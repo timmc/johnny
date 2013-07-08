@@ -108,34 +108,58 @@ public class HttpUrls {
         }
     }
 
-    public static String encodeUser(String user) {
-        return naivePercentEncode(user); //FIXME use minimal encoder
+    /**
+     * Minimally encode username portion of HTTP URL.
+     */
+    public static String encodeUsername(String username) {
+        return naivePercentEncode(username); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode password portion of HTTP URL.
+     */
     public static String encodePassword(String password) {
         return naivePercentEncode(password); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode path portion of HTTP URL.
+     */
     public static String encodePathSegment(String pathSegment) {
         return naivePercentEncode(pathSegment); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode path parameter key for an HTTP URL.
+     */
     public static String encodePathParamKey(String pathParamKey) {
         return naivePercentEncode(pathParamKey); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode path parameter value for an HTTP URL.
+     */
     public static String encodePathParamValue(String pathParamValue) {
         return naivePercentEncode(pathParamValue); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode query parameter key for an HTTP URL.
+     */
     public static String encodeQueryKey(String queryKey) {
         return naivePercentEncode(queryKey); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode query parameter value for an HTTP URL.
+     */
     public static String encodeQueryValue(String queryValue) {
         return naivePercentEncode(queryValue); //FIXME use minimal encoder
     }
 
+    /**
+     * Minimally encode fragment portion of HTTP URL.
+     */
     public static String encodeFragment(String fragment) {
         return naivePercentEncode(fragment); //FIXME use minimal encoder
     }

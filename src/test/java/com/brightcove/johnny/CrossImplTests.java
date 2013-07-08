@@ -20,7 +20,6 @@ public class CrossImplTests {
 
     /**
      * Example from http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding
-     * @throws MalformedURLException
      */
     @Test
     public void testLunatechMinimality() throws MalformedURLException {
