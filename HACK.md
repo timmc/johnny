@@ -9,6 +9,11 @@ Contribution guidelines and future work.
   structure-sharing, not persisted-to-disk!)
 - UTF-8 always
 
+## Pending design decisions
+
+- Case-fold protocol?
+- Checked or unchecked exceptions?
+
 ## TODO
 
 - Add features
@@ -46,7 +51,3 @@ Parse and manipulate components:
 ### Templating
 
 Belongs in another (dependent) lib.
-
-## Pending design decisions
-
-- Checked or unchecked exceptions?
