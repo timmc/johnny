@@ -11,7 +11,10 @@ Contribution guidelines and future work.
 
 ## Features to add
 
-### 2nd level
+- Expansion to other kinds of URIs.
+- Relative URLs
+
+### Component processing
 
 Parse and manipulate components:
 

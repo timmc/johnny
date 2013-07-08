@@ -14,12 +14,12 @@ public class javaNetUrlRegressionTest {
         String latin = "80";
         String devanagari = "\u096E\u0966"; // ८०
         try {
-            WebUrl.from(String.format(template, latin));
+            HttpUrls.from(String.format(template, latin));
         } catch (MalformedURLException murle) {
             fail("Latin-port should have worked");
         }
         try {
-            WebUrl.from(String.format(template, devanagari));
+            HttpUrls.from(String.format(template, devanagari));
             fail("Devanagari-port should have failed");
         } catch (MalformedURLException murle) {
             // expected

@@ -15,7 +15,7 @@ public class DifferentialEncodingTest {
     @Test
     public void testPlus() throws MalformedURLException {
         String original = "http://example.com/blue+light%20blue?blue%2Blight+blue";
-        WebUrl decoded = WebUrl.from(original);
+        HttpUrl decoded = HttpUrls.from(original);
         //TODO: pending path and QS decoding
     }
 

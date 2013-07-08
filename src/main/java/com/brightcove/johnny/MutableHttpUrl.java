@@ -13,7 +13,7 @@ import java.net.MalformedURLException;
  *
  * <code>mutableUrl.withProtocol("http").withHost("example.net").unparse()</code>
  */
-public class MutableWebUrl extends WebUrl {
+public class MutableHttpUrl extends HttpUrl {
     private String protocol;
     private String userInfo;
     private String host;
@@ -22,7 +22,7 @@ public class MutableWebUrl extends WebUrl {
     private String queryRaw;
     private String fragment;
 
-    private MutableWebUrl(String protocol, String userInfo, String host,
+    private MutableHttpUrl(String protocol, String userInfo, String host,
                           Long port, String pathRaw, String queryRaw,
                           String fragment) {
         this.protocol = protocol;
@@ -34,81 +34,67 @@ public class MutableWebUrl extends WebUrl {
         this.fragment = fragment;
     }
 
-    /** Parse a string as a {@link java.net.URL} and use the fields. */
-    public static MutableWebUrl fromFullUrl(String url) throws MalformedURLException {
-        Object[] args = parseFullUrl(url);
-        validateAllParts(args);
-        return new MutableWebUrl((String) args[0], (String) args[1],
+    /** Parse a string as a URL and extract the fields. */
+    public static MutableHttpUrl fromFullUrl(String url) throws MalformedURLException {
+        Object[] args = HttpUrls.parseFullUrl(url);
+        HttpUrls.validateAllParts(args);
+        return new MutableHttpUrl((String) args[0], (String) args[1],
                 (String) args[2], (Long) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
-    @Override
     public String getProtocol() { return protocol; }
     public void setProtocol(String protocol) { this.protocol = protocol; }
 
-    @Override
-    public WebUrl withProtocol(String protocol) {
+    public MutableHttpUrl withProtocol(String protocol) {
         setProtocol(protocol);
         return this;
     }
 
-    @Override
     public String getUserInfo() { return userInfo; }
     public void setUserInfo(String userInfo) { this.userInfo = userInfo; }
 
-    @Override
-    public WebUrl withUserInfo(String userInfo) {
+    public MutableHttpUrl withUserInfo(String userInfo) {
         setUserInfo(userInfo);
         return this;
     }
 
-    @Override
     public String getHost() { return host; }
     public void setHost(String host) { this.host = host; }
 
-    @Override
-    public WebUrl withHost(String host) {
+    public MutableHttpUrl withHost(String host) {
         setHost(host);
         return this;
     }
 
-    @Override
     public Long getPort() { return port; }
     public void setPort(Long port) { this.port = port; }
 
-    @Override
-    public WebUrl withPort(Long port) {
+    public MutableHttpUrl withPort(Long port) {
         setPort(port);
         return this;
     }
 
-    @Override
     public String getPathRaw() { return pathRaw; }
     public void setPathRaw(String pathRaw) { this.pathRaw = pathRaw; }
 
-    @Override
-    public WebUrl withPathRaw(String pathRaw) {
+    public MutableHttpUrl withPathRaw(String pathRaw) {
         setPathRaw(pathRaw);
         return this;
     }
 
-    @Override
     public String getQueryRaw() { return queryRaw; }
     public void setQueryRaw(String queryRaw) { this.queryRaw = queryRaw; }
 
-    @Override
-    public WebUrl withQueryRaw(String queryRaw) {
+    public HttpUrl withQueryRaw(String queryRaw) {
         setQueryRaw(queryRaw);
         return this;
     }
 
-    @Override
     public String getFragment() { return fragment; }
     public void setFragment(String fragment) { this.fragment = fragment; }
 
-    @Override
-    public WebUrl withFragment(String fragment) {
+    public HttpUrl withFragment(String fragment) {
         setFragment(fragment);
         return this;
     }
