@@ -19,7 +19,7 @@ public class HttpUrls {
      * Parse a URL string to a piecewise URL representation.
      */
     public static HttpUrl from(String url) throws MalformedURLException {
-        return ImmutableHttpUrl.fromFullUrl(url);
+        return ImmutableHttpUrl.from(url);
     }
 
     /*== Constructor assistance ==*/
@@ -27,7 +27,7 @@ public class HttpUrls {
     /** Parse a URL into arguments required for UrlBits constructors. */
     static Object[] parseFullUrl(String url) throws MalformedURLException {
         Object[] args = new Object[7];
-        URL parsed = new URL(url); // FIXME: Will happily accept http://google.com:८०/
+        URL parsed = new URL(url);
         args[0] = parsed.getProtocol();
         args[1] = parsed.getUserInfo();
         args[2] = parsed.getHost();

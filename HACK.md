@@ -21,11 +21,14 @@ Contribution guidelines and future work.
 - Add features
 - Automatically run tests against all impls of HttpUrl
 - Steal tests from other URL libs
+- Equality & comparators (see RFC 3986 section 6)
+- Cloning
 
 ## Features to add
 
 - Expansion to other kinds of URIs.
 - Relative URLs
+- StringBuilder-backed impls (store offsets for fast getters)
 
 ### Component processing
 

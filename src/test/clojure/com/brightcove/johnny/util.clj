@@ -7,7 +7,7 @@
 
 (defn ^:internal get-parser
   [^Class impl]
-  (.getMethod impl "fromFullUrl" (into-array Class [String])))
+  (.getMethod impl "from" (into-array Class [String])))
 
 (defn ^:internal parse-via-impl
   [^String s, ^Class impl]

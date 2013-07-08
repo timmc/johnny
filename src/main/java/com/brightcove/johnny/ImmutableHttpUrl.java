@@ -35,7 +35,7 @@ public class ImmutableHttpUrl extends HttpUrl {
     }
 
     /** Parse a string as a URL and extract the fields. */
-    public static ImmutableHttpUrl fromFullUrl(String url) throws MalformedURLException {
+    public static ImmutableHttpUrl from(String url) throws MalformedURLException {
         Object[] args = HttpUrls.parseFullUrl(url);
         HttpUrls.validateAllParts(args);
         return new ImmutableHttpUrl((String) args[0], (String) args[1],
