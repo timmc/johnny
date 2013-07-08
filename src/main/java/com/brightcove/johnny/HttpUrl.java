@@ -15,8 +15,8 @@ public abstract class HttpUrl {
     public String unparse() {
         StringBuilder build = new StringBuilder();
         build.append(getProtocol()).append("://");
-        if (getUserInfo() != null) {
-            build.append(getUserInfo()).append("@");
+        if (getUserInfoRaw() != null) {
+            build.append(getUserInfoRaw()).append("@");
         }
         build.append(getHost());
         if (getPort() != null) {
@@ -27,7 +27,7 @@ public abstract class HttpUrl {
             build.append("?").append(getQueryRaw());
         }
         if (getFragment() != null) {
-            build.append("#").append(getFragment()); //FIXME: Encode properly
+            build.append("#").append(HttpUrls.encodeFragment(getFragment()));
         }
         return build.toString();
     }
@@ -72,11 +72,16 @@ public abstract class HttpUrl {
     /** See {@link #getProtocol()}. */
     public abstract HttpUrl withProtocol(String protocol);
 
-    /** User info of URL, excluding "@" separator. Nullable. */
-    public abstract String getUserInfo(); // TODO: raw vs. decoded
+    /**
+     * Undecoded user info of URL, excluding "@" separator. Nullable.
+     * If you expect a :-delimited username/password pair, use
+     * {@link UserInfo} to decode it correctly. If this is instead expected
+     * to be a single field, use {@link HttpUrls#percentDecode(String)}.
+     */
+    public abstract String getUserInfoRaw();
 
-    /** See {@link #getUserInfo()}. */
-    public abstract HttpUrl withUserInfo(String userInfo);
+    /** See {@link #getUserInfoRaw()}. */
+    public abstract HttpUrl withUserInfoRaw(String userInfoRaw);
 
     /** Host address (domain or IP address). Not null. */
     public abstract String getHost();
@@ -90,20 +95,31 @@ public abstract class HttpUrl {
     /** See {@link #getPort()}. */
     public abstract HttpUrl withPort(Long port);
 
-    /** Undecoded path portion of URL, possibly empty. Not null. */
+    /**
+     * Undecoded path portion of URL, possibly empty. If not empty, must
+     * start with <code>/</code>. Not null.
+     * To decode a path into segments and path parameters, use
+     * {@link Path}. Do not simply percent-decode the raw path,
+     * as that may exposed encoded slashes.
+     */
+    //TODO: implement SimplePath and MatrixPath
     public abstract String getPathRaw();
 
     /** See {@link #getPathRaw()}. */
     public abstract HttpUrl withPathRaw(String pathRaw);
 
-    /** Undecoded query portion of URL, excluding "?" separator. Nullable. */ //TODO link to decomposer
+    /**
+     * Undecoded query portion of URL, excluding "?" separator. Nullable.
+     * To decode a query into keys and values, use {@link Query}.
+     */
+    //TODO Query
     public abstract String getQueryRaw();
 
     /** See {@link #getQueryRaw()}. */
     public abstract HttpUrl withQueryRaw(String queryRaw);
 
     /** Fragment portion of URL, excluding "#" separator. Nullable. */
-    public abstract String getFragment(); // TODO: raw vs. decoded
+    public abstract String getFragment();
 
     /** See {@link #getFragment()}. */
     public abstract HttpUrl withFragment(String fragment);

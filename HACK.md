@@ -5,6 +5,7 @@ Contribution guidelines and future work.
 ## Development ideals:
 
 - Fail fast
+- Allow parsing/construction without validation
 - Use immutable data structures, ideally persistent (that means
   structure-sharing, not persisted-to-disk!)
 - UTF-8 always
@@ -13,6 +14,7 @@ Contribution guidelines and future work.
 
 - Case-fold protocol?
 - Checked or unchecked exceptions?
+- Validate by default?
 
 ## TODO
 

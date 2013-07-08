@@ -3,6 +3,7 @@ package com.brightcove.johnny;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import com.google.common.net.InternetDomainName;
@@ -40,7 +41,7 @@ public class HttpUrls {
     /** Validate constructor arguments by parts. */
     static void validateAllParts(Object[] args) {
         validateProtocol((String) args[0]);
-        validateUserInfo((String) args[1]);
+        validateUserInfoRaw((String) args[1]);
         validateHost((String) args[2]);
         validatePort((Long) args[3]);
         validatePathRaw((String) args[4]);
@@ -58,7 +59,7 @@ public class HttpUrls {
         }
     }
 
-    static void validateUserInfo(String userInfo) {
+    static void validateUserInfoRaw(String userInfoRaw) {
         //TODO: Find unencoded delimiters
     }
 
@@ -93,12 +94,34 @@ public class HttpUrls {
         //TODO: Find unencoded delimiters
     }
 
+    /*== Decoders ==*/
+
+    /**
+     * Naïvely decode a percent-encoded string. This is generally not safe
+     * to perform on a path, query, or user info component, since it may
+     * expose spurious delimiters. For example, using this to decode the path
+     * <code>/one%2Fpart</code> will produce <code>/one/part</code>, which is
+     * certainly not correct. Instead, use a component-specific decoder.
+     */
+    //TODO: List component-specific decoders.
+    public static String percentDecode(String part) {
+        if (part == null) {
+            return ""; // TODO Correct behavior?
+        } else {
+            try {
+                return URLDecoder.decode(part, "UTF-8");
+            } catch (UnsupportedEncodingException uee) {
+                throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
+            }
+        }
+    }
+
     /*== Encoders ==*/
 
     /** Naively percent-encode for inclusion in any portion of a URL. */
     private static String naivePercentEncode(String part) {
         if (part == null) {
-            return "";
+            return ""; // TODO Correct behavior?
         } else {
             try {
                 return URLEncoder.encode(part, "UTF-8");

@@ -15,18 +15,18 @@ import java.net.MalformedURLException;
  */
 public class ImmutableHttpUrl extends HttpUrl {
     private final String protocol;
-    private final String userInfo;
+    private final String userInfoRaw;
     private final String host;
     private final Long port;
     private final String pathRaw;
     private final String queryRaw;
     private final String fragment;
 
-    private ImmutableHttpUrl(String protocol, String userInfo, String host,
+    private ImmutableHttpUrl(String protocol, String userInfoRaw, String host,
                             Long port, String pathRaw, String queryRaw,
                             String fragment) {
         this.protocol = protocol;
-        this.userInfo = userInfo;
+        this.userInfoRaw = userInfoRaw;
         this.host = host;
         this.port = port;
         this.pathRaw = pathRaw;
@@ -46,42 +46,42 @@ public class ImmutableHttpUrl extends HttpUrl {
     public String getProtocol() { return protocol; }
 
     public HttpUrl withProtocol(String protocol) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
-    public String getUserInfo() { return userInfo; }
+    public String getUserInfoRaw() { return userInfoRaw; }
 
-    public HttpUrl withUserInfo(String userInfo) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+    public HttpUrl withUserInfoRaw(String userInfoRaw) {
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
     public String getHost() { return host; }
 
     public HttpUrl withHost(String host) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
     public Long getPort() { return port; }
 
     public HttpUrl withPort(Long port) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
     public String getPathRaw() { return pathRaw; }
 
     public HttpUrl withPathRaw(String pathRaw) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
     public String getQueryRaw() { return queryRaw; }
 
     public HttpUrl withQueryRaw(String queryRaw) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
     public String getFragment() { return fragment; }
 
     public HttpUrl withFragment(String fragment) {
-        return new ImmutableHttpUrl(protocol, userInfo, host, port, pathRaw, queryRaw, fragment);
+        return new ImmutableHttpUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 }

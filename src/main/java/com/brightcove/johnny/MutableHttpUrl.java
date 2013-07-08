@@ -15,18 +15,18 @@ import java.net.MalformedURLException;
  */
 public class MutableHttpUrl extends HttpUrl {
     private String protocol;
-    private String userInfo;
+    private String userInfoRaw;
     private String host;
     private Long port;
     private String pathRaw;
     private String queryRaw;
     private String fragment;
 
-    private MutableHttpUrl(String protocol, String userInfo, String host,
+    private MutableHttpUrl(String protocol, String userInfoRaw, String host,
                           Long port, String pathRaw, String queryRaw,
                           String fragment) {
         this.protocol = protocol;
-        this.userInfo = userInfo;
+        this.userInfoRaw = userInfoRaw;
         this.host = host;
         this.port = port;
         this.pathRaw = pathRaw;
@@ -51,11 +51,11 @@ public class MutableHttpUrl extends HttpUrl {
         return this;
     }
 
-    public String getUserInfo() { return userInfo; }
-    public void setUserInfo(String userInfo) { this.userInfo = userInfo; }
+    public String getUserInfoRaw() { return userInfoRaw; }
+    public void setUserInfoRaw(String userInfoRaw) { this.userInfoRaw = userInfoRaw; }
 
-    public MutableHttpUrl withUserInfo(String userInfo) {
-        setUserInfo(userInfo);
+    public MutableHttpUrl withUserInfoRaw(String userInfoRaw) {
+        setUserInfoRaw(userInfoRaw);
         return this;
     }
 
