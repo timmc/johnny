@@ -9,6 +9,12 @@ Contribution guidelines and future work.
   structure-sharing, not persisted-to-disk!)
 - UTF-8 always
 
+## TODO
+
+- Add features
+- Automatically run tests against all impls of HttpUrl
+- Steal tests from other URL libs
+
 ## Features to add
 
 - Expansion to other kinds of URIs.
