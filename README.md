@@ -31,6 +31,10 @@ WebUrl.from("http://google.com/search?q=url#fragment").withDomain("brightcove.co
 
 FIXME
 
+## Contributing
+
+See HACK.md.
+
 ## License
 
 FIXME
