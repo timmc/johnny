@@ -2,16 +2,23 @@
   (:require [clojure.test :refer :all]
             [com.brightcove.johnny.util :as u]))
 
+(def accessors
+  [#(.getProtocol %) #(.getUserInfo %) #(.getHost %) #(.getPort %)
+   #(.getPathRaw %) #(.getQueryRaw %) #(.getFragment %)])
+
 (deftest parts
-  (u/for-all-impls
-   #(let [parts (u/parse "https://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
-      (is (= (.getProtocol parts) "https"))
-      (is (= (.getUserInfo parts) "bob:bobby%2B"))
-      (is (= (.getHost parts) "www.lunatech.com."))
-      (is (= (.getPort parts) 8080))
-      (is (= (.getPathRaw parts) "/file%2f;p%41=1%42"))
-      (is (= (.getQueryRaw parts) "q%43=2%44"))
-      (is (= (.getFragment parts) "third%45")))))
+  (testing "raw http parts"
+    (u/for-all-impls
+     #(let [parts (u/parse "https://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
+        (is (= ((apply juxt accessors) parts)
+               ["https" "bob:bobby%2B" "www.lunatech.com." 8080
+                "/file%2f;p%41=1%42" "q%43=2%44" "third%45"])))))
+  (testing "missing bits"
+    (u/for-all-impls
+     #(let [parts (u/parse "http://localhost")]
+        (is (= ((apply juxt accessors) parts)
+               ["http" nil "localhost" nil
+                "" nil nil]))))))
 
 ;; http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding
 (deftest minimality
