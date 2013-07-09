@@ -3,7 +3,8 @@
 
 * http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding"
   (:require [clojure.test :refer :all]
-            [com.brightcove.johnny.util :as u]))
+            [com.brightcove.johnny.util :as u]
+            [clojure.string :as str]))
 
 (def getters
   [#(.getProtocol %) #(.getUserInfoRaw %) #(.getHost %) #(.getPort %)
@@ -20,7 +21,7 @@
      #(let [parts (u/parse "https://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
         (is (= ((apply juxt getters) parts)
                ["https" "bob:bobby%2B" "www.lunatech.com." 8080
-                "/file%2f;p%41=1%42" "q%43=2%44" "third%45"])))))
+                "/file%2f;p%41=1%42" "q%43=2%44" "thirdE"])))))
   (testing "raw parts stay raw"
     (u/for-all-impls
      #(let [parts (u/parse "http://one%3Atwo:three@localhost/one%2Fpart?query%3f%26%3d")]
@@ -98,3 +99,13 @@
                  (.addQueryParam "foo", "bar")
                  str)
              "http://brightcove.com/search?q=url&foo=bar#fragment")))))
+
+(deftest utf-8
+  (u/for-all-impls
+   #(testing "Correctly encode/decode Unicode"
+      (is (= (-> (u/parse "http://localhost")
+                 (.withFragment "ಠ")
+                 str/lower-case)
+             "http://localhost#%e0%b2%a0"))
+      (is (= (-> (.getFragment (u/parse "http://localhost#%e0%b2%a0")))
+             "ಠ")))))

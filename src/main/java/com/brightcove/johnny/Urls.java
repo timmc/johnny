@@ -34,7 +34,8 @@ public class Urls {
         args[3] = parsed.getPort() == -1 ? null : Long.valueOf(parsed.getPort());
         args[4] = parsed.getPath();
         args[5] = parsed.getQuery();
-        args[6] = parsed.getRef();
+        String fragment = parsed.getRef();
+        args[6] = fragment == null ? null : percentDecode(fragment);
         return args;
     }
 

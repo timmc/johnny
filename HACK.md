@@ -74,9 +74,10 @@ Belongs in another (dependent) lib.
 ## Specs
 
 - RFC 3986: Generic URI Syntax -- use the http portion
-- RFC 2616: Defines HTTP URLs, makes reference to 3986 (via latter's
-  obsoletion of 2396)
+- RFC 2616: Defines HTTP URLs, makes reference to 2396 (now 3986)
 - RFC 2732: IPv6 in URL
+- RFC 6874: IPv6 scope/zone identifier (and problems with % in
+  authority)
 
 Unused:
 
@@ -90,7 +91,8 @@ Unused:
 
 These have at least one useful thing:
 
-- java.net.URL - mostly good parsing
+- java.net.URL - mostly good parsing, but allows alternative numeric
+  chars in port and doesn't decode fragment for you
 - 
 
 ### Unuseful
