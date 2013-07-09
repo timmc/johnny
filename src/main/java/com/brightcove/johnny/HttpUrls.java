@@ -87,6 +87,12 @@ public class HttpUrls {
         if (pathRaw == null) {
             throw new IllegalArgumentException("pathRaw must not be null");
         }
+        if (pathRaw.isEmpty()) {
+            return;
+        }
+        if (pathRaw.charAt(0) != '/') {
+            throw new IllegalArgumentException("pathRaw must start with / if not empty");
+        }
         //TODO: Find unencoded delimiters
     }
 

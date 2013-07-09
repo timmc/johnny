@@ -23,6 +23,10 @@ Contribution guidelines and future work.
 - Steal tests from other URL libs
 - Equality & comparators (see RFC 3986 section 6)
 - Cloning
+- Roundtripping of encoding decisions. May want to preserve:
+  - Case of percent-encodes (%2f vs. %2F)
+  - Encoding of optionally-encoded chars (e.g. "?" in query)
+  - Empty query components (e.g. "&&")
 
 ## Features to add
 
@@ -56,3 +60,14 @@ Parse and manipulate components:
 ### Templating
 
 Belongs in another (dependent) lib.
+
+## Sources to draw from
+
+- java.net.URL - mostly good parsing
+- 
+
+## Sources to avoid
+
+- http://ostermiller.org/utils/src/CGIParser.java.html does not allow
+  null query values
+
