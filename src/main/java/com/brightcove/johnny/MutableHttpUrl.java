@@ -36,8 +36,8 @@ public class MutableHttpUrl extends HttpUrl {
 
     /** Parse a string as a URL and extract the fields. */
     public static MutableHttpUrl from(String url) throws MalformedURLException {
-        Object[] args = HttpUrls.parseFullUrl(url);
-        HttpUrls.validateAllParts(args);
+        Object[] args = Urls.parseFullHttpUrl(url);
+        Urls.validateAllParts(args);
         return new MutableHttpUrl((String) args[0], (String) args[1],
                 (String) args[2], (Long) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);

@@ -1,6 +1,5 @@
 (ns com.brightcove.johnny.util
-  (:import (com.brightcove.johnny HttpUrls
-                                  ImmutableHttpUrl
+  (:import (com.brightcove.johnny ImmutableHttpUrl
                                   MutableHttpUrl)))
 
 (def known-impls #{MutableHttpUrl ImmutableHttpUrl})

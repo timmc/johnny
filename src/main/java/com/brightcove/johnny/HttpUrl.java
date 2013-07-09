@@ -27,7 +27,7 @@ public abstract class HttpUrl {
             build.append("?").append(getQueryRaw());
         }
         if (getFragment() != null) {
-            build.append("#").append(HttpUrls.encodeFragment(getFragment()));
+            build.append("#").append(Urls.encodeFragment(getFragment()));
         }
         return build.toString();
     }
@@ -76,7 +76,7 @@ public abstract class HttpUrl {
      * Undecoded user info of URL, excluding "@" separator. Nullable.
      * If you expect a :-delimited username/password pair, use
      * {@link UserInfo} to decode it correctly. If this is instead expected
-     * to be a single field, use {@link HttpUrls#percentDecode(String)}.
+     * to be a single field, use {@link Urls#percentDecode(String)}.
      */
     public abstract String getUserInfoRaw();
 

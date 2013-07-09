@@ -11,21 +11,21 @@ import com.google.common.net.InternetDomainName;
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
  */
-public class HttpUrls {
+public class Urls {
 
     /*== Convenience ==*/ 
 
     /**
-     * Parse a URL string to a piecewise URL representation.
+     * Parse a URL string to a piecewise HTTP URL representation.
      */
-    public static HttpUrl from(String url) throws MalformedURLException {
+    public static HttpUrl httpUrl(String url) throws MalformedURLException {
         return ImmutableHttpUrl.from(url);
     }
 
     /*== Constructor assistance ==*/
 
     /** Parse a URL into arguments required for UrlBits constructors. */
-    static Object[] parseFullUrl(String url) throws MalformedURLException {
+    static Object[] parseFullHttpUrl(String url) throws MalformedURLException {
         Object[] args = new Object[7];
         URL parsed = new URL(url);
         args[0] = parsed.getProtocol();
