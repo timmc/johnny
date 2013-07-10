@@ -14,8 +14,18 @@ missing values.)
 The goal is to be able to write this:
 
 ```java
-WebUrl.from("http://google.com/search?q=url#fragment").withDomain("brightcove.com").addQueryParam("foo", "bar").toString() // "http://brightcove.com/search?q=url&foo=bar#fragment"
+Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").toString() // "http://brightcove.com/search?q=url&foo=bar#fragment"
 ```
+
+...but the library is **nowhere near ready**. **DO NOT USE**.  It
+needs further API development and grooming, a good long sit-down with
+some RFCs, careful selection of supporting libraries, a huge number of
+careful tests, and way more eyeballs.
+
+If you're willing to help out, let me know! I'm also considering
+opening up a Bitcoin bug bounty once the library is at the alpha
+stage, and I would appreciate both deposits and withdrawals at that
+point.
 
 ## Goals
 
@@ -27,6 +37,10 @@ WebUrl.from("http://google.com/search?q=url#fragment").withDomain("brightcove.co
 * Use of immutable data structures so that manipulations are
   thread-safe
 
+### More goals
+
+* Pluggable parsing, validation, manipulation, and encoding
+
 ## Usage
 
 FIXME
@@ -37,4 +51,4 @@ See HACK.md.
 
 ## License
 
-FIXME
+FIXME (will be Apache or MIT)
