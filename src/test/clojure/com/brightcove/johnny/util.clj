@@ -1,39 +1,33 @@
-(ns com.brightcove.johnny.util
-  (:import (com.brightcove.johnny ImmutableHttpUrl
-                                  MutableHttpUrl)))
+(ns com.brightcove.johnny.util)
 
-(def known-impls #{MutableHttpUrl ImmutableHttpUrl})
+(def url-getters
+  "In order, the getters on http.Url."
+  [#(.getProtocol %) #(.getUserInfoRaw %) #(.getHost %) #(.getPort %)
+   #(.getPathRaw %) #(.getQueryRaw %) #(.getFragment %)])
 
-(defn ^:internal get-parser
-  [^Class impl]
-  (.getMethod impl "from" (into-array Class [String])))
+(def url-setters
+  "In order, the chaining 'setters' on http.Url."
+  [#(.withProtocol % %2) #(.withUserInfoRaw % %2)
+   #(.withHost % %2) #(.withPort % %2)
+   #(.withPathRaw % %2) #(.withQueryRaw % %2) #(.withFragment % %2)])
 
-(defn ^:internal parse-via-impl
-  [^String s, ^Class impl]
-  (let [m (get-parser impl)]
-    (.invoke m nil (to-array [s]))))
-
-(def ^:dynamic *impl* nil)
-
-(defn parse
-  "Parse a string as a URL according to the current `*impl*`."
-  [^String s]
-  (parse-via-impl s *impl*))
-
-(defn for-all-impls
-  "Perform a thunk with each implementation successively."
-  [thunk]
+(defn dorun-bindings
+  "Perform a thunk under a series of bindings for a var."
+  [the-var vals thunk]
   (let [succeed (atom 0)
         current (atom nil)]
     (try
-      (doseq [impl known-impls]
-        (binding [*impl* impl]
-          (reset! current impl)
-          (thunk)
-          (swap! succeed inc)))
-      (finally
-        (let [remaining (- (count known-impls) @succeed)]
-          (when-not (zero? remaining)
-            (binding [*out* *err*]
-              (println "Failure for implementation:" (.getName @current))
-              (println "Implementations skipped:" remaining))))))))
+      (doseq [val vals]
+        ;; binding is a macro so you can't pass in a var
+        (try (push-thread-bindings {the-var val})
+             (reset! current val)
+             (thunk)
+             (swap! succeed inc)
+             nil
+             (finally (pop-thread-bindings))))
+      (finally ;; Detect exceptions and note early bail-out
+        (let [unfinished (- (count vals) @succeed)]
+          (when (< 0 unfinished)
+            (println "Threw on val:" @current)
+            (when (< 1 unfinished)
+              (println "Vals skipped:" (dec unfinished)))))))))

@@ -1,10 +1,10 @@
-(ns com.brightcove.johnny.immutable
-  "Tests for immutable implementation."
+(ns com.brightcove.johnny.http.defaults
+  "Tests for default implementations."
   (:require [clojure.test :refer :all])
-  (:import (com.brightcove.johnny Urls)))
+  (:import (com.brightcove.johnny.http Urls)))
 
-(deftest immutable-by-default
-  (let [orig (Urls/httpUrl "http://brightcove.com")
+(deftest immutable-url-by-default
+  (let [orig (Urls/parse "http://brightcove.com")
         alt (.withHost orig "example.net")]
     (testing "Original unaltered"
       (is (= (str orig) "http://brightcove.com")))

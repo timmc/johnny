@@ -1,111 +1,89 @@
 (ns com.brightcove.johnny.cross-impl-test
-  "Examples drawn from:
-
-* http://blog.lunatech.com/2009/02/03/what-every-web-developer-must-know-about-url-encoding"
+  "This should be split up."
   (:require [clojure.test :refer :all]
             [com.brightcove.johnny.util :as u]
+            [com.brightcove.johnny.http.impls :as i]
             [clojure.string :as str]))
 
-(def getters
-  [#(.getProtocol %) #(.getUserInfoRaw %) #(.getHost %) #(.getPort %)
-   #(.getPathRaw %) #(.getQueryRaw %) #(.getFragment %)])
-
-(def setters
-  [#(.withProtocol % %2) #(.withUserInfoRaw % %2)
-   #(.withHost % %2) #(.withPort % %2)
-   #(.withPathRaw % %2) #(.withQueryRaw % %2) #(.withFragment % %2)])
-
-(deftest parse
-  (testing "raw http parts"
-    (u/for-all-impls
-     #(let [parts (u/parse "https://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
-        (is (= ((apply juxt getters) parts)
-               ["https" "bob:bobby%2B" "www.lunatech.com." 8080
-                "/file%2f;p%41=1%42" "q%43=2%44" "thirdE"])))))
-  (testing "raw parts stay raw"
-    (u/for-all-impls
-     #(let [parts (u/parse "http://one%3Atwo:three@localhost/one%2Fpart?query%3f%26%3d")]
-        (is (= (.getUserInfoRaw parts) "one%3Atwo:three"))
-        (is (= (.getPathRaw parts) "/one%2Fpart"))
-        (is (= (.getQueryRaw parts) "query%3f%26%3d")))))
-  (testing "missing bits"
-    (u/for-all-impls
-     #(let [parts (u/parse "http://localhost")]
-        (is (= ((apply juxt getters) parts)
-               ["http" nil "localhost" nil
-                "" nil nil]))))))
+(defmacro cross
+  [& body]
+  `(u/dorun-bindings
+    (var i/*url-manip*) i/url-manip-impls
+    #(u/dorun-bindings
+      (var i/*url-parser*) i/url-parse-impls
+      (fn tests [] ~@body))))
 
 (deftest swap-single
-  (u/for-all-impls
-   #(testing "Alter a single component at a time"
-      ;; List of component variations, each of which is a set of pairs of
-      ;; value and serialized text (with delimiters).
-      (let [variations [{"https" "https://", "http" "http://"}
-                        {"to%3aen" "to%3aen@", nil nil, "" "@"}
-                        {"timmc.local" "timmc.local"}
-                        {nil "", 43 ":43"}
-                        {"" "", "/" "/"}
-                        {nil "", "" "?", "a=b?" "?a=b?"}
-                        {nil "", "" "#", "foo#" "#foo%23"}]]
-        ;; Set up a baseline URL, pre-decomposed into components plus
-        ;; their delimiters
-        (doseq [baseline [["http://" "user:pass@" "[::1%eth0]" ":80"
-                           "/p/a/t/h/" "?q?u=er&&y" "#fragment"]
-                          ["http://" nil "127.0.0.1" nil
-                           nil nil nil]]
-                :let [composed (apply str baseline)]]
-          ;; For each component, try using the setter, and confirm that that
-          ;; component is affected as expected
-          (doseq [i (range 7)
-                  :let [getter (get getters i)
-                        setter (get setters i)]
-                  [in out] (get variations i)]
-            (let [altered (setter (u/parse composed) in)]
-              ;; confirm that the set succeeds
-              (is (= (getter altered) in))
-              ;; confirm that the URL string representation changes correctly
-              (is (= (str altered)
-                     (apply str (assoc baseline i out)))))))))))
+  (cross
+   (testing "Alter a single component at a time"
+     ;; List of component variations, each of which is a set of pairs of
+     ;; value and serialized text (with delimiters).
+     (let [variations [{"https" "https://", "http" "http://"}
+                       {"to%3aen" "to%3aen@", nil nil, "" "@"}
+                       {"timmc.local" "timmc.local"}
+                       {nil "", 43 ":43"}
+                       {"" "", "/" "/"}
+                       {nil "", "" "?", "a=b?" "?a=b?"}
+                       {nil "", "" "#", "foo#" "#foo%23"}]]
+       ;; Set up a baseline URL, pre-decomposed into components plus
+       ;; their delimiters
+       (doseq [baseline [["http://" "user:pass@" "[::1%eth0]" ":80"
+                          "/p/a/t/h/" "?q?u=er&&y" "#fragment"]
+                         ["http://" nil "127.0.0.1" nil
+                          nil nil nil]]
+               :let [composed (apply str baseline)]]
+         ;; For each component, try using the setter, and confirm that that
+         ;; component is affected as expected
+         (doseq [i (range 7)
+                 :let [getter (get u/url-getters i)
+                       setter (get u/url-setters i)]
+                 [in out] (get variations i)]
+           (let [altered (setter (i/parse-u composed) in)]
+             ;; confirm that the set succeeds
+             (is (= (getter altered) in))
+             ;; confirm that the URL string representation changes correctly
+             (is (= (str altered)
+                    (apply str (assoc baseline i out)))))))))))
 
 (deftest minimality
   ;; TODO: Write test that builds a URL where each component is a string
   ;; containing all of lower ASCII (plus some non-ASCII Unicode) and then
   ;; check that the unencoded characters are appropriate.
-  (u/for-all-impls
-   #(let [lunatech-example "http://example.com/:@-._~!$&'()*+,=;:@-._~!$&'()*+,=:@-._~!$&'()*+,==?/?:@-._~!$'()*+,;=/?:@-._~!$'()*+,;==#/?:@-._~!$&'()*+,;="]
-      (is (= (.unparse (u/parse lunatech-example))
-             lunatech-example)))))
+  (cross
+   (let [lunatech-example "http://example.com/:@-._~!$&'()*+,=;:@-._~!$&'()*+,=:@-._~!$&'()*+,==?/?:@-._~!$'()*+,;=/?:@-._~!$'()*+,;==#/?:@-._~!$&'()*+,;="]
+     (is (= (.unparse (i/parse-u lunatech-example))
+            lunatech-example)))))
 
 (deftest j-n-url-regression
-  (u/for-all-impls
-   #(testing "port-numerics"
-      (is (= (.getPort (u/parse "http://google.com:80/")) 80))
-      ;; ८० is Devanagari numerals
-      (is (thrown? java.net.MalformedURLException
-                   (.getPort (u/parse "http://google.com:\u096E\u0966/")))))))
+  (cross
+   (testing "port-numerics"
+     (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
+     ;; ८० is Devanagari numerals
+     (is (thrown? java.net.MalformedURLException
+                  (.getPort (i/parse-u "http://google.com:\u096E\u0966/")))))))
 
 (deftest differential-encoding
-  (u/for-all-impls
-   #(testing "+ character"
-      (let [orig "http://example.com/blue+light%20blue?blue%2Blight+blue"]
-        ;; TODO: pending path and QS decoding
-        ))))
+  (cross
+   (testing "+ character"
+     (let [orig "http://example.com/blue+light%20blue?blue%2Blight+blue"]
+       ;; TODO: pending path and QS decoding
+       ))))
 
 (deftest workflow
-  (u/for-all-impls
-   #(testing "README example"
-      (is (= (-> (u/parse "http://google.com/search?q=url#fragment")
+  (cross
+   (testing "README example"
+     (let [u (-> (i/parse-u "http://example.net/search?q=1&q=2#fragment")
                  (.withHost "brightcove.com")
-                 (.addQueryParam "foo", "bar")
-                 str)
-             "http://brightcove.com/search?q=url&foo=bar#fragment")))))
+                 (.querySetKey "q", "check"))]
+       (is (= (str u)
+              "http://brightcove.com/search?q=check#fragment"))))))
 
 (deftest utf-8
-  (u/for-all-impls
-   #(testing "Correctly encode/decode Unicode"
-      (is (= (-> (u/parse "http://localhost")
-                 (.withFragment "ಠ")
-                 str/lower-case)
-             "http://localhost#%e0%b2%a0"))
-      (is (= (-> (.getFragment (u/parse "http://localhost#%e0%b2%a0")))
-             "ಠ")))))
+  (cross
+   (testing "Correctly encode/decode Unicode"
+     (is (= (-> (i/parse-u "http://localhost")
+                (.withFragment "ಠ")
+                str/lower-case)
+            "http://localhost#%e0%b2%a0"))
+     (is (= (-> (.getFragment (i/parse-u "http://localhost#%e0%b2%a0")))
+            "ಠ")))))

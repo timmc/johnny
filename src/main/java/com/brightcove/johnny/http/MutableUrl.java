@@ -1,4 +1,4 @@
-package com.brightcove.johnny;
+package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
@@ -6,14 +6,17 @@ import java.net.MalformedURLException;
  * A non-concurrency-safe UrlBits implementation. Methods are generally not
  * thread-safe, and instances should not be shared outside of the scope they
  * are created in (as a best practice.)
- *
- * Even though the setters always return the same instance they are called on,
+ * <p>
+ * Even though the "setters" always return the same instance they are called on,
  * client code should still use a chaining technique (allowing a safe and easy
- * transition to supporting immutable UrlBits implementations as well):
- *
+ * transition to supporting immutable {@link Url} implementations as well):
+ * <p>
  * <code>mutableUrl.withProtocol("http").withHost("example.net").unparse()</code>
+ * <p>
+ * Methods beginning with "set" are provided only for bean compability and
+ * should have the same performance characteristics as the "with" methods.
  */
-public class MutableHttpUrl extends HttpUrl {
+public class MutableUrl extends Url {
     private String protocol;
     private String userInfoRaw;
     private String host;
@@ -22,9 +25,29 @@ public class MutableHttpUrl extends HttpUrl {
     private String queryRaw;
     private String fragment;
 
-    private MutableHttpUrl(String protocol, String userInfoRaw, String host,
-                          Long port, String pathRaw, String queryRaw,
-                          String fragment) {
+    /**
+     * Create an invalid URL (null protocol and host). Provided for bean
+     * compatibility.
+     */
+    public MutableUrl() {
+        this(null, null, null, null, null, null, null);
+    }
+
+    /**
+     * Create a URL piecewise, with no validation. See accessors for
+     * allowable values; parameters are here only described as nullable
+     * or not.
+     * @param protocol Non-null
+     * @param userInfoRaw Nullable
+     * @param host Non-null
+     * @param port Nullable
+     * @param pathRaw Non-null
+     * @param queryRaw Nullable
+     * @param fragment Nullable
+     */
+    public MutableUrl(String protocol, String userInfoRaw, String host,
+                      Long port, String pathRaw, String queryRaw,
+                      String fragment) {
         this.protocol = protocol;
         this.userInfoRaw = userInfoRaw;
         this.host = host;
@@ -35,66 +58,73 @@ public class MutableHttpUrl extends HttpUrl {
     }
 
     /** Parse a string as a URL and extract the fields. */
-    public static MutableHttpUrl from(String url) throws MalformedURLException {
-        Object[] args = Urls.parseFullHttpUrl(url);
-        Urls.validateAllParts(args);
-        return new MutableHttpUrl((String) args[0], (String) args[1],
+    public static MutableUrl from(String url, UrlParser parser) throws MalformedURLException {
+        Object[] args = parser.parse(url);
+        Urls.STANDARD_URL_VALIDATOR.validateAllParts(args);
+        return new MutableUrl((String) args[0], (String) args[1],
                 (String) args[2], (Long) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
     public String getProtocol() { return protocol; }
+    /** Setter provided for bean compatibility. */
     public void setProtocol(String protocol) { this.protocol = protocol; }
 
-    public MutableHttpUrl withProtocol(String protocol) {
+    public MutableUrl withProtocol(String protocol) {
         setProtocol(protocol);
         return this;
     }
 
     public String getUserInfoRaw() { return userInfoRaw; }
+    /** Setter provided for bean compatibility. */
     public void setUserInfoRaw(String userInfoRaw) { this.userInfoRaw = userInfoRaw; }
 
-    public MutableHttpUrl withUserInfoRaw(String userInfoRaw) {
+    public MutableUrl withUserInfoRaw(String userInfoRaw) {
         setUserInfoRaw(userInfoRaw);
         return this;
     }
 
     public String getHost() { return host; }
+    /** Setter provided for bean compatibility. */
     public void setHost(String host) { this.host = host; }
 
-    public MutableHttpUrl withHost(String host) {
+    public MutableUrl withHost(String host) {
         setHost(host);
         return this;
     }
 
     public Long getPort() { return port; }
+    /** Setter provided for bean compatibility. */
     public void setPort(Long port) { this.port = port; }
 
-    public MutableHttpUrl withPort(Long port) {
+    public MutableUrl withPort(Long port) {
         setPort(port);
         return this;
     }
 
     public String getPathRaw() { return pathRaw; }
+    /** Setter provided for bean compatibility. */
     public void setPathRaw(String pathRaw) { this.pathRaw = pathRaw; }
 
-    public MutableHttpUrl withPathRaw(String pathRaw) {
+    public MutableUrl withPathRaw(String pathRaw) {
         setPathRaw(pathRaw);
         return this;
     }
 
     public String getQueryRaw() { return queryRaw; }
+    /** Setter provided for bean compatibility. */
     public void setQueryRaw(String queryRaw) { this.queryRaw = queryRaw; }
 
-    public HttpUrl withQueryRaw(String queryRaw) {
+    public Url withQueryRaw(String queryRaw) {
         setQueryRaw(queryRaw);
         return this;
     }
 
     public String getFragment() { return fragment; }
+    /** Setter provided for bean compatibility. */
     public void setFragment(String fragment) { this.fragment = fragment; }
 
-    public HttpUrl withFragment(String fragment) {
+    public Url withFragment(String fragment) {
         setFragment(fragment);
         return this;
     }

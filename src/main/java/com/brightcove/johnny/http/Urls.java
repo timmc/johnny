@@ -1,104 +1,30 @@
-package com.brightcove.johnny;
+package com.brightcove.johnny.http;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-import com.google.common.net.InternetDomainName;
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
  */
 public class Urls {
 
+    static final UrlParser STANDARD_URL_PARSER = new JNUrlParser();
+    static final UrlValidator STANDARD_URL_VALIDATOR = new UrlValidator();
+    static final UrlEncoder STANDARD_URL_ENCODER = new UrlEncoder();
+    static final QueryParser STANDARD_QUERY_PARSER = new NullIsEmptyQueryParser();
+    static final QueryEncoder STANDARD_QUERY_ENCODER = new BasicQueryEncoder();
+
     /*== Convenience ==*/ 
 
     /**
-     * Parse a URL string to a piecewise HTTP URL representation.
+     * Parse a URL string to the default piecewise HTTP URL representation
+     * and using the default parser.
      */
-    public static HttpUrl httpUrl(String url) throws MalformedURLException {
-        return ImmutableHttpUrl.from(url);
-    }
-
-    /*== Constructor assistance ==*/
-
-    /** Parse a URL into arguments required for UrlBits constructors. */
-    static Object[] parseFullHttpUrl(String url) throws MalformedURLException {
-        Object[] args = new Object[7];
-        URL parsed = new URL(url);
-        args[0] = parsed.getProtocol();
-        args[1] = parsed.getUserInfo();
-        args[2] = parsed.getHost();
-        args[3] = parsed.getPort() == -1 ? null : Long.valueOf(parsed.getPort());
-        args[4] = parsed.getPath();
-        args[5] = parsed.getQuery();
-        String fragment = parsed.getRef();
-        args[6] = fragment == null ? null : percentDecode(fragment);
-        return args;
-    }
-
-    /** Validate constructor arguments by parts. */
-    static void validateAllParts(Object[] args) {
-        validateProtocol((String) args[0]);
-        validateUserInfoRaw((String) args[1]);
-        validateHost((String) args[2]);
-        validatePort((Long) args[3]);
-        validatePathRaw((String) args[4]);
-        validateQueryRaw((String) args[5]);
-        // fragment does not need validation
-    }
-
-    /*== Validations for arguments. ==*/
-
-    static void validateProtocol(String protocol) {
-        if (protocol == null) {
-            throw new IllegalArgumentException("protocol must not be null");
-        } else if (!protocol.equals("http") && !protocol.equals("https")) {
-            throw new IllegalArgumentException("protocol must be http or https"); //XXX -- true?
-        }
-    }
-
-    static void validateUserInfoRaw(String userInfoRaw) {
-        //TODO: Find unencoded delimiters
-    }
-
-    static void validateHost(String host) {
-        if (host == null) {
-            throw new IllegalArgumentException("host must not be null");
-        }
-        if (!InternetDomainName.isValidLenient(host)) {
-            //TODO: IPv4 serializations
-            //TODO: IPv6 serializations, including scope and future formats
-        }
-    }
-
-    static void validatePort(Long port) {
-        if (port == null) { return; }
-        long port_i = port;
-        if (port_i < 0) {
-            throw new IllegalArgumentException("port must not be negative"); // TODO: Is 0 allowed?
-        } else if (port_i > 65535) { 
-            throw new IllegalArgumentException("port must not be greater than 65535"); // TODO Maximum port value?
-        }
-    }
-
-    static void validatePathRaw(String pathRaw) {
-        if (pathRaw == null) {
-            throw new IllegalArgumentException("pathRaw must not be null");
-        }
-        if (pathRaw.isEmpty()) {
-            return;
-        }
-        if (pathRaw.charAt(0) != '/') {
-            throw new IllegalArgumentException("pathRaw must start with / if not empty");
-        }
-        //TODO: Find unencoded delimiters
-    }
-
-    static void validateQueryRaw(String pathRaw) {
-        //TODO: Find unencoded delimiters
+    public static Url parse(String url) throws MalformedURLException {
+        return ImmutableUrl.from(url, STANDARD_URL_PARSER);
     }
 
     /*== Decoders ==*/
