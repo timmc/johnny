@@ -33,3 +33,13 @@
             (println "Threw on val:" @current)
             (when (< 1 unfinished)
               (println "Vals skipped:" (dec unfinished)))))))))
+
+(defn cross-thunk
+  "Wrap a thunk in a dorun-bindings for each var-vals pair in bindings.
+Yields a thunk that will run the input thunk once for every combination
+of bindings."
+  [bindings thunk]
+  (reduce (fn [acc [a-var some-vals]]
+            #(dorun-bindings a-var some-vals acc))
+          thunk
+          bindings))

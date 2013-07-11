@@ -5,9 +5,14 @@
             [clojure.string :as str])
   (:import (com.brightcove.johnny.http ImmutableUrl)))
 
-(defmacro cross
+(defmacro default-others
   [& body]
   `(binding [i/*url-manip* ImmutableUrl]
+     ~@body))
+
+(defmacro cross
+  [& body]
+  `(default-others
      (u/dorun-bindings (var i/*url-parser*) i/url-parse-impls
                        (fn tests [] ~@body))))
 
@@ -28,3 +33,12 @@
        (is (= ((apply juxt u/url-getters) parts)
               ["http" nil "localhost" nil
                "" nil nil]))))))
+
+(deftest j-n-url-regression
+  (default-others
+    (binding [i/*url-parser* i/default-url-parser]
+      (testing "port-numerics"
+        (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
+        ;; ८० is Devanagari numerals
+        (is (thrown? java.net.MalformedURLException
+                     (i/parse-u "http://google.com:\u096E\u0966/")))))))

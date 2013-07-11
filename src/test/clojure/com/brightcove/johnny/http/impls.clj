@@ -23,6 +23,12 @@
 (def ^:dynamic *query-manip* nil)
 (def ^:dynamic *query-encoder* nil)
 
+;;;; Binding sets
+
+(def url-impl-bindings
+  {#'*url-manip* url-manip-impls
+   #'*url-parser* url-parse-impls})
+
 ;;;; Parsing
 
 (defn ^:internal get-bits-builder
