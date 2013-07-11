@@ -37,9 +37,9 @@ public class BasicQueryEncoder extends APairQueryEncoder {
             } else {
                 writtenFirst = true;
             }
-            ret.append(Urls.encodeQueryKey(e.getKey()));
+            ret.append(Codecs.encodeQueryKey(e.getKey()));
             if (e.getValue() != null) {
-                ret.append(kSep).append(Urls.encodeQueryValue(e.getValue()));
+                ret.append(kSep).append(Codecs.encodeQueryValue(e.getValue()));
             }
         }
         return ret.toString();

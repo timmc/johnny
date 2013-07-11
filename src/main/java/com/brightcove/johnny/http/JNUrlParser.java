@@ -21,7 +21,7 @@ public class JNUrlParser implements UrlParser {
         args[4] = parsed.getPath();
         args[5] = parsed.getQuery();
         String fragment = parsed.getRef();
-        args[6] = fragment == null ? null : Urls.percentDecode(fragment);
+        args[6] = fragment == null ? null : Codecs.percentDecode(fragment);
         return args;
     }
 }

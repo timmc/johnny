@@ -23,7 +23,7 @@ public class UrlEncoder { //TODO convert to interface?
             build.append("?").append(url.getQueryRaw());
         }
         if (url.getFragment() != null) {
-            build.append("#").append(Urls.encodeFragment(url.getFragment()));
+            build.append("#").append(Codecs.encodeFragment(url.getFragment()));
         }
         return build.toString();
     }

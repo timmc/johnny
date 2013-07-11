@@ -60,7 +60,6 @@ public class MutableUrl extends Url {
     /** Parse a string as a URL and extract the fields. */
     public static MutableUrl from(String url, UrlParser parser) throws MalformedURLException {
         Object[] args = parser.parse(url);
-        Urls.STANDARD_URL_VALIDATOR.validateAllParts(args);
         return new MutableUrl((String) args[0], (String) args[1],
                 (String) args[2], (Long) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
