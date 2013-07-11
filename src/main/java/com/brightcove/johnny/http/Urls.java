@@ -11,11 +11,11 @@ import java.net.URLEncoder;
  */
 public class Urls {
 
-    static final UrlParser STANDARD_URL_PARSER = new JNUrlParser();
-    static final UrlValidator STANDARD_URL_VALIDATOR = new UrlValidator();
-    static final UrlEncoder STANDARD_URL_ENCODER = new UrlEncoder();
-    static final QueryParser STANDARD_QUERY_PARSER = new NullIsEmptyQueryParser();
-    static final QueryEncoder STANDARD_QUERY_ENCODER = new BasicQueryEncoder();
+    public static final UrlParser STANDARD_URL_PARSER = new JNUriParser();
+    public static final UrlValidator STANDARD_URL_VALIDATOR = new UrlValidator();
+    public static final UrlEncoder STANDARD_URL_ENCODER = new UrlEncoder();
+    public static final QueryParser STANDARD_QUERY_PARSER = new NullIsEmptyQueryParser();
+    public static final QueryEncoder STANDARD_QUERY_ENCODER = new BasicQueryEncoder();
 
     /*== Convenience ==*/ 
 

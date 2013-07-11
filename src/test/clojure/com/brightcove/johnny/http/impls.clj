@@ -1,16 +1,18 @@
 (ns com.brightcove.johnny.http.impls  
   (:import (com.brightcove.johnny.http
-            UrlParser JNUrlParser
+            Urls
+            UrlParser JNUrlParser JNUriParser
             Url ImmutableUrl MutableUrl
             BasicQueryEncoder)))
 
 ;;;; Known implementations
 
-(def url-parse-impls #{(JNUrlParser.)})
+(def url-parse-impls #{(JNUrlParser.) (JNUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
-(def default-url-parser (JNUrlParser.))
+(def default-url-parser Urls/STANDARD_URL_PARSER)
+(def default-url-manip ImmutableUrl)
 
 ;;;; Bindings for current preferred implementation
 
@@ -32,4 +34,6 @@
   "Parse a string as a URL according to the current impl."
   [^String s]
   (let [m (get-bits-builder *url-manip*)]
-    (.invoke m nil (to-array [s *url-parser*]))))
+    (try (.invoke m nil (to-array [s *url-parser*]))
+         (catch java.lang.reflect.InvocationTargetException ite
+           (throw (or (.getCause ite) ite))))))

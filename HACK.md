@@ -119,3 +119,4 @@ I have evaluated these and found them unuseful for this project:
 
 - com.google.gdata.util.common.base.CharEscapers
 - Apache HttpCore & HttpClient
+- Urly (mostly the API choices)

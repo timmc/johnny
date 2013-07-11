@@ -1,4 +1,5 @@
-(ns com.brightcove.johnny.util)
+(ns com.brightcove.johnny.util
+  (:require [clojure.test :as test]))
 
 (def url-getters
   "In order, the getters on http.Url."
@@ -21,7 +22,8 @@
         ;; binding is a macro so you can't pass in a var
         (try (push-thread-bindings {the-var val})
              (reset! current val)
-             (thunk)
+             (test/testing (str the-var " bound to " val "\n")
+               (thunk))
              (swap! succeed inc)
              nil
              (finally (pop-thread-bindings))))
