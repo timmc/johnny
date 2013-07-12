@@ -2,6 +2,9 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
+import com.brightcove.johnny.parts.PersistentOrderedQuery;
+import com.brightcove.johnny.parts.Query;
+
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
@@ -17,10 +20,17 @@ public class Urls {
 
     /**
      * Parse a URL string to the default piecewise HTTP URL representation
-     * and using the default parser.
+     * using the default parser.
      */
     public static Url parse(String url) throws MalformedURLException {
         return ImmutableUrl.from(url, STANDARD_URL_PARSER);
     }
 
+    /**
+     * Parse a query string to the default piecewise URI query representation
+     * using the default parser.
+     */
+    public static Query parseQuery(String queryRaw) {
+        return new PersistentOrderedQuery().appendAll(STANDARD_QUERY_PARSER.parse(queryRaw));
+    }
 }

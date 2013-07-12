@@ -80,6 +80,10 @@ public class PersistentMultimapQuery implements Query {
         return new PersistentMultimapQuery(store.cons(key, val));
     }
 
+    public Query appendAll(Iterable<Entry<String, String>> pairs) {
+        return new PersistentMultimapQuery(store.consAll(pairs));
+    }
+
     public Query replace(String key, String val) {
         return removeAll(key).append(key, val);
     }

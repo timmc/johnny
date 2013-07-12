@@ -3,12 +3,18 @@
             Urls
             UrlParser JNUrlParser JNUriParser
             Url ImmutableUrl MutableUrl
-            BasicQueryEncoder)))
+            NullableValueQueryParser NullIsEmptyQueryParser
+            BasicQueryEncoder))
+  (:import (com.brightcove.johnny.parts
+            Query PersistentOrderedQuery
+            MutableMultimapQuery PersistentMultimapQuery)))
 
 ;;;; Known implementations
 
 (def url-parse-impls #{(JNUrlParser.) (JNUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
+(def q-parse-impls #{NullableValueQueryParser NullIsEmptyQueryParser})
+(def q-manip-impls #{PersistentOrderedQuery})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
 (def default-url-parser Urls/STANDARD_URL_PARSER)

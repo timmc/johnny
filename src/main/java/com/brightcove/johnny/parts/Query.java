@@ -39,6 +39,7 @@ public interface Query {
 
     /**
      * Produce a key-value pair representation of this query.
+     * @return non-null collection of key-value pairs
      */
     public Collection<Map.Entry<String, String>> getPairs();
 
@@ -82,6 +83,11 @@ public interface Query {
      *  will be larger by 1.
      */
     public Query append(String key, String val);
+
+    /**
+     * Append a sequence of key-value pairs.
+     */
+    public Query appendAll(Iterable<Map.Entry<String, String>> source);
 
     /**
      * Replace all <code>key</code> pairs with a single pair containing

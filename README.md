@@ -5,8 +5,8 @@
 For a language used extensively in web-facing application, it's
 surprising that Java lacks a library that can (correctly!) parse and
 manipulate URLs. The result is that everyone ends up writing their own
-URL library, and the result is security flaws and subtly broken
-apps. (java.net.URL accepts `८०` as a port number; java.net.URI
+URL library, and the result of that is security flaws and subtly
+broken apps. (java.net.URL accepts `८०` as a port number; java.net.URI
 helpfully offers to decode paths wholesale instead of segmenting them
 first; innumerable querystring APIs mishandle duplicate keys or
 missing values.)
@@ -14,7 +14,7 @@ missing values.)
 The goal is to be able to write this:
 
 ```java
-Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").toString() // "http://brightcove.com/search?q=url&foo=bar#fragment"
+Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").unparse() // "http://brightcove.com/search?q=url&foo=bar#fragment"
 ```
 
 ...but the library is **nowhere near ready**. **DO NOT USE**.  It

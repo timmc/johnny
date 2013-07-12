@@ -11,6 +11,7 @@ import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 
+
 import clojure.lang.APersistentVector;
 import clojure.lang.IEditableCollection;
 import clojure.lang.IMapEntry;
@@ -66,14 +67,6 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
         } else {
             return (APersistentVector) e.getValue();
         }
-    }
-
-    private static APersistentVector into(APersistentVector base, Iterator<?> more) {
-        ITransientCollection list = ((IEditableCollection) base).asTransient();
-        for (; more.hasNext();) {
-            list = list.conj(more.next());
-        }
-        return (APersistentVector) list.persistent();
     }
 
     /**
@@ -155,7 +148,7 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
         }
         APersistentVector list = getList(key);
         int oldCount = list.size();
-        list = into(list, iter);
+        list = ClojureHelper.into(list, iter);
         int added = list.size() - oldCount;
         return new PersistentMultimap<K, V>(store.assoc(key, list), count + added);
     }
@@ -170,7 +163,7 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
     public PersistentMultimap<K, V> consAll(Multimap<K, V> multimap) { // TODO should be <? extends K, ? extends V> to match
         ITransientMap build = (ITransientMap) ((IEditableCollection) store).asTransient();
         for (K key : multimap.keySet()) {
-            APersistentVector replacement = into(getList(key), multimap.get(key).iterator());
+            APersistentVector replacement = ClojureHelper.into(getList(key), multimap.get(key).iterator());
             if (!replacement.isEmpty()) { // not sure if the multimap can have keys -> empty value lists
                 build = build.assoc(key, replacement);
             }
@@ -201,7 +194,7 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
 
     /** Associate these (and only these) values for the key. */
     public PersistentMultimap<K, V> assoc(K key, Iterable<? extends V> values) {
-        APersistentVector replacement = into(PersistentVector.EMPTY, values.iterator());
+        APersistentVector replacement = ClojureHelper.into(PersistentVector.EMPTY, values.iterator());
         if (replacement.isEmpty()) {
             return dissoc(key);
         } else {

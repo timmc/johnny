@@ -101,6 +101,13 @@ public class MutableMultimapQuery implements Query {
         return this;
     }
 
+    public Query appendAll(Iterable<Entry<String, String>> source) {
+        for (Entry<String, String> e : source) {
+            append(e.getKey(), e.getValue());
+        }
+        return this;
+    }
+
     public Query append(String key, String val) {
         getOrCreateList(key).add(val);
         return this;
