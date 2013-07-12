@@ -1,6 +1,6 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
-import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.http.Url;
 
 /**
  * Query encoder. Implementations are free to choose character sets,

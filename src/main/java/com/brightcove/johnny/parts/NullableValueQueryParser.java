@@ -1,4 +1,4 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.brightcove.johnny.coll.MapEntry;
+import com.brightcove.johnny.http.Codecs;
 
 /**
  * A query parser that allows keys that are missing values (e.g. the second

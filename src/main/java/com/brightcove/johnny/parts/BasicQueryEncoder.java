@@ -1,8 +1,8 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
 import java.util.Map.Entry;
 
-import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.http.Codecs;
 
 /**
  * Encodes queries in the standard fashion, defaulting to ampersand and equals

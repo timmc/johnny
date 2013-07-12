@@ -1,6 +1,8 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
 import java.util.Map;
+
+import com.brightcove.johnny.http.Url;
 
 /**
  * Adds the assumption that a Query is made of key-value pairs.

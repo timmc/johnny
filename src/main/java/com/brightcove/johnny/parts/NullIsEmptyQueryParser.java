@@ -1,4 +1,4 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
 import java.util.Collections;
 import java.util.LinkedList;

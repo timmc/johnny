@@ -2,8 +2,12 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
+import com.brightcove.johnny.parts.BasicQueryEncoder;
+import com.brightcove.johnny.parts.NullIsEmptyQueryParser;
 import com.brightcove.johnny.parts.PersistentOrderedQuery;
 import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.parts.QueryEncoder;
+import com.brightcove.johnny.parts.QueryParser;
 
 
 /**

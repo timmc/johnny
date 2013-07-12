@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.brightcove.johnny.parts.PersistentMultimapQuery;
 import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.parts.QueryParser;
 
 /**
  * A base class for manipulating piecemeal URLs with a chaining API.

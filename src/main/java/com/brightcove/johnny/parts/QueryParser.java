@@ -1,6 +1,8 @@
-package com.brightcove.johnny.http;
+package com.brightcove.johnny.parts;
 
 import java.util.Map;
+
+import com.brightcove.johnny.http.Url;
 
 /**
  * A parser for query components that are composed of keys and optional
