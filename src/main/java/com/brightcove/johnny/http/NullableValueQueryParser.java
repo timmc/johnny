@@ -59,7 +59,9 @@ public class NullableValueQueryParser implements QueryParser {
                 continue;
             }
             String[] kv = kSep.split(pair, 2);
-            ret.addLast(new MapEntry<String, String>(kv[0], kv.length == 1 ? null : kv[1]));
+            String k = Codecs.percentDecode(kv[0]);
+            String v = kv.length == 1 ? null : Codecs.percentDecode(kv[1]);
+            ret.addLast(new MapEntry<String, String>(k, v));
         }
         return Collections.unmodifiableList(ret);
     }
