@@ -69,11 +69,11 @@ public class PersistentMultimapQuery implements Query {
     }
 
     public Query removeAll(String key) {
-        return new PersistentMultimapQuery(byKey.dissocAll(key));
+        return new PersistentMultimapQuery(byKey.dissoc(key));
     }
 
     public Query removeAll(String key, String val) {
-        return new PersistentMultimapQuery(byKey.dissocAll(key, val));
+        return new PersistentMultimapQuery(byKey.dropAll(key, val));
     }
 
     public Query append(String key, String val) {

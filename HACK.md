@@ -23,6 +23,14 @@ Contribution guidelines and future work.
 - Make Suites of parser, manipulators, and encoders
   - Order-preserving query suite
   - Conservative encoding suite
+- Efficient persistent ordered Query
+  - Two fields:
+    - PersistentVector of Map.Entry holding key-value pairs or nulls
+      - When a pair is deleted, null it out (preserve indexes)
+      - When a pair is modified, overwrite it
+    - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
+      - Fast lookup of values, in order
+  - Could also have index on values
 - Split out encoding methods from Urls.java into Encoders
 - Equality & comparators (see RFC 3986 section 6)
 - Cloning

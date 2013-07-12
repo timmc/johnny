@@ -27,8 +27,9 @@
 (deftest differential-encoding
   (cross-all
    (testing "+ character"
-     (let [orig "http://example.com/blue+light%20blue?blue%2Blight+blue"]
-       ;; TODO: pending path and QS decoding
+     (let [orig "http://example.com/blue+light%20blue?k=blue%2Blight+blue"]
+       (is (= (.queryGetLast (i/parse-u orig) "k") "blue+light blue"))
+       ;; TODO: pending path decoding
        ))))
 
 (deftest workflow

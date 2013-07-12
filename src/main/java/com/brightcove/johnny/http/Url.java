@@ -64,8 +64,8 @@ public abstract class Url {
     /**
      * Convenience method for {@link Query#getAll(String)}; for heavy
      * inspection use a {@link QueryParser} to produce a {@link Query},
-     * which can be inspected more efficiently. Tie-breaks repeated keys in
-     * favor of last value and treats missing values as empty strings.
+     * which can be inspected more efficiently. Treats missing values
+     * as empty strings.
      *
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
@@ -76,6 +76,23 @@ public abstract class Url {
         }
         Query q = new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parseAs(getQueryRaw()));
         return q.getAll(key);
+    }
+
+    /**
+     * Convenience method for {@link Query#getLast(String)}; for heavy
+     * inspection use a {@link QueryParser} to produce a {@link Query},
+     * which can be inspected more efficiently. Treats missing values
+     * as empty strings.
+     *
+     * @param key Non-null query param key (may be empty)
+     * @return Last value for key, null iff key not present.
+     */
+    public String queryGetLast(String key) {
+        if (key == null) {
+            throw new NullPointerException("Cannot search for null query key");
+        }
+        Query q = new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parseAs(getQueryRaw()));
+        return q.getLast(key);
     }
 
     /*== Accessors ==*/
@@ -90,7 +107,7 @@ public abstract class Url {
      * Undecoded user info of URL, excluding "@" separator. Nullable.
      * If you expect a colon-delimited username/password pair, use
      * {@link UserInfo} to decode it correctly. If this is instead expected
-     * to be a single field, use {@link Urls#percentDecode(String)}.
+     * to be a single field, use {@link Codecs#percentDecode(String)}.
      */
     public abstract String getUserInfoRaw();
 
