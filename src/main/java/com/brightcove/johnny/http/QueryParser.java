@@ -14,5 +14,5 @@ public interface QueryParser {
      *   {@link Url#getQueryRaw()}, possibly null.
      * @return Sequence of keys and values, where values may be null.
      */
-    public Iterable<Map.Entry<String, String>> parseAs(String queryRaw);
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw);
 }

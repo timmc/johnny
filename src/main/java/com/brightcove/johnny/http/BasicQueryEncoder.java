@@ -24,7 +24,7 @@ public class BasicQueryEncoder extends APairQueryEncoder {
     }
 
     public String unparse(Query q) {
-        return unparse(q.getPairs());
+        return q == null ? null : unparse(q.getPairs());
     }
 
     @Override

@@ -48,7 +48,7 @@ public class NullableValueQueryParser implements QueryParser {
         this.pairSep = pairSep;
     }
 
-    public Iterable<Map.Entry<String, String>> parseAs(String queryRaw) {
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw) {
         if (queryRaw == null) {
             return EMPTY_LIST;
         }

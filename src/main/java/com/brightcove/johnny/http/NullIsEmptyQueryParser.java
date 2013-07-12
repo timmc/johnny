@@ -30,9 +30,9 @@ public class NullIsEmptyQueryParser implements QueryParser {
         this.delegate = new NullableValueQueryParser(pairSep);
     }
 
-    public Iterable<Map.Entry<String, String>> parseAs(String queryRaw) {
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw) {
         LinkedList<Map.Entry<String, String>> ret = new LinkedList<Map.Entry<String, String>>();
-        for (Map.Entry<String, String> e : delegate.parseAs(queryRaw)) {
+        for (Map.Entry<String, String> e : delegate.parse(queryRaw)) {
             ret.add(e.getValue() == null ? new MapEntry<String, String>(e.getKey(), "") : e);
         }
         return Collections.unmodifiableList(ret);

@@ -43,10 +43,34 @@ public abstract class Url {
     }
 
     /**
+     * Get query decoded using standard parser. Assumes ampersand-separated
+     * key-value pairs and treats missing values as empty strings. May not
+     * preserve order of keys, but will preserve order of values.
+     * @return Decoded query, or null
+     */
+    public Query getQuery() {
+        String raw = getQueryRaw();
+        return raw == null ? null : new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parse(raw));
+    }
+
+    /**
+     * Set raw query by encoding provided query with standard query encoder.
+     * @param q Possibly null Query
+     */
+    public abstract Url withQuery(Query q);
+
+    /**
+     * Compute raw query for {@link #withQuery(Query)}.
+     * @param q Possibly null Query
+     */
+    protected String computeDefaultEncodedQuery(Query q) {
+        return Urls.STANDARD_QUERY_ENCODER.unparse(q);
+    }
+
+    /**
      * Convenience method for {@link Query#replace(String, String)}; for heavy
      * manipulation, use a {@link QueryParser} to produce a {@link Query},
-     * which can be manipulated more efficiently. Assumes ampersand-separated
-     * key-value pairs with nullable values.
+     * which can be manipulated more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
      * @param value Nullable query param value
@@ -55,17 +79,13 @@ public abstract class Url {
         if (key == null) {
             throw new NullPointerException("Cannot append null query key");
         }
-        String oldQS = getQueryRaw();
-        Query q = new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parseAs(oldQS));
-        q = q.replace(key, value);
-        return withQueryRaw(Urls.STANDARD_QUERY_ENCODER.unparse(q));
+        return withQuery(getQuery().replace(key, value));
     }
 
     /**
      * Convenience method for {@link Query#getAll(String)}; for heavy
      * inspection use a {@link QueryParser} to produce a {@link Query},
-     * which can be inspected more efficiently. Treats missing values
-     * as empty strings.
+     * which can be inspected more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
@@ -74,15 +94,13 @@ public abstract class Url {
         if (key == null) {
             throw new NullPointerException("Cannot search for null query key");
         }
-        Query q = new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parseAs(getQueryRaw()));
-        return q.getAll(key);
+        return getQuery().getAll(key);
     }
 
     /**
      * Convenience method for {@link Query#getLast(String)}; for heavy
      * inspection use a {@link QueryParser} to produce a {@link Query},
-     * which can be inspected more efficiently. Treats missing values
-     * as empty strings.
+     * which can be inspected more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
      * @return Last value for key, null iff key not present.
@@ -91,8 +109,7 @@ public abstract class Url {
         if (key == null) {
             throw new NullPointerException("Cannot search for null query key");
         }
-        Query q = new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parseAs(getQueryRaw()));
-        return q.getLast(key);
+        return getQuery().getLast(key);
     }
 
     /*== Accessors ==*/

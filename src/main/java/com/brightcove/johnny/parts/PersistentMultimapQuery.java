@@ -25,7 +25,11 @@ public class PersistentMultimapQuery implements Query {
     public static final PersistentMultimapQuery EMPTY = new PersistentMultimapQuery();
 
     /** Map of keys to null-or-nonempty lists of values. */
-    private PersistentMultimap<String, String> byKey = new PersistentMultimap<String, String>();
+    private PersistentMultimap<String, String> store = new PersistentMultimap<String, String>();
+
+    private PersistentMultimapQuery(PersistentMultimap<String, String> store) {
+        this.store = store;
+    }
 
     /**
      * Build an instance from a sequence of key-value pairs.
@@ -34,50 +38,46 @@ public class PersistentMultimapQuery implements Query {
         this(EMPTY_STORE.consAll(pairs));
     }
 
-    private PersistentMultimapQuery(PersistentMultimap<String, String> store) {
-        this.byKey = store;
-    }
-
     /** Private singleton constructor. Prefer {@link #EMPTY}. */
     private PersistentMultimapQuery() {
         this(EMPTY_STORE);
     }
 
     public boolean hasKey(String key) {
-        return byKey.containsKey(key);
+        return store.containsKey(key);
     }
 
     public String getLast(String key) {
-        List<String> all = byKey.get(key); // non-null, may be empty
+        List<String> all = store.get(key); // non-null, may be empty
         return all.isEmpty() ? null : all.get(all.size() - 1);
     }
 
     public List<String> getAll(String key) {
-        return byKey.get(key);
+        return store.get(key);
     }
 
     public Collection<Entry<String, String>> getPairs() {
-        return byKey.entries();
+        return store.entries();
     }
 
     public int countKeys() {
-        return byKey.length();
+        return store.length();
     }
 
     public int countPairs() {
-        return byKey.size();
+        return store.size();
     }
 
     public Query removeAll(String key) {
-        return new PersistentMultimapQuery(byKey.dissoc(key));
+        return new PersistentMultimapQuery(store.dissoc(key));
     }
 
     public Query removeAll(String key, String val) {
-        return new PersistentMultimapQuery(byKey.dropAll(key, val));
+        return new PersistentMultimapQuery(store.dropAll(key, val));
     }
 
     public Query append(String key, String val) {
-        return new PersistentMultimapQuery(byKey.cons(key, val));
+        return new PersistentMultimapQuery(store.cons(key, val));
     }
 
     public Query replace(String key, String val) {
@@ -85,7 +85,7 @@ public class PersistentMultimapQuery implements Query {
     }
 
     public Query replaceLast(String key, String val) {
-        List<String> original = byKey.get(key);
+        List<String> original = store.get(key);
         LinkedList<String> replacement = new LinkedList<String>();
         boolean found = false;
         for (int i = original.size() - 1; i >= 0; i--) {
@@ -96,6 +96,6 @@ public class PersistentMultimapQuery implements Query {
             }
             replacement.addFirst(cur);
         }
-        return new PersistentMultimapQuery(byKey.assoc(key, replacement));
+        return new PersistentMultimapQuery(store.assoc(key, replacement));
     }
 }

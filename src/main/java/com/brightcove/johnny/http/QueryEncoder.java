@@ -9,8 +9,9 @@ import com.brightcove.johnny.parts.Query;
 public interface QueryEncoder {
     /**
      * Encode a query to a raw query string.
-     * @param q Query object
-     * @return String suitable for {@link Url#withQueryRaw(String)}
+     * @param q Query object (nullable)
+     * @return String (possibly null) suitable for
+     *  {@link Url#withQueryRaw(String)}
      */
     public String unparse(Query q);
 }
