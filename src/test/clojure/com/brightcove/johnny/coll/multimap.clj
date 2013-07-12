@@ -1,5 +1,6 @@
 (ns com.brightcove.johnny.coll.multimap
-  (:use clojure.test))
+  (:use clojure.test)
+  (:import com.google.common.collect.ArrayListMultimap))
 (.importClass *ns* 'PMM com.brightcove.johnny.coll.PersistentMultimap)
 
 (deftest base-cases
@@ -36,18 +37,34 @@
 
 (deftest many-roads
   (testing "Several manipulations that should all produce the same result"
-    (let [goal {"foo" ["bar" "bar" "baz"] "quux" ["grovel"]}
+    (let [goal {"foo" ["bar" "bar" "baz"] "quux" ["grovel" nil]}
           paths {:consing (-> (PMM.)
                               (.cons "foo" "bar")
                               (.cons "quux" "grovel")
                               (.cons "foo" "bar")
-                              (.cons "foo" "baz"))}
+                              (.cons "foo" "baz")
+                              (.cons "quux" nil))
+                 :assoc-per-key (-> (PMM.)
+                                    (.assoc "quux" ["grovel" nil])
+                                    (.assoc "foo" ["bar" "bar" "baz"]))
+                 :cons-entries (.consAll (PMM.)
+                                         ^java.util.Iterable
+                                         (for [[k vs] goal
+                                               v vs]
+                                           (first {k v})))
+                 :cons-kvs (reduce (fn [m [k vs]] (.consAll m k vs))
+                                   (PMM.)
+                                   goal)
+                 :cons-mm (let [mm (ArrayListMultimap/create)]
+                            (doseq [[k vs] goal]
+                              (.putAll mm k vs))
+                            (.consAll (PMM.) mm))}
           checkers {:asmap #(is (= (into {} (for [[k vs] (.asMap %)]
                                               [k (vec vs)]))
                                    goal))}]
       (doseq [[path val] paths]
         (testing (str "path=" (name path))
-          (is (= (.size val) 4))
+          (is (= (.size val) 5))
           (is (= (.length val) 2))
           (doseq [[ch-n ch-v] checkers]
             (testing (str "checker=" (name ch-n))

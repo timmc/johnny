@@ -184,7 +184,11 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
         ITransientMap build = (ITransientMap) ((IEditableCollection) store).asTransient();
         int added = 0;
         for (Map.Entry<K, V> e : pairs) {
-            build = build.assoc(e.getKey(), getList(e.getKey()).cons(e.getValue()));
+            APersistentVector base = (APersistentVector) build.valAt(e.getKey());
+            if (base == null) {
+                base = PersistentVector.EMPTY;
+            }
+            build = build.assoc(e.getKey(), base.cons(e.getValue()));
             added++;
         }
         return new PersistentMultimap<K, V>(build.persistent(), count + added);
