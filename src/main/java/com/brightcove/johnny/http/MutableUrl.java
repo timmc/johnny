@@ -20,7 +20,7 @@ public class MutableUrl extends Url {
     private String protocol;
     private String userInfoRaw;
     private String host;
-    private Long port;
+    private Integer port;
     private String pathRaw;
     private String queryRaw;
     private String fragment;
@@ -46,7 +46,7 @@ public class MutableUrl extends Url {
      * @param fragment Nullable
      */
     public MutableUrl(String protocol, String userInfoRaw, String host,
-                      Long port, String pathRaw, String queryRaw,
+                      Integer port, String pathRaw, String queryRaw,
                       String fragment) {
         this.protocol = protocol;
         this.userInfoRaw = userInfoRaw;
@@ -61,7 +61,7 @@ public class MutableUrl extends Url {
     public static MutableUrl from(String url, UrlParser parser) throws MalformedURLException {
         Object[] args = parser.parse(url);
         return new MutableUrl((String) args[0], (String) args[1],
-                (String) args[2], (Long) args[3], (String) args[4],
+                (String) args[2], (Integer) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
@@ -92,11 +92,11 @@ public class MutableUrl extends Url {
         return this;
     }
 
-    public Long getPort() { return port; }
+    public Integer getPort() { return port; }
     /** Setter provided for bean compatibility. */
-    public void setPort(Long port) { this.port = port; }
+    public void setPort(Integer port) { this.port = port; }
 
-    public MutableUrl withPort(Long port) {
+    public MutableUrl withPort(Integer port) {
         setPort(port);
         return this;
     }

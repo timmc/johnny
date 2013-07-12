@@ -12,7 +12,7 @@ public class ImmutableUrl extends Url {
     private final String protocol;
     private final String userInfoRaw;
     private final String host;
-    private final Long port;
+    private final Integer port;
     private final String pathRaw;
     private final String queryRaw;
     private final String fragment;
@@ -30,7 +30,7 @@ public class ImmutableUrl extends Url {
      * @param fragment Nullable
      */
     public ImmutableUrl(String protocol, String userInfoRaw, String host,
-                        Long port, String pathRaw, String queryRaw,
+                        Integer port, String pathRaw, String queryRaw,
                         String fragment) {
         this.protocol = protocol;
         this.userInfoRaw = userInfoRaw;
@@ -54,7 +54,7 @@ public class ImmutableUrl extends Url {
     public static ImmutableUrl from(String url, UrlParser parser) throws MalformedURLException {
         Object[] args = parser.parse(url);
         return new ImmutableUrl((String) args[0], (String) args[1],
-                (String) args[2], (Long) args[3], (String) args[4],
+                (String) args[2], (Integer) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
@@ -76,9 +76,9 @@ public class ImmutableUrl extends Url {
         return new ImmutableUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 
-    public Long getPort() { return port; }
+    public Integer getPort() { return port; }
 
-    public ImmutableUrl withPort(Long port) {
+    public ImmutableUrl withPort(Integer port) {
         return new ImmutableUrl(protocol, userInfoRaw, host, port, pathRaw, queryRaw, fragment);
     }
 

@@ -20,7 +20,7 @@ public class JNUriParser implements UrlParser {
             throw new MalformedURLException("Could not parse host from authority section of URI");
         }
         args[2] = parsed.getHost();
-        args[3] = parsed.getPort() == -1 ? null : Long.valueOf(parsed.getPort());
+        args[3] = parsed.getPort() == -1 ? null : Integer.valueOf(parsed.getPort());
         args[4] = parsed.getRawPath();
         args[5] = parsed.getRawQuery();
         args[6] = parsed.getFragment();

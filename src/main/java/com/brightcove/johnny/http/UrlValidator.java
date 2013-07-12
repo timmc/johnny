@@ -12,7 +12,7 @@ public class UrlValidator {
         validateProtocol((String) args[0]);
         validateUserInfoRaw((String) args[1]);
         validateHost((String) args[2]);
-        validatePort((Long) args[3]);
+        validatePort((Integer) args[3]);
         validatePathRaw((String) args[4]);
         validateQueryRaw((String) args[5]);
         // fragment does not need validation
@@ -42,9 +42,9 @@ public class UrlValidator {
         }
     }
 
-    void validatePort(Long port) {
+    void validatePort(Integer port) {
         if (port == null) { return; }
-        long port_i = port;
+        int port_i = port;
         if (port_i < 0) {
             throw new IllegalArgumentException("port must not be negative"); // TODO: Is 0 allowed?
         } else if (port_i > 65535) { 

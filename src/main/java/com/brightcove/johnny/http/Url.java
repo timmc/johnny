@@ -20,7 +20,7 @@ import com.brightcove.johnny.parts.Query;
  *   <li>constructor <code>(String protocol, String host)</code></li>
  *   <li>factory method <code>from(String url, UrlParser parser)</code></li>
  *   <li>constructor <code>(String protocol, String userInfoRaw, String host,
- *       Long port, String pathRaw, String queryRaw, String fragment)</code>
+ *       Integer port, String pathRaw, String queryRaw, String fragment)</code>
  *       </li>
  * </ul>
  *
@@ -121,10 +121,10 @@ public abstract class Url {
     public abstract Url withHost(String host);
 
     /** Port of host, in valid range. Nullable. */
-    public abstract Long getPort();
+    public abstract Integer getPort();
 
     /** See {@link #getPort()}. */
-    public abstract Url withPort(Long port);
+    public abstract Url withPort(Integer port);
 
     /**
      * Undecoded path portion of URL, possibly empty. If not empty, must

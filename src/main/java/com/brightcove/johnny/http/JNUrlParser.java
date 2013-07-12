@@ -17,7 +17,7 @@ public class JNUrlParser implements UrlParser {
         args[0] = parsed.getProtocol();
         args[1] = parsed.getUserInfo();
         args[2] = parsed.getHost();
-        args[3] = parsed.getPort() == -1 ? null : Long.valueOf(parsed.getPort());
+        args[3] = parsed.getPort() == -1 ? null : Integer.valueOf(parsed.getPort());
         args[4] = parsed.getPath();
         args[5] = parsed.getQuery();
         String fragment = parsed.getRef();

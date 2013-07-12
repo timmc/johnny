@@ -9,7 +9,7 @@
 (def url-setters
   "In order, the chaining 'setters' on http.Url."
   [#(.withProtocol % %2) #(.withUserInfoRaw % %2)
-   #(.withHost % %2) #(.withPort % %2)
+   #(.withHost % %2) #(.withPort % (and %2 (int %2)))
    #(.withPathRaw % %2) #(.withQueryRaw % %2) #(.withFragment % %2)])
 
 (defn dorun-bindings
