@@ -59,7 +59,7 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
     /**
      * Get a non-empty sublist for the key (may be missing from map.)
      */
-    private APersistentVector getList(K key) {
+    private APersistentVector getList(Object key) {
         IMapEntry e = store.entryAt(key);
         if (e == null || e.getValue() == null) {
             return PersistentVector.EMPTY;
@@ -127,8 +127,7 @@ public class PersistentMultimap<K, V> implements Multimap<K, V>{
      * Linear in size of {@link #get(Object)}.
      */
     public boolean containsEntry(Object key, Object value) {
-        APersistentVector list = (APersistentVector) store.entryAt(key);
-        return list != null && list.contains(value);
+        return getList(key).contains(value);
     }
 
     /** @see #cons(Object, Object) */

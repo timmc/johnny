@@ -61,11 +61,24 @@
                             (.consAll (PMM.) mm))}
           checkers {:asmap #(is (= (into {} (for [[k vs] (.asMap %)]
                                               [k (vec vs)]))
-                                   goal))}]
+                                   goal))
+                    :keys #(is (= (sort (seq (.keys %)))
+                                  (sort (for [k (keys goal)
+                                              _ (goal k)]
+                                          k))))
+                    :keySet #(is (= (set (keys goal)) (.keySet %)))
+                    :size #(is (= (.size %) 5))
+                    :not-empty #(is (not (.isEmpty %)))
+                    :length #(is (= (.length %) 2))
+                    :contains-goal-kv #(doseq [[gk gvs] goal
+                                               gv gvs]
+                                         (is (.containsEntry % gk gv)))
+                    :contains-goal-key #(doseq [gk (keys goal)]
+                                          (is (.containsKey % gk)))
+                    :contains-goal-val #(doseq [gv (apply concat (vals goal))]
+                                          (is (.containsValue % gv)))}]
       (doseq [[path val] paths]
         (testing (str "path=" (name path))
-          (is (= (.size val) 5))
-          (is (= (.length val) 2))
           (doseq [[ch-n ch-v] checkers]
             (testing (str "checker=" (name ch-n))
               (ch-v val))))))))
