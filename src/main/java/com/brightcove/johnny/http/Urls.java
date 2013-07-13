@@ -35,6 +35,9 @@ public class Urls {
      * using the default parser.
      */
     public static Query parseQuery(String queryRaw) {
+        if (queryRaw == null) {
+            return null;
+        }
         return new PersistentOrderedQuery().appendAll(STANDARD_QUERY_PARSER.parse(queryRaw));
     }
 }

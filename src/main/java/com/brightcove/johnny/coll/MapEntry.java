@@ -36,4 +36,39 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
     public V setValue(V value) {
         throw new UnsupportedOperationException("Mutation is not supported on PersistentMultimap$Entry.");
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        // as required by interface
+        if (o == null) {
+            return false;
+        }
+        Map.Entry<Object, Object> e;
+        if (o instanceof Map.Entry<?, ?>) {
+            e = (Map.Entry<Object, Object>) o;
+        } else {
+            return false;
+        }
+        Object ek = e.getKey();
+        Object ev = e.getValue();
+        if (key == null ? ek == null : key.equals(ek)) {
+            if (val == null ? ev == null : val.equals(ev)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        // as required by interface
+        return (key == null ? 0 : key.hashCode()) ^
+               (val == null ? 0 : val.hashCode());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("MapEntry[%s=%s]", key, val);
+    }
 }
