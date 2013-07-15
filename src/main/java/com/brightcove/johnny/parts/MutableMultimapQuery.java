@@ -128,6 +128,9 @@ public class MutableMultimapQuery implements Query {
                 pairCount--;
             }
         }
+        if (victim.isEmpty()) {
+            byKey.remove(key);
+        }
         return this;
     }
 

@@ -44,6 +44,7 @@
   (cross-all
    (doseq [raw [""
                 "&&&&&"
+                "a=%20%20%20&c=d"
                 "a=&b=c=?&a=+++&b=%e2%98%83"]
            :let [qc #(i/parse-q raw) ;; there are mutable representations
                  orig (qc)]]
@@ -60,6 +61,20 @@
                   (if (.hasKey orig "a") 1 0)))
            (is (= (- (.countPairs orig) (.countPairs val))
                   (count (.getAll orig "a"))))))
+       (testing ".removeAll(k,v)"
+         (let [k "a"
+               v "   "
+               val (.removeAll (qc) k v)]
+           (when (= (.getAll orig k) [v])
+             (is (not (.hasKey val k)))
+             (is (nil? (.getLast val k)))
+             (is (= (- (.countKeys orig) (.countKeys val)) 1)))
+           (is (not (.hasPair val k v)))
+           (is (not (.contains (.getAll val k) v)))
+           (is (not (.contains (.getPairs val)
+                               (MapEntry. k v))))
+           (is (= (- (.countPairs orig) (.countPairs val))
+                  (if (.hasPair orig k v) 1 0)))))
        (testing ".append"
          (doseq [k [nil "foo" "a"] ;; at least one existing key
                  v [nil "" "bar"]] ;; at least one existing val for that key

@@ -126,7 +126,7 @@ public class PersistentOrderedQuery implements Query {
 
     public boolean hasKey(String key) {
         PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
-        return indices != null && !indices.isEmpty();
+        return indices != null;
     }
 
     public boolean hasPair(String key, String val) {
@@ -208,7 +208,8 @@ public class PersistentOrderedQuery implements Query {
         return new PersistentOrderedQuery(
                 newEntries.persistent(),
                 deleted + removed,
-                keylocs.assoc(key, indices));
+                indices.isEmpty() ? keylocs.without(key)
+                                  : keylocs.assoc(key, indices));
     }
 
     public Query append(String key, String val) {
