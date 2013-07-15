@@ -32,17 +32,19 @@ public class MutableMultimapQuery implements Query {
     /**
      * Build an instance from a list of key-value pairs.
      */
-    public MutableMultimapQuery(List<Map.Entry<String, String>> pairs) {
+    public MutableMultimapQuery(Iterable<Map.Entry<String, String>> pairs) {
         for (Map.Entry<String, String> pair : pairs) {
-            getOrCreateList(pair.getKey()).add(pair.getValue());
+            prepareForAppend(pair.getKey()).add(pair.getValue());
             pairCount++;
         }
     }
 
     /**
-     * Get the val list at a key, creating and adding it first, if necessary.
+     * Get or create the val list at a key -- ONLY to be used when list is
+     * going to grow, since this would otherwise leave the store in an
+     * inconsistent state.
      */
-    private ArrayList<String> getOrCreateList(String key) {
+    private ArrayList<String> prepareForAppend(String key) {
         ArrayList<String> list = byKey.get(key);
         if (list == null) {
             list = new ArrayList<String>();
@@ -61,7 +63,7 @@ public class MutableMultimapQuery implements Query {
         for (int i = haystack.size() - 1; i >= 0; i--) {
             String cur = haystack.get(i);
             if (needle == null ? cur == null : needle.equals(cur)) {
-                return i;
+                return Integer.valueOf(i);
             }
         }
         return null;
@@ -74,7 +76,8 @@ public class MutableMultimapQuery implements Query {
     }
 
     public boolean hasPair(String key, String val) {
-        return findLast(getOrCreateList(key), val) != null;
+        List<String> all = byKey.get(key); // nullable, non-empty
+        return all == null ? false : findLast(all, val) != null;
     }
 
     public String getLast(String key) {
@@ -136,7 +139,7 @@ public class MutableMultimapQuery implements Query {
     }
 
     public Query append(String key, String val) {
-        getOrCreateList(key).add(val);
+        prepareForAppend(key).add(val);
         pairCount++;
         return this;
     }

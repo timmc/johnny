@@ -14,10 +14,11 @@
 
 (def url-parse-impls #{(JNUrlParser.) (JNUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
-(def url-encode-impls #{UrlEncoder})
+(def url-encode-impls #{(UrlEncoder.)})
 
-(def q-parse-impls #{NullableValueQueryParser NullIsEmptyQueryParser})
-(def q-manip-impls #{PersistentOrderedQuery})
+(def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
+(def q-manip-impls #{PersistentOrderedQuery MutableMultimapQuery
+                     PersistentMultimapQuery})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
 (def default-url-parser Urls/STANDARD_URL_PARSER)
@@ -40,20 +41,37 @@
 ;;;; Binding sets
 
 (def url-impl-bindings
-  {#'*url-manip* url-manip-impls
-   #'*url-parser* url-parse-impls})
+  {#'*url-parser* url-parse-impls
+   #'*url-manip* url-manip-impls})
+
+(def query-impl-bindings
+  {#'*query-parser* q-parse-impls
+   #'*query-manip* q-manip-impls
+   #'*query-encoder* q-encode-impls})
 
 ;;;; Parsing
 
-(defn ^:internal get-bits-builder
+(defn ^:internal get-url-builder
   [^Class impl]
-  {:pre [impl], :post [impl]}
+  {:pre [impl], :post [%]}
   (.getMethod impl "from" (into-array Class [String UrlParser])))
 
 (defn parse-u
   "Parse a string as a URL according to the current impl."
   [^String s]
-  (let [m (get-bits-builder *url-manip*)]
+  (let [m (get-url-builder *url-manip*)]
     (try (.invoke m nil (to-array [s *url-parser*]))
          (catch java.lang.reflect.InvocationTargetException ite
            (throw (or (.getCause ite) ite))))))
+
+(defn ^:internal get-query-constructor
+  "Retrieve nullary constructor for Query implementation."
+  [^Class impl]
+  {:pre [impl], :post [%]}
+  (.getConstructor impl (into-array Class [])))
+
+(defn parse-q
+  "Parse a string as a Query."
+  [^String s]
+  (-> (.newInstance (get-query-constructor *query-manip*) (to-array []))
+      (.appendAll (.parse *query-parser* s))))

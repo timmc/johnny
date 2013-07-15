@@ -19,7 +19,7 @@ public interface Query {
     /**
      * Check if key is present in query.
      * @param key Key string, not null.
-     * @return True iff key is present.
+     * @return True iff key is present (has at least one value.)
      */
     public boolean hasKey(String key);
 
@@ -113,7 +113,10 @@ public interface Query {
      * @param key Key string, not null.
      * @param val New value string, nullable.
      * @return Query on which {@link #getLast(String)} with <code>key</code>
-     *  will return <code>val</code>.
+     *  will return <code>val</code> (for implementations supporting
+     *  {@link #implPreservesValueOrderPerKey()}) and on which
+     *  {@link #getAll(String)} will return a collection containing
+     *  <code>val</code> (for all implementations.)
      */
     public Query replaceLast(String key, String val);
 
