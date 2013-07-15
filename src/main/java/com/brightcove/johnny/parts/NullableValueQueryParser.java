@@ -1,9 +1,7 @@
 package com.brightcove.johnny.parts;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -16,9 +14,6 @@ import com.brightcove.johnny.http.Codecs;
  * to represent them.
  */
 public class NullableValueQueryParser implements QueryParser {
-
-    private static final List<Map.Entry<String,String>> EMPTY_LIST =
-            Collections.unmodifiableList(new ArrayList<Map.Entry<String,String>>(0));
 
     /** Pattern that finds ampersands. */
     public static final Pattern AMPERSAND = Pattern.compile("&");
@@ -50,9 +45,6 @@ public class NullableValueQueryParser implements QueryParser {
     }
 
     public Iterable<Map.Entry<String, String>> parse(String queryRaw) {
-        if (queryRaw == null) {
-            return EMPTY_LIST;
-        }
         LinkedList<Map.Entry<String, String>> ret = new LinkedList<Map.Entry<String, String>>();
         String[] pairs = pairSep.split(queryRaw);
         for (String pair : pairs) {

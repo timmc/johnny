@@ -25,6 +25,11 @@ public class MutableMultimapQuery implements Query {
     private int pairCount = 0;
 
     /**
+     * Create empty Query.
+     */
+    public MutableMultimapQuery() { }
+
+    /**
      * Build an instance from a list of key-value pairs.
      */
     public MutableMultimapQuery(List<Map.Entry<String, String>> pairs) {
@@ -46,8 +51,30 @@ public class MutableMultimapQuery implements Query {
         return list;
     }
 
+    /**
+     * Find last occurrance in a list.
+     * @param haystack Non-null list
+     * @param needle Nullable item to find
+     * @return Last index, or null if not found.
+     */
+    private Integer findLast(List<String> haystack, String needle) {
+        for (int i = haystack.size() - 1; i >= 0; i--) {
+            String cur = haystack.get(i);
+            if (needle == null ? cur == null : needle.equals(cur)) {
+                return i;
+            }
+        }
+        return null;
+    }
+
+    /*== Interface implementation ==*/
+
     public boolean hasKey(String key) {
         return byKey.containsKey(key);
+    }
+
+    public boolean hasPair(String key, String val) {
+        return findLast(getOrCreateList(key), val) != null;
     }
 
     public String getLast(String key) {
@@ -110,6 +137,7 @@ public class MutableMultimapQuery implements Query {
 
     public Query append(String key, String val) {
         getOrCreateList(key).add(val);
+        pairCount++;
         return this;
     }
 
@@ -118,20 +146,28 @@ public class MutableMultimapQuery implements Query {
     }
 
     public Query replaceLast(String key, String val) {
-        ArrayList<String> vals = getOrCreateList(key);
-        int foundAt = -1;
-        for (int i = vals.size() - 1; i >= 0; i--) {
-            String cur = vals.get(i);
-            if (val == null ? cur == null : val.equals(cur)) {
-                foundAt = i;
-                break;
-            }
-        }
-        if (foundAt == -1) {
-            vals.add(val);
+        ArrayList<String> vals = byKey.get(key);
+        if (vals == null || vals.isEmpty()) {
+            append(key, val);
         } else {
-            vals.set(foundAt, val);
+            vals.set(vals.size() - 1, val);
         }
         return this;
+    }
+
+    public boolean implPreservesRepeatedKeys() {
+        return true;
+    }
+
+    public boolean implPreservesValueOrderPerKey() {
+        return true;
+    }
+
+    public boolean implPreservesPairOrder() {
+        return false;
+    }
+
+    public boolean implImmutable() {
+        return false;
     }
 }

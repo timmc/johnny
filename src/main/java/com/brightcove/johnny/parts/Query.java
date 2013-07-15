@@ -5,11 +5,12 @@ import java.util.Map;
 
 /**
  * A decoded query component.
- *
+ * <p>
  * Mutator methods that return a {@link Query} expect that the returned
- * instance be used for fruther mutations; the original instance may not
+ * instance be used for further mutations; the original instance may not
  * reflect the mutation.
- *
+ * <p>
+ * Implementations are expected to have a public nullary constructor.
  */
 public interface Query {
 
@@ -21,6 +22,14 @@ public interface Query {
      * @return True iff key is present.
      */
     public boolean hasKey(String key);
+
+    /**
+     * Check if key-value pair is present in query.
+     * @param key Key string, not null.
+     * @param val Value string, nullable.
+     * @return True iff key-value pair is present.
+     */
+    public boolean hasPair(String key, String val);
 
     /**
      * Get the last value for the specified key.
@@ -107,4 +116,27 @@ public interface Query {
      *  will return <code>val</code>.
      */
     public Query replaceLast(String key, String val);
+
+    /*== Implementation inspectors ==*/
+    //TODO: Replace these with annotations?
+
+    /**
+     * @return true iff this implementation preserves repeated keys
+     */
+    public boolean implPreservesRepeatedKeys();
+
+    /**
+     * @return true iff this implementation preserves the order of values of each key
+     */
+    public boolean implPreservesValueOrderPerKey();
+
+    /**
+     * @return true iff this implementation preserves absolute order of key-value pairs
+     */
+    public boolean implPreservesPairOrder();
+
+    /**
+     * @return true iff this implementation is immutable
+     */
+    public boolean implImmutable();
 }

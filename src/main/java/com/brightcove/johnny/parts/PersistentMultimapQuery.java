@@ -1,11 +1,12 @@
 package com.brightcove.johnny.parts;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.brightcove.johnny.coll.Concat;
 import com.brightcove.johnny.coll.PersistentMultimap;
 
 /**
@@ -38,13 +39,19 @@ public class PersistentMultimapQuery implements Query {
         this(EMPTY_STORE.consAll(pairs));
     }
 
-    /** Private singleton constructor. Prefer {@link #EMPTY}. */
-    private PersistentMultimapQuery() {
+    /** Singleton constructor. Prefer {@link #EMPTY}. */
+    public PersistentMultimapQuery() {
         this(EMPTY_STORE);
     }
 
+    /*== Interface implementation ==*/
+
     public boolean hasKey(String key) {
         return store.containsKey(key);
+    }
+
+    public boolean hasPair(String key, String val) {
+        return store.containsEntry(key, val);
     }
 
     public String getLast(String key) {
@@ -90,16 +97,28 @@ public class PersistentMultimapQuery implements Query {
 
     public Query replaceLast(String key, String val) {
         List<String> original = store.get(key);
-        LinkedList<String> replacement = new LinkedList<String>();
-        boolean found = false;
-        for (int i = original.size() - 1; i >= 0; i--) {
-            String cur = original.get(i);
-            if (!found && (val == null ? cur == null : val.equals(cur))) {
-                found = true;
-                continue;
-            }
-            replacement.addFirst(cur);
+        if (original == null || original.isEmpty()) {
+            return append(key, val);
         }
-        return new PersistentMultimapQuery(store.assoc(key, replacement));
+        //TODO Maybe PMM should have a drop(key, nth)
+        List<String> truncated = original.subList(0, original.size() - 1);
+        return new PersistentMultimapQuery(
+                store.assoc(key, new Concat<String>(truncated, Arrays.asList(val))));
+    }
+
+    public boolean implPreservesRepeatedKeys() {
+        return true;
+    }
+
+    public boolean implPreservesValueOrderPerKey() {
+        return true;
+    }
+
+    public boolean implPreservesPairOrder() {
+        return false;
+    }
+
+    public boolean implImmutable() {
+        return true;
     }
 }

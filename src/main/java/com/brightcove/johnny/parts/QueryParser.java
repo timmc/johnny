@@ -13,7 +13,7 @@ public interface QueryParser {
     /**
      * Parse a query to an intermediate form.
      * @param queryRaw Undecoded query as retrieved from
-     *   {@link Url#getQueryRaw()}, possibly null.
+     *   {@link Url#getQueryRaw()}, not null.
      * @return Sequence of keys and values, where values may be null.
      */
     public Iterable<Map.Entry<String, String>> parse(String queryRaw);

@@ -21,7 +21,8 @@ import clojure.lang.PersistentVector;
 /**
  * An immutable query representation that maintains the original order
  * of key-value pairs, appends to the end, and can replace existing
- * pairs in-place. Finding the last value for a key takes sublinear time.
+ * pairs in-place. Accepts null values. Finding the last value for a key
+ * takes sublinear time.
  */
 public class PersistentOrderedQuery implements Query {
 
@@ -121,11 +122,15 @@ public class PersistentOrderedQuery implements Query {
         return null;
     }
 
-    /*== Interface == */
+    /*== Interface implementation ==*/
 
     public boolean hasKey(String key) {
         PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
         return indices != null && !indices.isEmpty();
+    }
+
+    public boolean hasPair(String key, String val) {
+        return findLast(key, val) != null;
     }
 
     public String getLast(String key) {
@@ -223,6 +228,9 @@ public class PersistentOrderedQuery implements Query {
         for (Iterator<Entry<String, String>> iter = source.iterator(); iter.hasNext(); ) {
             Entry<String, String> e = iter.next();
             PersistentTreeSet indices = (PersistentTreeSet) keylocsT.valAt(e.getKey());
+            if (indices == null) {
+                indices = PersistentTreeSet.EMPTY;
+            }
             keylocsT = keylocsT.assoc(e.getKey(), indices.cons(nextIndex));
             nextIndex++;
         }
@@ -241,16 +249,28 @@ public class PersistentOrderedQuery implements Query {
         if (indices == null) {
             return append(key, val);
         } else {
-            Integer lastMatchingIndex = findLast(key, val);
-            if (lastMatchingIndex == null) {
-                return append(key, val);
-            } else {
-                return new PersistentOrderedQuery(
-                        entries.assocN(lastMatchingIndex,
-                                       new MapEntry<String, String>(key, val)),
-                        deleted,
-                        keylocs);
-            }
+            Integer lastMatchingIndex = maxIndex(indices);
+            return new PersistentOrderedQuery(
+                    entries.assocN(lastMatchingIndex,
+                                   new MapEntry<String, String>(key, val)),
+                    deleted,
+                    keylocs);
         }
+    }
+
+    public boolean implPreservesRepeatedKeys() {
+        return true;
+    }
+
+    public boolean implPreservesValueOrderPerKey() {
+        return true;
+    }
+
+    public boolean implPreservesPairOrder() {
+        return true;
+    }
+
+    public boolean implImmutable() {
+        return true;
     }
 }
