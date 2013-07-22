@@ -70,8 +70,12 @@
   {:pre [impl], :post [%]}
   (.getConstructor impl (into-array Class [])))
 
+(defn create-q
+  "Construct a Query of the current impl."
+  []
+  (.newInstance (get-query-constructor *query-manip*) (to-array [])))
+
 (defn parse-q
   "Parse a string as a Query."
   [^String s]
-  (-> (.newInstance (get-query-constructor *query-manip*) (to-array []))
-      (.appendAll (.parse *query-parser* s))))
+  (.appendAll (create-q) (.parse *query-parser* s)))

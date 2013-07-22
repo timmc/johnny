@@ -51,7 +51,7 @@ public abstract class Url {
      */
     public Query getQuery() {
         String raw = getQueryRaw();
-        return raw == null ? null : new PersistentMultimapQuery(Urls.STANDARD_QUERY_PARSER.parse(raw));
+        return raw == null ? null : new PersistentMultimapQuery().appendAll(Urls.STANDARD_QUERY_PARSER.parse(raw));
     }
 
     /**

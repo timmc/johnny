@@ -30,16 +30,6 @@ public class MutableMultimapQuery implements Query {
     public MutableMultimapQuery() { }
 
     /**
-     * Build an instance from a list of key-value pairs.
-     */
-    public MutableMultimapQuery(Iterable<Map.Entry<String, String>> pairs) {
-        for (Map.Entry<String, String> pair : pairs) {
-            prepareForAppend(pair.getKey()).add(pair.getValue());
-            pairCount++;
-        }
-    }
-
-    /**
      * Get or create the val list at a key -- ONLY to be used when list is
      * going to grow, since this would otherwise leave the store in an
      * inconsistent state.

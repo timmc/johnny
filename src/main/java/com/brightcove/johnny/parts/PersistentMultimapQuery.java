@@ -3,7 +3,6 @@ package com.brightcove.johnny.parts;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.brightcove.johnny.coll.Concat;
@@ -30,13 +29,6 @@ public class PersistentMultimapQuery implements Query {
 
     private PersistentMultimapQuery(PersistentMultimap<String, String> store) {
         this.store = store;
-    }
-
-    /**
-     * Build an instance from a sequence of key-value pairs.
-     */
-    public PersistentMultimapQuery(Iterable<Map.Entry<String, String>> pairs) {
-        this(EMPTY_STORE.consAll(pairs));
     }
 
     /** Singleton constructor. Prefer {@link #EMPTY}. */

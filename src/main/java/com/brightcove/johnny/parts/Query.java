@@ -95,6 +95,7 @@ public interface Query {
 
     /**
      * Append a sequence of key-value pairs.
+     * @param source Non-null iterable of key-value pairs
      */
     public Query appendAll(Iterable<Map.Entry<String, String>> source);
 
