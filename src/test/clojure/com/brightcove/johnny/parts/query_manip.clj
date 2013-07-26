@@ -5,6 +5,7 @@
             [com.brightcove.johnny.http.impls :as i])
   (:import (com.brightcove.johnny.coll MapEntry)
            (com.brightcove.johnny.http Urls)))
+(.importClass *ns* 'ME com.brightcove.johnny.coll.MapEntry)
 
 (defmacro cross
   [binding-overlay & body]
@@ -40,8 +41,48 @@
        (is (= (.countKeys (qc)) 0))
        (is (= (.countPairs (qc)) 0))))))
 
+(deftest construction
+  (cross
+   {#'i/*query-encoder* [nil]}
+   (let [val (i/parse-q "a=5&b=&a=6")]
+     (is (= (.countKeys val) 2))
+     (is (.hasKey val "a"))
+     (is (.hasKey val "b"))
+     (if (.implPreservesRepeatedKeys val)
+       (do (is (= (.countPairs val) 3))
+           (when (.implPreservesValueOrderPerKey val)
+             (is (= (.getLast val "a") "6"))
+             (is (= (.getLast val "b") ""))
+             (is (= (.getAll val "a") ["5" "6"])))
+           (let [ordered [(ME. "a" "5") (ME. "b" "") (ME. "a" "6")]]
+             (if (.implPreservesPairOrder val)
+               (is (= (.getPairs val) ordered))
+               (is (= (set (.getPairs val)) (set ordered))))))
+       (do (is (= (.countPairs val) 2))
+           (is (= (set (map first (.getPairs val))) #{"a" "b"})))))))
+
 (deftest non-null-invariants
+  ;; Detailed tests of .appendAll first
+  (cross
+   {#'i/*query-parser* [nil]
+    #'i/*query-encoder* [nil]}
+   ;; Empty
+   (doseq [[which val] {:fresh (i/create-q)
+                        :append-nothing (.appendAll (i/create-q) [])}]
+     (testing which
+       (is (zero? (.countKeys val)))
+       (is (zero? (.countPairs val)))
+       (is (empty-not-nil? (.getPairs val)))
+       (doseq [k [nil "" "foo"]]
+         (testing (str "k=" (pr-str k))
+           (is (not (.hasKey val k)))
+           (is (nil? (.getLast val k)))
+           (is (empty-not-nil? (.getAll val k)))
+           (doseq [v [nil "" "bar"]]
+             (testing (str "v=" (pr-str v))
+               (is (not (.hasPair val k v))))))))))
   (cross-all
+   ;; Now test things based on .appendAll
    (doseq [raw [""
                 "&&&&&"
                 "a=%20%20%20&c=d"
@@ -62,19 +103,20 @@
            (is (= (- (.countPairs orig) (.countPairs val))
                   (count (.getAll orig "a"))))))
        (testing ".removeAll(k,v)"
-         (let [k "a"
-               v "   "
-               val (.removeAll (qc) k v)]
-           (when (= (.getAll orig k) [v])
-             (is (not (.hasKey val k)))
-             (is (nil? (.getLast val k)))
-             (is (= (- (.countKeys orig) (.countKeys val)) 1)))
-           (is (not (.hasPair val k v)))
-           (is (not (.contains (.getAll val k) v)))
-           (is (not (.contains (.getPairs val)
-                               (MapEntry. k v))))
-           (is (= (- (.countPairs orig) (.countPairs val))
-                  (if (.hasPair orig k v) 1 0)))))
+         (doseq [k [nil "foo" "a"]
+                 v [nil "   " "bar"]
+                 :let [val (.removeAll (qc) k v)]]
+           (testing (str "k=" (pr-str k) " v=" (pr-str v))
+             (when (= (.getAll orig k) [v])
+               (is (not (.hasKey val k)))
+               (is (nil? (.getLast val k)))
+               (is (= (- (.countKeys orig) (.countKeys val)) 1)))
+             (is (not (.hasPair val k v)))
+             (is (not (.contains (.getAll val k) v)))
+             (is (not (.contains (.getPairs val)
+                                 (MapEntry. k v))))
+             (is (= (- (.countPairs orig) (.countPairs val))
+                    (if (.hasPair orig k v) 1 0))))))
        (testing ".append"
          (doseq [k [nil "foo" "a"] ;; at least one existing key
                  v [nil "" "bar"]] ;; at least one existing val for that key
@@ -89,6 +131,7 @@
                (is (= (- (.countKeys app) (.countKeys orig))
                       (if (.hasKey orig k) 0 1)))
                (is (= (- (.countPairs app) (.countPairs orig)) 1))))))
+       ;; TODO: .replace
        (testing ".replaceLast"
          (let [change #(.replaceLast % "a" "new")
                repl (-> (qc) change)
