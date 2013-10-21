@@ -2,6 +2,17 @@
 
 Contribution guidelines and future work.
 
+## Building
+
+johnny is managed with the [Leiningen][lein] build tool.
+
+- Build: `lein do clean, deps, javac`
+- Test: `lein do test, junit`
+- Package: `lein do pom, jar`
+- Enter an interactive Clojure session, `lein repl`
+
+[lein]: http://leiningen.org/
+
 ## Development ideals:
 
 - Fail fast
