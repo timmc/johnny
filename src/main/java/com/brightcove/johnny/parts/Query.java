@@ -10,7 +10,8 @@ import java.util.Map;
  * instance be used for further mutations; the original instance may not
  * reflect the mutation.
  * <p>
- * Implementations are expected to have a public nullary constructor.
+ * Implementations are expected to have a public nullary constructor which
+ * can be used in conjunction with {@link #appendAll(Iterable)}.
  */
 public interface Query {
 

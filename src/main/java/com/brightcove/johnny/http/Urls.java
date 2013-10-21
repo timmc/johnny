@@ -12,6 +12,7 @@ import com.brightcove.johnny.parts.QueryParser;
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
+ * Start by calling {@link #parse(String)}, then use builder methods on the return value.
  */
 public class Urls {
 

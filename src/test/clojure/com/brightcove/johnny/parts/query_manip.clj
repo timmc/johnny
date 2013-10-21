@@ -82,6 +82,24 @@
              (testing (str "v=" (pr-str v))
                (is (not (.hasPair val k v))))))))))
   (cross-all
+   ;; Appending to various non-empty queries
+   (let [base (i/parse-q "m=5&m=6")]
+     (let [appended (.. base
+                        (append "m" "6") ;; again
+                        (append "a" "before")
+                        (append "m" "7")
+                        (append "z" "after"))]
+       (if (.implPreservesRepeatedKeys base)
+         (is (= (set (.getAll appended "m")) #{"5" "6" "7"}))
+         (is (.contains (.getAll appended "m") "7")))
+       (when (.implPreservesValueOrderPerKey base)
+         (is (= (.getLast appended "m") "7")))
+       (when (.implPreservesPairOrder base)
+         (let [final (last (.getPairs appended))]
+           (is (= (key final) "z"))
+           (is (= (val final) "after"))))
+       (when (.implPreservesRepeatedKeys base)
+         (is (= (-> appended (.getAll "m") (frequencies) (get "6")) 2)))))
    ;; Now test things based on .appendAll
    (doseq [raw [""
                 "&&&&&"
@@ -131,7 +149,29 @@
                (is (= (- (.countKeys app) (.countKeys orig))
                       (if (.hasKey orig k) 0 1)))
                (is (= (- (.countPairs app) (.countPairs orig)) 1))))))
-       ;; TODO: .replace
+       (testing ".appendAll"
+         (doseq [[which data] {:empty []
+                               :overlaps (concat {"a" "new"} {"b" "c=?"}
+                                                 {"a" "nuovo"} {"" ""})}
+                 :let [last-vals (into {} data)]]
+           (testing (str which)
+             (let [val (.appendAll (qc) data)]
+               (doseq [[k v] (if (.implPreservesRepeatedKeys val)
+                               data
+                               last-vals)]
+                 (is (.hasPair val k v)))))))
+       (testing ".replace"
+         (let [change #(.replace % "a" "new")
+               repl (-> (qc) change)
+               ;; check that replace is idempotent
+               idem (-> (qc) change change)]
+           (doseq [[which val] {:replace-1 repl
+                                :replace-2 idem}]
+             (testing (str "which=" (name which))
+               (is (.hasKey val "a"))
+               (is (.hasPair val "a" "new"))
+               (is (= (.getLast val "a") "new"))
+               (is (= (vec (.getAll val "a")) ["new"]))))))
        (testing ".replaceLast"
          (let [change #(.replaceLast % "a" "new")
                repl (-> (qc) change)
