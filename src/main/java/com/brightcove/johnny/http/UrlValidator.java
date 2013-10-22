@@ -1,5 +1,8 @@
 package com.brightcove.johnny.http;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import com.google.common.net.InternetDomainName;
 
 /**
@@ -11,7 +14,7 @@ public class UrlValidator {
     void validateAllParts(Object[] args) {
         validateProtocol((String) args[0]);
         validateUserInfoRaw((String) args[1]);
-        validateHost((String) args[2]);
+        validateHostRaw((String) args[2]);
         validatePort((Integer) args[3]);
         validatePathRaw((String) args[4]);
         validateQueryRaw((String) args[5]);
@@ -32,14 +35,14 @@ public class UrlValidator {
         //TODO: Find unencoded delimiters
     }
 
-    void validateHost(String host) {
-        if (host == null) {
+    void validateHostRaw(String hostRaw) {
+        if (hostRaw == null) {
             throw new IllegalArgumentException("host must not be null");
         }
-        if (!InternetDomainName.isValidLenient(host)) {
-            //TODO: IPv4 serializations
-            //TODO: IPv6 serializations, including scope and future formats
+        if (hostRaw.isEmpty()) {
+            throw new IllegalArgumentException("host must not be empty");
         }
+        //TODO Rationalize with HostParser
     }
 
     void validatePort(Integer port) {

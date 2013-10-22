@@ -2,6 +2,7 @@ package com.brightcove.johnny.http;
 
 import java.util.Collection;
 
+import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.PersistentMultimapQuery;
 import com.brightcove.johnny.parts.Query;
 import com.brightcove.johnny.parts.QueryParser;
@@ -41,6 +42,13 @@ public abstract class Url {
      */
     public String unparse() {
         return Urls.STANDARD_URL_ENCODER.encode(this);
+    }
+
+    /**
+     * Get host decoded using standard parser.
+     */
+    public Host getHost() {
+        return Urls.STANDARD_HOST_PARSER.parse(getHostRaw());
     }
 
     /**
@@ -132,11 +140,11 @@ public abstract class Url {
     /** See {@link #getUserInfoRaw()}. */
     public abstract Url withUserInfoRaw(String userInfoRaw);
 
-    /** Host address (domain or IP address). Not null. */
-    public abstract String getHost();
+    /** Unencoded host address (domain or IP address). Not null. */
+    public abstract String getHostRaw();
 
-    /** See {@link #getHost()}. */
-    public abstract Url withHost(String host);
+    /** See {@link #getHostRaw()}. */
+    public abstract Url withHostRaw(String hostRaw);
 
     /** Port of host, in valid range. Nullable. */
     public abstract Integer getPort();

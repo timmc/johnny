@@ -12,6 +12,9 @@ public interface UrlParser {
     /**
      * Parse a full URL into an intermediate representation that a {@link Url}
      * implementation can read.
+     * @return Array of values suitable for return from {@link Url#getProtocol()},
+     *  {@link Url#getUserInfoRaw()}, {@link Url#getHostRaw()}, {@link Url#getPort()},
+     *  {@link Url#getPathRaw()}, {@link Url#getQueryRaw()}, {@link Url#getFragment()}.
      * @throws MalformedURLException if the URL is not well-formed
      */
     public Object[] parse(String url) throws MalformedURLException;

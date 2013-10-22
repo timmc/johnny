@@ -36,7 +36,7 @@
   (cross-all
    (testing "README example"
      (let [u (-> (i/parse-u "http://example.net/search?q=1&q=2#fragment")
-                 (.withHost "brightcove.com")
+                 (.withHostRaw "brightcove.com")
                  (.querySetKey "q", "check"))]
        (is (= (str u)
               "http://brightcove.com/search?q=check#fragment"))))))

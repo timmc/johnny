@@ -48,8 +48,8 @@
             i/*url-manip* MutableUrl]
     (let [make-orig (constantly (i/parse-u "http://brightcove.com"))]
       (is (= (str (doto (make-orig)
-                    (.setHost "localhost")
+                    (.setHostRaw "localhost")
                     (.setFragment "frag")))
              (str (-> (make-orig)
-                      (.withHost "localhost")
+                      (.withHostRaw "localhost")
                       (.withFragment "frag"))))))))

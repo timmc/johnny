@@ -13,7 +13,7 @@ import com.brightcove.johnny.parts.Query;
  * client code should still use a chaining technique (allowing a safe and easy
  * transition to supporting immutable {@link Url} implementations as well):
  * <p>
- * <code>mutableUrl.withProtocol("http").withHost("example.net").unparse()</code>
+ * <code>mutableUrl.withProtocol("http").withHostRaw("example.net").unparse()</code>
  * <p>
  * Methods beginning with "set" are provided only for bean compability and
  * should have the same performance characteristics as the "with" methods.
@@ -21,7 +21,7 @@ import com.brightcove.johnny.parts.Query;
 public class MutableUrl extends Url {
     private String protocol;
     private String userInfoRaw;
-    private String host;
+    private String hostRaw;
     private Integer port;
     private String pathRaw;
     private String queryRaw;
@@ -41,18 +41,18 @@ public class MutableUrl extends Url {
      * or not.
      * @param protocol Non-null
      * @param userInfoRaw Nullable
-     * @param host Non-null
+     * @param hostRaw Non-null
      * @param port Nullable
      * @param pathRaw Non-null
      * @param queryRaw Nullable
      * @param fragment Nullable
      */
-    public MutableUrl(String protocol, String userInfoRaw, String host,
+    public MutableUrl(String protocol, String userInfoRaw, String hostRaw,
                       Integer port, String pathRaw, String queryRaw,
                       String fragment) {
         this.protocol = protocol;
         this.userInfoRaw = userInfoRaw;
-        this.host = host;
+        this.hostRaw = hostRaw;
         this.port = port;
         this.pathRaw = pathRaw;
         this.queryRaw = queryRaw;
@@ -85,12 +85,12 @@ public class MutableUrl extends Url {
         return this;
     }
 
-    public String getHost() { return host; }
+    public String getHostRaw() { return hostRaw; }
     /** Setter provided for bean compatibility. */
-    public void setHost(String host) { this.host = host; }
+    public void setHostRaw(String hostRaw) { this.hostRaw = hostRaw; }
 
-    public MutableUrl withHost(String host) {
-        setHost(host);
+    public MutableUrl withHostRaw(String hostRaw) {
+        setHostRaw(hostRaw);
         return this;
     }
 

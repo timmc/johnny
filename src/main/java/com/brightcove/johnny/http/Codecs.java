@@ -4,6 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+/**
+ * Encoders and decoders for HTTP land.
+ */
 public class Codecs {
 
     /*== Decoders ==*/

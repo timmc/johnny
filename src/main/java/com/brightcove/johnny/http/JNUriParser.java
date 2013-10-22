@@ -4,6 +4,12 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * A parser based on {@link java.net.URI}, which doesn't understand unicode domains.
+ * Also, will ignore errors in the port component:
+ * <p>
+ * <code>new URI("http://localhost:८४४३").getPort() //= -1</code>
+ */
 public class JNUriParser implements UrlParser {
     public Object[] parse(String url) throws MalformedURLException {
         Object[] args = new Object[7];

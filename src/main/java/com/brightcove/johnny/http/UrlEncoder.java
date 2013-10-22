@@ -14,7 +14,7 @@ public class UrlEncoder { //TODO convert to interface?
         if (url.getUserInfoRaw() != null) {
             build.append(url.getUserInfoRaw()).append("@");
         }
-        build.append(url.getHost());
+        build.append(url.getHostRaw());
         if (url.getPort() != null) {
             build.append(":").append(url.getPort());
         }
