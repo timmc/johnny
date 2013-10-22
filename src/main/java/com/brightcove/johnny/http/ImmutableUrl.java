@@ -2,7 +2,7 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
-import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.parts.Params;
 
 
 /**
@@ -96,7 +96,7 @@ public class ImmutableUrl extends Url {
         return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
-    public ImmutableUrl withQuery(Query q) {
+    public ImmutableUrl withQuery(Params q) {
         return withQueryRaw(computeDefaultEncodedQuery(q));
     }
 

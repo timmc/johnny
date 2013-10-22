@@ -6,8 +6,8 @@
             UrlEncoder))
   (:import (com.brightcove.johnny.parts
             NullableValueQueryParser NullIsEmptyQueryParser
-            Query PersistentOrderedQuery
-            MutableMultimapQuery PersistentMultimapQuery
+            PersistentOrderedParams MutableMultimapParams
+            PersistentMultimapParams
             BasicQueryEncoder)))
 
 ;;;; Known implementations
@@ -17,17 +17,17 @@
 (def url-encode-impls #{(UrlEncoder.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
-(def q-manip-impls #{PersistentOrderedQuery MutableMultimapQuery
-                     PersistentMultimapQuery})
+(def q-manip-impls #{PersistentOrderedParams MutableMultimapParams
+                     PersistentMultimapParams})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
-(def default-url-parser Urls/STANDARD_URL_PARSER)
+(def default-url-parser Urls/DEFAULT_URL_PARSER)
 (def default-url-manip ImmutableUrl)
-(def default-url-encode Urls/STANDARD_URL_ENCODER)
+(def default-url-encode Urls/DEFAULT_URL_ENCODER)
 
-(def default-q-parser Urls/STANDARD_QUERY_PARSER)
-(def default-q-manip PersistentOrderedQuery)
-(def default-q-encode Urls/STANDARD_QUERY_ENCODER)
+(def default-q-parser Urls/DEFAULT_QUERY_PARSER)
+(def default-q-manip PersistentOrderedParams)
+(def default-q-encode Urls/DEFAULT_QUERY_ENCODER)
 
 ;;;; Bindings for current preferred implementation
 

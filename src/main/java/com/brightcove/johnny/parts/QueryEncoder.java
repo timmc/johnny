@@ -13,5 +13,5 @@ public interface QueryEncoder {
      * @return String (possibly null) suitable for
      *  {@link Url#withQueryRaw(String)}
      */
-    public String unparse(Query q);
+    public String unparse(Params q);
 }

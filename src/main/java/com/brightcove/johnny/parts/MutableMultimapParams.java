@@ -12,11 +12,11 @@ import java.util.Map.Entry;
 import com.brightcove.johnny.coll.MapEntry;
 
 /**
- * An implementation of {@link Query} that only preserves value ordering
+ * An implementation of {@link Params} that only preserves value ordering
  * per-key, is mutable (and thus completely thread-unsafe), and accepts null
  * vals.
  */
-public class MutableMultimapQuery implements Query {
+public class MutableMultimapParams implements Params {
 
     private static final List<String> NO_VALS = Collections.unmodifiableList(new ArrayList<String>());
 
@@ -25,9 +25,9 @@ public class MutableMultimapQuery implements Query {
     private int pairCount = 0;
 
     /**
-     * Create empty Query.
+     * Create empty Params.
      */
-    public MutableMultimapQuery() { }
+    public MutableMultimapParams() { }
 
     /**
      * Get or create the val list at a key -- ONLY to be used when list is
@@ -98,7 +98,13 @@ public class MutableMultimapQuery implements Query {
         return pairCount;
     }
 
-    public Query removeAll(String key) {
+    public MutableMultimapParams empty() {
+        byKey.clear();
+        pairCount = 0;
+        return this;
+    }
+
+    public MutableMultimapParams removeAll(String key) {
         List<String> removed = byKey.remove(key);
         if (removed != null) {
             pairCount -= removed.size();
@@ -106,7 +112,7 @@ public class MutableMultimapQuery implements Query {
         return this;
     }
 
-    public Query removeAll(String key, String val) {
+    public MutableMultimapParams removeAll(String key, String val) {
         List<String> victim = byKey.get(key);
         if (victim == null) {
             return this;
@@ -124,24 +130,24 @@ public class MutableMultimapQuery implements Query {
         return this;
     }
 
-    public Query appendAll(Iterable<Entry<String, String>> source) {
+    public MutableMultimapParams appendAll(Iterable<Entry<String, String>> source) {
         for (Entry<String, String> e : source) {
             append(e.getKey(), e.getValue());
         }
         return this;
     }
 
-    public Query append(String key, String val) {
+    public MutableMultimapParams append(String key, String val) {
         prepareForAppend(key).add(val);
         pairCount++;
         return this;
     }
 
-    public Query replace(String key, String val) {
+    public MutableMultimapParams replace(String key, String val) {
         return removeAll(key).append(key, val);
     }
 
-    public Query replaceLast(String key, String val) {
+    public MutableMultimapParams replaceLast(String key, String val) {
         ArrayList<String> vals = byKey.get(key);
         if (vals == null || vals.isEmpty()) {
             append(key, val);

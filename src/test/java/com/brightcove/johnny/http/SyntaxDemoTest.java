@@ -6,6 +6,9 @@ import java.net.MalformedURLException;
 
 import org.junit.Test;
 
+import com.brightcove.johnny.parts.MutableMultimapParams;
+import com.brightcove.johnny.parts.Params;
+
 /** Demonstrate basic usage. */
 public class SyntaxDemoTest {
 
@@ -41,5 +44,16 @@ public class SyntaxDemoTest {
                                         .append("foo", "bar")
                                         .replace("a", null));
         assertEquals("http://brightcove.com/login?a&foo=bar", result.unparse());
+    }
+
+    /**
+     * Demonstrate alternative query representation.
+     */
+    @Test
+    public void testQSAlt() throws MalformedURLException {
+        Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
+        Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(orig.getQueryRaw()));
+        mutable = mutable.append("foo", "bar").replace("a", null);
+        assertEquals("http://brightcove.com/login?a&foo=bar", orig.withQuery(mutable).unparse());
     }
 }

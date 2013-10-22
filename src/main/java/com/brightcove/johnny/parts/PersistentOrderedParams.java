@@ -19,21 +19,22 @@ import clojure.lang.PersistentTreeSet;
 import clojure.lang.PersistentVector;
 
 /**
- * An immutable query representation that maintains the original order
+ * An immutable params representation that maintains the original order
  * of key-value pairs, appends to the end, and can replace existing
  * pairs in-place. Accepts null values. Finding the last value for a key
  * takes sublinear time.
  */
-public class PersistentOrderedQuery implements Query {
+public class PersistentOrderedParams implements Params {
 
     /**
      * A blank instance.
      */
-    public static final PersistentOrderedQuery EMPTY = new PersistentOrderedQuery();
+    public static final PersistentOrderedParams EMPTY = new PersistentOrderedParams();
 
     /**
      * Ordered list of key-value entries (Entry), with nulls indicating
-     * deleted entries.
+     * deleted entries. NB: Null param values are not the same as null entries
+     * in this collection.
      */
     private final PersistentVector entries;
     /**
@@ -47,15 +48,15 @@ public class PersistentOrderedQuery implements Query {
      */
     private final PersistentHashMap keylocs;
 
-    /** Create a new, empty query (prefer to use {@link #EMPTY}.) */
-    public PersistentOrderedQuery() {
+    /** Create a new, empty params (prefer to use {@link #EMPTY}.) */
+    public PersistentOrderedParams() {
         entries = PersistentVector.EMPTY;
         deleted = 0;
         keylocs = PersistentHashMap.EMPTY;
     }
 
     /** Mutation constructor. */
-    private PersistentOrderedQuery(IPersistentCollection entries, int deleted, IPersistentMap keylocs) {
+    private PersistentOrderedParams(IPersistentCollection entries, int deleted, IPersistentMap keylocs) {
         this.entries = (PersistentVector) entries;
         this.deleted = deleted;
         this.keylocs = (PersistentHashMap) keylocs;
@@ -171,8 +172,12 @@ public class PersistentOrderedQuery implements Query {
         return entries.size() - deleted;
     }
 
+    public PersistentOrderedParams empty() {
+        return EMPTY;
+    }
+
     @SuppressWarnings("unchecked")
-    public Query removeAll(String key) {
+    public PersistentOrderedParams removeAll(String key) {
         PersistentTreeSet indices = indicesFor(key);
         if (indices == null) {
             return this;
@@ -181,14 +186,14 @@ public class PersistentOrderedQuery implements Query {
         for (Integer i : (Set<Integer>) indices) {
             newEntries = newEntries.assocN(i, null);
         }
-        return new PersistentOrderedQuery(
+        return new PersistentOrderedParams(
                 newEntries.persistent(),
                 deleted + indices.size(),
                 keylocs.without(key));
     }
 
     @SuppressWarnings("unchecked")
-    public Query removeAll(String key, String val) {
+    public PersistentOrderedParams removeAll(String key, String val) {
         PersistentTreeSet indices = indicesFor(key);
         if (indices == null) {
             return this;
@@ -205,25 +210,25 @@ public class PersistentOrderedQuery implements Query {
                 indices = (PersistentTreeSet) indices.disjoin(i);
             }
         }
-        return new PersistentOrderedQuery(
+        return new PersistentOrderedParams(
                 newEntries.persistent(),
                 deleted + removed,
                 indices.isEmpty() ? keylocs.without(key)
                                   : keylocs.assoc(key, indices));
     }
 
-    public Query append(String key, String val) {
+    public PersistentOrderedParams append(String key, String val) {
         PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
         if (indices == null) {
             indices = PersistentTreeSet.EMPTY;
         }
-        return new PersistentOrderedQuery(
+        return new PersistentOrderedParams(
                 entries.cons(new MapEntry<String, String>(key, val)),
                 deleted,
                 keylocs.assoc(key, indices.cons(entries.size())));
     }
 
-    public Query appendAll(Iterable<Entry<String, String>> source) {
+    public PersistentOrderedParams appendAll(Iterable<Entry<String, String>> source) {
         ITransientMap keylocsT = keylocs.asTransient();
         int nextIndex = entries.size();
         for (Iterator<Entry<String, String>> iter = source.iterator(); iter.hasNext(); ) {
@@ -235,23 +240,23 @@ public class PersistentOrderedQuery implements Query {
             keylocsT = keylocsT.assoc(e.getKey(), indices.cons(nextIndex));
             nextIndex++;
         }
-        return new PersistentOrderedQuery(
+        return new PersistentOrderedParams(
                 ClojureHelper.into(entries, source.iterator()),
                 deleted,
                 keylocsT.persistent());
     }
 
-    public Query replace(String key, String val) {
+    public PersistentOrderedParams replace(String key, String val) {
         return removeAll(key).append(key, val);
     }
 
-    public Query replaceLast(String key, String val) {
+    public PersistentOrderedParams replaceLast(String key, String val) {
         PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
         if (indices == null) {
             return append(key, val);
         } else {
             Integer lastMatchingIndex = maxIndex(indices);
-            return new PersistentOrderedQuery(
+            return new PersistentOrderedParams(
                     entries.assocN(lastMatchingIndex,
                                    new MapEntry<String, String>(key, val)),
                     deleted,

@@ -2,7 +2,7 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
-import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.parts.Params;
 
 /**
  * A non-concurrency-safe UrlBits implementation. Methods are generally not
@@ -121,12 +121,12 @@ public class MutableUrl extends Url {
         return this;
     }
 
-    /** Convenience mutator method accompanying {@link #withQuery(Query)}. */
-    public void setQuery(Query q) {
+    /** Convenience mutator method accompanying {@link #withQuery(Params)}. */
+    public void setQuery(Params q) {
         setQueryRaw(computeDefaultEncodedQuery(q));
     }
 
-    public MutableUrl withQuery(Query q) {
+    public MutableUrl withQuery(Params q) {
         setQuery(q);
         return this;
     }

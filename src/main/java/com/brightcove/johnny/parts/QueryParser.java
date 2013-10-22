@@ -10,7 +10,7 @@ import com.brightcove.johnny.http.Urls;
  * values. Implementations may handle repeated keys and null values as
  * they wish.
  *
- * @see Urls#STANDARD_QUERY_PARSER
+ * @see Urls#DEFAULT_QUERY_PARSER
  */
 public interface QueryParser {
     /**

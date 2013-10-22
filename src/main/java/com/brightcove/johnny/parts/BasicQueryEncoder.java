@@ -23,7 +23,7 @@ public class BasicQueryEncoder extends APairQueryEncoder {
         this.pairSep = pairSep;
     }
 
-    public String unparse(Query q) {
+    public String unparse(Params q) {
         return q == null ? null : unparse(q.getPairs());
     }
 

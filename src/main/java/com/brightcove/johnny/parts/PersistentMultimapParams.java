@@ -9,30 +9,30 @@ import com.brightcove.johnny.coll.Concat;
 import com.brightcove.johnny.coll.PersistentMultimap;
 
 /**
- * An implementation of {@link Query} that only preserves value ordering
+ * An implementation of {@link Params} that only preserves value ordering
  * per-key, is immutable (and thus thread-safe), and accepts null
  * vals.
  * <p>
  * This is a persistent data structure, viz., mutation operations return a
  * new immutable instance that shares structure with the old instance. As
- * such, there is only one empty instance, {@link #EMPTY}.
+ * a result, there is a resuable empty instance, {@link #EMPTY}.
  */
-public class PersistentMultimapQuery implements Query {
+public class PersistentMultimapParams implements Params {
 
     private static final PersistentMultimap<String, String> EMPTY_STORE = new PersistentMultimap<String, String>();
 
     /** Empty value. */
-    public static final PersistentMultimapQuery EMPTY = new PersistentMultimapQuery();
+    public static final PersistentMultimapParams EMPTY = new PersistentMultimapParams();
 
     /** Map of keys to null-or-nonempty lists of values. */
     private PersistentMultimap<String, String> store = new PersistentMultimap<String, String>();
 
-    private PersistentMultimapQuery(PersistentMultimap<String, String> store) {
+    private PersistentMultimapParams(PersistentMultimap<String, String> store) {
         this.store = store;
     }
 
     /** Singleton constructor. Prefer {@link #EMPTY}. */
-    public PersistentMultimapQuery() {
+    public PersistentMultimapParams() {
         this(EMPTY_STORE);
     }
 
@@ -67,34 +67,38 @@ public class PersistentMultimapQuery implements Query {
         return store.size();
     }
 
-    public Query removeAll(String key) {
-        return new PersistentMultimapQuery(store.dissoc(key));
+    public PersistentMultimapParams empty() {
+        return EMPTY;
     }
 
-    public Query removeAll(String key, String val) {
-        return new PersistentMultimapQuery(store.dropAll(key, val));
+    public PersistentMultimapParams removeAll(String key) {
+        return new PersistentMultimapParams(store.dissoc(key));
     }
 
-    public Query append(String key, String val) {
-        return new PersistentMultimapQuery(store.cons(key, val));
+    public PersistentMultimapParams removeAll(String key, String val) {
+        return new PersistentMultimapParams(store.dropAll(key, val));
     }
 
-    public Query appendAll(Iterable<Entry<String, String>> pairs) {
-        return new PersistentMultimapQuery(store.consAll(pairs));
+    public PersistentMultimapParams append(String key, String val) {
+        return new PersistentMultimapParams(store.cons(key, val));
     }
 
-    public Query replace(String key, String val) {
+    public PersistentMultimapParams appendAll(Iterable<Entry<String, String>> pairs) {
+        return new PersistentMultimapParams(store.consAll(pairs));
+    }
+
+    public PersistentMultimapParams replace(String key, String val) {
         return removeAll(key).append(key, val);
     }
 
-    public Query replaceLast(String key, String val) {
+    public PersistentMultimapParams replaceLast(String key, String val) {
         List<String> original = store.get(key);
         if (original == null || original.isEmpty()) {
             return append(key, val);
         }
         //TODO Maybe PMM should have a drop(key, nth)
         List<String> truncated = original.subList(0, original.size() - 1);
-        return new PersistentMultimapQuery(
+        return new PersistentMultimapParams(
                 store.assoc(key, new Concat<String>(truncated, Arrays.asList(val))));
     }
 

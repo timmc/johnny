@@ -3,8 +3,8 @@ package com.brightcove.johnny.http;
 import java.util.Collection;
 
 import com.brightcove.johnny.parts.Host;
-import com.brightcove.johnny.parts.PersistentMultimapQuery;
-import com.brightcove.johnny.parts.Query;
+import com.brightcove.johnny.parts.PersistentMultimapParams;
+import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
 
 /**
@@ -41,14 +41,14 @@ public abstract class Url {
      * Convenience method to re-encode a URL.
      */
     public String unparse() {
-        return Urls.STANDARD_URL_ENCODER.encode(this);
+        return Urls.DEFAULT_URL_ENCODER.encode(this);
     }
 
     /**
      * Get host decoded using standard parser.
      */
     public Host getHost() {
-        return Urls.STANDARD_HOST_PARSER.parse(getHostRaw());
+        return Urls.DEFAULT_HOST_PARSER.parse(getHostRaw());
     }
 
     /**
@@ -57,28 +57,28 @@ public abstract class Url {
      * preserve order of keys, but will preserve order of values.
      * @return Decoded query, or null
      */
-    public Query getQuery() {
+    public Params getQuery() {
         String raw = getQueryRaw();
-        return raw == null ? null : new PersistentMultimapQuery().appendAll(Urls.STANDARD_QUERY_PARSER.parse(raw));
+        return raw == null ? null : new PersistentMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(raw));
     }
 
     /**
      * Set raw query by encoding provided query with standard query encoder.
      * @param q Possibly null Query
      */
-    public abstract Url withQuery(Query q);
+    public abstract Url withQuery(Params q);
 
     /**
-     * Compute raw query for {@link #withQuery(Query)}.
+     * Compute raw query for {@link #withQuery(Params)}.
      * @param q Possibly null Query
      */
-    protected String computeDefaultEncodedQuery(Query q) {
-        return Urls.STANDARD_QUERY_ENCODER.unparse(q);
+    protected String computeDefaultEncodedQuery(Params q) {
+        return Urls.DEFAULT_QUERY_ENCODER.unparse(q);
     }
 
     /**
-     * Convenience method for {@link Query#replace(String, String)}; for heavy
-     * manipulation, use a {@link QueryParser} to produce a {@link Query},
+     * Convenience method for {@link Params#replace(String, String)}; for heavy
+     * manipulation, use a {@link QueryParser} to produce a {@link Params},
      * which can be manipulated more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
@@ -92,8 +92,8 @@ public abstract class Url {
     }
 
     /**
-     * Convenience method for {@link Query#getAll(String)}; for heavy
-     * inspection use a {@link QueryParser} to produce a {@link Query},
+     * Convenience method for {@link Params#getAll(String)}; for heavy
+     * inspection use a {@link QueryParser} to produce a {@link Params},
      * which can be inspected more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
@@ -107,8 +107,8 @@ public abstract class Url {
     }
 
     /**
-     * Convenience method for {@link Query#getLast(String)}; for heavy
-     * inspection use a {@link QueryParser} to produce a {@link Query},
+     * Convenience method for {@link Params#getLast(String)}; for heavy
+     * inspection use a {@link QueryParser} to produce a {@link Params},
      * which can be inspected more efficiently. Uses {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
