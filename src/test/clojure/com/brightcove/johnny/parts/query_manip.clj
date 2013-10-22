@@ -90,16 +90,14 @@
                         (append "m" "7")
                         (append "z" "after"))]
        (if (.implPreservesRepeatedKeys base)
-         (is (= (set (.getAll appended "m")) #{"5" "6" "7"}))
+         (is (= (sort (.getAll appended "m")) ["5" "6" "6" "7"]))
          (is (.contains (.getAll appended "m") "7")))
        (when (.implPreservesValueOrderPerKey base)
          (is (= (.getLast appended "m") "7")))
        (when (.implPreservesPairOrder base)
          (let [final (last (.getPairs appended))]
            (is (= (key final) "z"))
-           (is (= (val final) "after"))))
-       (when (.implPreservesRepeatedKeys base)
-         (is (= (-> appended (.getAll "m") (frequencies) (get "6")) 2)))))
+           (is (= (val final) "after"))))))
    ;; Now test things based on .appendAll
    (doseq [raw [""
                 "&&&&&"
