@@ -36,6 +36,7 @@ point.
 * Support for querystring keys without values (`foo` vs. `foo=`)
 * Use of immutable data structures so that manipulations are
   thread-safe
+* Attempt to balance simple interface against configurability.
 
 ### More goals
 
