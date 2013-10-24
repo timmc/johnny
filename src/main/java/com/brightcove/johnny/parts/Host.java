@@ -7,6 +7,10 @@ import com.google.common.net.InternetDomainName;
 /**
  * The host component of a URL (e.g. "example.com" or an IP address.)
  *
+ * Note that a hostname is not necessarily a domain name (e.g. IP addresses),
+ * and a domain name is not necessarily a hostname (e.g. domain names with
+ * underscores in them.)
+ *
  * Delegates to {@link InternetDomainName} for domain names and
  * {@link InetAddress} for IP address literals.
  */

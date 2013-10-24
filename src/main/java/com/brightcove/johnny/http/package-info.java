@@ -37,8 +37,4 @@
  * </code></pre>
  */
 package com.brightcove.johnny.http;
-import static org.junit.Assert.assertEquals;
-
-import com.brightcove.johnny.parts.MutableMultimapParams;
-import com.brightcove.johnny.parts.Params;
 

@@ -3,6 +3,7 @@ package com.brightcove.johnny.http;
 import java.util.Collection;
 
 import com.brightcove.johnny.parts.Host;
+import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.PersistentMultimapParams;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
@@ -49,6 +50,21 @@ public abstract class Url {
      */
     public Host getHost() {
         return Urls.DEFAULT_HOST_PARSER.parse(getHostRaw());
+    }
+
+    /**
+     * Parse and return the path component.
+     */
+    public Path getPath() {
+        return Urls.DEFAULT_EMPTY_PATH.addSegments(Urls.DEFAULT_PATH_PARSER.parse(getPathRaw()));
+    }
+
+    /**
+     * Set raw path by encoding provided path with standard path encoder.
+     * @param path Nullable
+     */
+    public Url withPath(Path path) {
+        return withPathRaw(Urls.DEFAULT_PATH_ENCODER.unparse(path));
     }
 
     /**
