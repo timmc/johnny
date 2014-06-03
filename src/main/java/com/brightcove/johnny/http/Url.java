@@ -6,7 +6,6 @@ import clojure.lang.Util;
 
 import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PersistentMultimapParams;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
 
@@ -53,7 +52,7 @@ public abstract class Url {
      * Parse and return the path component.
      */
     public Path getPath() {
-        return Urls.DEFAULT_EMPTY_PATH.addSegments(Urls.DEFAULT_PATH_PARSER.parse(getPathRaw()));
+        return Urls.parsePath(getPathRaw());
     }
 
     /**
@@ -72,21 +71,15 @@ public abstract class Url {
      */
     public Params getQuery() {
         String raw = getQueryRaw();
-        return raw == null ? null : new PersistentMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(raw));
+        return raw == null ? null : Urls.parseQuery(raw);
     }
 
     /**
      * Set raw query by encoding provided query with standard query encoder.
      * @param q Possibly null Query
      */
-    public abstract Url withQuery(Params q);
-
-    /**
-     * Compute raw query for {@link #withQuery(Params)}.
-     * @param q Possibly null Query
-     */
-    protected String computeDefaultEncodedQuery(Params q) {
-        return Urls.DEFAULT_QUERY_ENCODER.unparse(q);
+    public Url withQuery(Params q) {
+        return withQueryRaw(Urls.DEFAULT_QUERY_ENCODER.unparse(q));
     }
 
     /**

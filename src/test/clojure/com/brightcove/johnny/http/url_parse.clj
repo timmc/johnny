@@ -32,7 +32,15 @@
      (let [parts (i/parse-u "http://localhost")]
        (is (= ((apply juxt u/url-getters) parts)
               ["http" nil "localhost" nil
-               "" nil nil]))))))
+               "" nil nil]))))
+   (testing "Greedy parser regressions"
+     (is (= (.getPathRaw (i/parse-u "http://localhost/http://localhost/"))
+            "/http://localhost/"))
+     (is (= (.getQueryRaw (i/parse-u "http://localhost/?foo?bar"))
+            "foo?bar"))
+     #_(comment ;; TODO: A way to accept invalid fragments like this one
+         (is (= (.getFragment (i/parse-u "http://localhost/#foo%23bar#baz"))
+                "foo#bar#baz"))))))
 
 (deftest j-n-url-regression
   (default-others

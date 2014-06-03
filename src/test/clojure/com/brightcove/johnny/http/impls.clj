@@ -40,7 +40,7 @@
 (def default-path-encode Urls/DEFAULT_PATH_ENCODER)
 
 (def default-q-parser Urls/DEFAULT_QUERY_PARSER)
-(def default-q-manip PersistentOrderedParams)
+(def default-q-inst Urls/DEFAULT_EMPTY_PARAMS)
 (def default-q-encode Urls/DEFAULT_QUERY_ENCODER)
 
 ;;;; Bindings for current preferred implementation

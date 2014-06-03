@@ -2,8 +2,6 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
-import com.brightcove.johnny.parts.Params;
-
 /**
  * A non-concurrency-safe UrlBits implementation. Methods are generally not
  * thread-safe, and instances should not be shared outside of the scope they
@@ -118,16 +116,6 @@ public class MutableUrl extends Url {
 
     public MutableUrl withQueryRaw(String queryRaw) {
         setQueryRaw(queryRaw);
-        return this;
-    }
-
-    /** Convenience mutator method accompanying {@link #withQuery(Params)}. */
-    public void setQuery(Params q) {
-        setQueryRaw(computeDefaultEncodedQuery(q));
-    }
-
-    public MutableUrl withQuery(Params q) {
-        setQuery(q);
         return this;
     }
 

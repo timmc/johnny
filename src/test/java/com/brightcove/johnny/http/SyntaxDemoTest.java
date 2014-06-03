@@ -3,6 +3,7 @@ package com.brightcove.johnny.http;
 import static org.junit.Assert.*;
 
 import java.net.MalformedURLException;
+import java.util.Arrays;
 
 import org.junit.Test;
 
@@ -43,7 +44,10 @@ public class SyntaxDemoTest {
         Url result = orig.withQuery(orig.getQuery()
                                         .append("foo", "bar")
                                         .replace("a", null));
-        assertEquals("http://brightcove.com/login?a&foo=bar", result.unparse());
+        assertTrue(Arrays.<String>asList(
+                "http://brightcove.com/login?foo=bar&a",
+                "http://brightcove.com/login?a&foo=bar"
+                ).contains(result.unparse()));
     }
 
     /**
@@ -54,6 +58,9 @@ public class SyntaxDemoTest {
         Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
         Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(orig.getQueryRaw()));
         mutable = mutable.append("foo", "bar").replace("a", null);
-        assertEquals("http://brightcove.com/login?a&foo=bar", orig.withQuery(mutable).unparse());
+        assertTrue(Arrays.<String>asList(
+                "http://brightcove.com/login?foo=bar&a",
+                "http://brightcove.com/login?a&foo=bar"
+                ).contains(orig.withQuery(mutable).unparse()));
     }
 }

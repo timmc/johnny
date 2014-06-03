@@ -2,9 +2,6 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
-import com.brightcove.johnny.parts.Params;
-
-
 /**
  * A concurrency-safe UrlBits implementation. Methods are generally
  * thread-safe, and instances may be freely shared outside of the scope they
@@ -94,10 +91,6 @@ public class ImmutableUrl extends Url {
 
     public ImmutableUrl withQueryRaw(String queryRaw) {
         return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
-    }
-
-    public ImmutableUrl withQuery(Params q) {
-        return withQueryRaw(computeDefaultEncodedQuery(q));
     }
 
     public String getFragment() { return fragment; }

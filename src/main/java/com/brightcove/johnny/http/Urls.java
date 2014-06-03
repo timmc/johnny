@@ -2,6 +2,7 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
+import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
@@ -24,7 +25,12 @@ import com.brightcove.johnny.parts.QueryParser;
  */
 public class Urls {
 
+    static {
+        ClojureHelper.init(); // XXX but see init()'s docs
+    }
+
     public static final UrlParser DEFAULT_URL_PARSER = new JNUriParser();
+    public static final Class<? extends Url> DEFAULT_URL_REP = ImmutableUrl.class;
     public static final UrlEncoder DEFAULT_URL_ENCODER = new UrlEncoder();
     public static final HostParser DEFAULT_HOST_PARSER = new StrictHostParser();
     public static final HostEncoder DEFAULT_HOST_ENCODER = new HostEncoder();
@@ -57,11 +63,13 @@ public class Urls {
     /**
      * Parse a query string to the default piecewise URI query representation
      * using the default parser.
+     * @param queryRaw Query component, or null
+     * @return Params, or null if input was null
      */
     public static Params parseQuery(String queryRaw) {
         if (queryRaw == null) {
             return null;
         }
-        return new PersistentOrderedParams().appendAll(DEFAULT_QUERY_PARSER.parse(queryRaw));
+        return DEFAULT_EMPTY_PARAMS.appendAll(DEFAULT_QUERY_PARSER.parse(queryRaw));
     }
 }
