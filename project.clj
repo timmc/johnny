@@ -9,5 +9,5 @@
   :test-paths ["src/test/clojure"]
   ;; We have a tiny bit of Java for testing
   :profiles {:dev {:dependencies [[junit/junit "4.11"]]}}
-  :plugins [[lein-junit "1.1.2"]]
+  :plugins [[lein-junit "1.1.6"]]
   :junit ["src/test/java"])
