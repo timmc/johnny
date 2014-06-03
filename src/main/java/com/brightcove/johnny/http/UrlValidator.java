@@ -1,10 +1,5 @@
 package com.brightcove.johnny.http;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import com.google.common.net.InternetDomainName;
-
 /**
  * Deeper validation of Url components.
  */

@@ -53,3 +53,17 @@
              (str (-> (make-orig)
                       (.withHostRaw "localhost")
                       (.withFragment "frag"))))))))
+
+(deftest object-overrides
+  (cross
+   {#'i/*url-parser* [i/default-url-parser]}
+   (let [ecom (i/parse-u "http://admin@example.com:80/path?query#frag")
+         enet (i/parse-u "http://admin@example.net:80/path?query#frag")
+         minimal (i/parse-u "http://localhost")]
+     (testing "equals is at least string equality"
+       (is (.equals ecom ecom))
+       (is (not (.equals ecom enet))))
+     (testing "equals can handle minimal URLs"
+       (is (.equals minimal minimal)))
+     (testing "hashcode is consistent"
+       (is (= (.hashCode ecom) (.hashCode ecom)))))))

@@ -2,6 +2,8 @@ package com.brightcove.johnny.http;
 
 import java.util.Collection;
 
+import clojure.lang.Util;
+
 import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.PersistentMultimapParams;
@@ -30,11 +32,6 @@ import com.brightcove.johnny.parts.QueryParser;
  * @author timmc
  */
 public abstract class Url {
-
-    @Override
-    public String toString() {
-        return unparse();
-    }
 
     /*== Convenience ==*/
 
@@ -135,6 +132,42 @@ public abstract class Url {
             throw new NullPointerException("Cannot search for null query key");
         }
         return getQuery().getLast(key);
+    }
+
+    @Override
+    public String toString() {
+        return unparse();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Url)) {
+            return false;
+        }
+        Url other = (Url) o;
+        return Util.equiv(getProtocol(), other.getProtocol()) &&
+                Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
+                Util.equiv(getHost(), other.getHost()) &&
+                Util.equiv(getPort(), other.getPort()) &&
+                Util.equiv(getPathRaw(), other.getPathRaw()) &&
+                Util.equiv(getQueryRaw(), other.getQueryRaw()) &&
+                Util.equiv(getFragment(), other.getFragment());
+    }
+
+    private Integer cachedHashCode = null;
+
+    @Override
+    public int hashCode() {
+        // No need for synchronization, this is just an optimization. (Even if
+        // this is changed to write a primitive int, that's a 32-bit operation
+        // and therefore still atomic. (Writes to longs are not atomic.)
+        if (cachedHashCode != null) {
+            return cachedHashCode;
+        }
+        cachedHashCode = Util.hash(getProtocol()) + Util.hash(getUserInfoRaw()) +
+                Util.hash(getHostRaw()) + Util.hash(getPort()) +
+                Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragment());
+        return cachedHashCode;
     }
 
     /*== Accessors ==*/
