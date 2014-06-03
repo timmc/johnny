@@ -2,12 +2,18 @@
 
 Contribution guidelines and future work.
 
+## Structure
+
+While the johnny library is written entirely in Java, the test suite
+is mostly Clojure to allow for rapid development of comprehensive
+tests.
+
 ## Building
 
 johnny is managed with the [Leiningen][lein] build tool.
 
 - Build: `lein do clean, deps, javac`
-- Test: `lein do test, junit`
+- Test: `lein test`
 - Package: `lein do pom, jar`
 - Enter an interactive Clojure session, `lein repl`
 

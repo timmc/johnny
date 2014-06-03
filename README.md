@@ -27,6 +27,30 @@ opening up a Bitcoin bug bounty once the library is at the alpha
 stage, and I would appreciate both deposits and withdrawals at that
 point.
 
+## Why use johnny
+
+Correct decoding of query components:
+
+```java
+// URI offers to decode query before destructuring it:
+new java.net.URI("http://localhost?foo=b%26ar").getQuery().split("&"); //= ["foo=b", "ar"]
+// Johnny knows not to percent-decode until the pairs are parsed:
+Urls.parse("http://localhost?foo=b%26ar").getQuery().getLast("foo"); //= "b&ar"
+```
+
+Checks equality in a reasonable fashion:
+
+```java
+// j.u.URL actually does a *DNS lookup* when you call .equals:
+new java.net.URL("http://example.net/").equals(new java.net.URL("http://example.org/")) //= true
+// Johnny uses piece-wise equality (but may implement a deeper matching option in the future)
+Urls.parse("http://example.net/").equals(Urls.parse("http://example.org/")) //= false
+```
+
+Correctly encodes for different URL components:
+
+(TODO: Example with j.n.URLEncoder incorrectly encoding spaces as `+`.)
+
 ## Goals
 
 * Minimal encoding of each URL component (e.g. querystring params can
@@ -48,7 +72,7 @@ FIXME
 
 ## Contributing
 
-See HACK.md.
+See [HACK.md](HACK.md).
 
 ## License
 
