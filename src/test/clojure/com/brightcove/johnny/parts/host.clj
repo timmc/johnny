@@ -7,18 +7,31 @@
            com.google.common.net.InternetDomainName))
 
 (deftest invariants
-  (let [ip4 (InetAddress/getByName "4.4.4.4")
-        ip4h (Host. ip4)]
-    (is (.isIp ip4h))
-    (is (= (.getIp ip4h) ip4)))
-  (let [ip6 (InetAddress/getByName "::1")
-        ip6h (Host. ip6)]
-    (is (.isIp ip6h))
-    (is (= (.getIp ip6h) ip6)))
-  (let [dom (InternetDomainName/from "example.net")
-        domh (Host. dom)]
-    (is (.isDomain domh))
-    (is (= (.getDomain domh) dom))))
+  (let [mk-ip4 #(InetAddress/getByName "4.4.4.4")
+        ip4h (Host. (mk-ip4))
+        mk-ip6 #(InetAddress/getByName "::1")
+        ip6h (Host. (mk-ip6))
+        mk-dom #(InternetDomainName/from "example.net")
+        domh (Host. (mk-dom))]
+    (testing "isX"
+      (is (.isIp ip4h))
+      (is (.isIp ip6h))
+      (is (.isDomain domh)))
+    (testing "getX"
+      (is (= (.getIp ip4h) (mk-ip4)))
+      (is (= (.getIp ip6h) (mk-ip6)))
+      (is (= (.getDomain domh) (mk-dom))))
+    (testing "equals"
+      (are [gen] (.equals (Host. (gen)) (Host. (gen)))
+           mk-ip4 mk-ip6 mk-dom))
+    (testing "hashcode"
+      (are [gen] (.equals (.hashCode (Host. (gen)))
+                          (.hashCode (Host. (gen))))
+           mk-ip4 mk-ip6 mk-dom)
+      (let [other-ip4 (InetAddress/getByName "8.8.8.8")]
+        (are [gen] (not (.equals (.hashCode (Host. other-ip4))
+                                 (.hashCode (Host. (gen)))))
+             mk-ip4 mk-ip6 mk-dom)))))
 
 (deftest which
   ;; Test component parsing in full-url-parsing context

@@ -4,6 +4,8 @@ import java.net.InetAddress;
 
 import com.google.common.net.InternetDomainName;
 
+import com.brightcove.johnny.http.Urls;
+
 /**
  * The host component of a URL (e.g. "example.com" or an IP address.)
  *
@@ -45,5 +47,29 @@ public class Host {
     /** Return IP address if {@link #isIp()} is true, else null */
     public InetAddress getIp() {
         return ip;
+    }
+
+    @Override
+    public String toString() {
+        return Urls.DEFAULT_HOST_ENCODER.unparse(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Host)) {
+            return false;
+        }
+        Host other = (Host) o;
+        return isDomain() ? other.isDomain() && getDomain().equals(other.getDomain())
+                          : getIp().equals(other.getIp());
+    }
+
+    @Override
+    public int hashCode() {
+        if (isDomain()) {
+            return getDomain().hashCode();
+        } else {
+            return getIp().hashCode();
+        }
     }
 }

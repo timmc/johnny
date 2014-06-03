@@ -3,6 +3,7 @@ package com.brightcove.johnny.http;
 import java.net.MalformedURLException;
 
 import com.brightcove.johnny.parts.BasicQueryEncoder;
+import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
 import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.PathEncoder;
@@ -26,6 +27,7 @@ public class Urls {
     public static final UrlParser DEFAULT_URL_PARSER = new JNUriParser();
     public static final UrlEncoder DEFAULT_URL_ENCODER = new UrlEncoder();
     public static final HostParser DEFAULT_HOST_PARSER = new StrictHostParser();
+    public static final HostEncoder DEFAULT_HOST_ENCODER = new HostEncoder();
     public static final PathParser DEFAULT_PATH_PARSER = new StdPathParser();
     public static final Path DEFAULT_EMPTY_PATH = StdPath.EMPTY;
     public static final PathEncoder DEFAULT_PATH_ENCODER = new PathEncoder();
