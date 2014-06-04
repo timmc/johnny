@@ -68,6 +68,8 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Expansion to other kinds of URIs.
 - Relative URLs
 - StringBuilder-backed impls (store offsets for fast getters)
+- Parsing of paths and queries based on templates,
+  e.g. `"/video/{id}/sources;limit={?limit}"`
 
 ### Component processing
 
