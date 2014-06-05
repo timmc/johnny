@@ -36,6 +36,7 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ## TODO
 
+- Correctly round-trip absolute domain names
 - Steal tests from other URL libs
 - getHost vs. getHostRaw? (IPv6 with zone can require encoding)
 - Make Suites of parser, manipulators, and encoders
@@ -49,8 +50,9 @@ johnny is managed with the [Leiningen][lein] build tool.
         - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
             - Fast lookup of values, in order
     - Could also have index on values
-- Split out encoding methods from Urls.java into Encoders
 - Equality & comparators (see RFC 3986 section 6)
+- File path parser (drop empty segments including final; treat
+  semicolons as non-delimiters)
 - Cloning
 - Roundtripping of encoding decisions. May want to preserve:
     - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
