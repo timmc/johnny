@@ -42,21 +42,21 @@ johnny is managed with the [Leiningen][lein] build tool.
   - Order-preserving query suite
   - Conservative encoding suite
 - Efficient persistent ordered Query
-  - Two fields:
-    - PersistentVector of Map.Entry holding key-value pairs or nulls
-      - When a pair is deleted, null it out (preserve indexes)
-      - When a pair is modified, overwrite it
-    - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
-      - Fast lookup of values, in order
-  - Could also have index on values
+    - Two fields:
+        - PersistentVector of Map.Entry holding key-value pairs or nulls
+            - When a pair is deleted, null it out (preserve indexes)
+            - When a pair is modified, overwrite it
+        - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
+            - Fast lookup of values, in order
+    - Could also have index on values
 - Split out encoding methods from Urls.java into Encoders
 - Equality & comparators (see RFC 3986 section 6)
 - Cloning
 - Roundtripping of encoding decisions. May want to preserve:
-  - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
-    uppercase
-  - Encoding of optionally-encoded chars (e.g. `?` in query)
-  - Empty query components (e.g. `&&`)
+    - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
+      uppercase
+    - Encoding of optionally-encoded chars (e.g. `?` in query)
+    - Empty query components (e.g. `&&`)
 - Ensure GC hygiene re: substrings (an Url impl might hand back
   substrings that hold reference to their (larger) parent strings)
 - Harden query impls against HashDoS attack
@@ -77,12 +77,12 @@ johnny is managed with the [Leiningen][lein] build tool.
 Parse and manipulate components:
 
 - path (/-delimited)
-  - collapsing of /./ segments (RFC 3986)
-  - relative URI resolution (RFC 3986)
+    - collapsing of /./ segments (RFC 3986)
+    - relative URI resolution (RFC 3986)
 - querystring
-  - &-delimited or ;-delimited
-  - keep or collapse duplicate keys
-  - FormEncoded utility
+    - &-delimited or ;-delimited
+    - keep or collapse duplicate keys
+    - FormEncoded utility
 - User portion
 - Hostname portion
 - Lambda support for any of the above: `withQueryChange(...lambda...)`
@@ -90,14 +90,14 @@ Parse and manipulate components:
 ### Variations
 
 - Encoding options:
-  - Minimal (default)
-  - conservative
-  - always/only encode provided chars (BitSet is mutable, but
-  BigInteger isn't...)
-  - only encode provided char sets for each URL component
-  - application/x-www-form-encoded variation (use + instead
-    of %20)
-  - '#' unencoded in fragment (may cause problems with some bad parsers)
+    - Minimal (default)
+    - conservative
+    - always/only encode provided chars (BitSet is mutable, but
+      BigInteger isn't...)
+    - only encode provided char sets for each URL component
+    - application/x-www-form-encoded variation (use + instead
+      of %20)
+    - '#' unencoded in fragment (may cause problems with some bad parsers)
 - Charset options: Decode from non-UTF-8, encode to non-UTF-8 (do we
   even want to allow this?)
 - WebUrl#reEncode: Decode and then encode with various options

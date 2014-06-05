@@ -13,7 +13,7 @@ public class StrictHostParser implements HostParser {
     public Host parse(String hostRaw) {
         String host = Codecs.percentDecode(hostRaw);
         boolean isBracketed = host.startsWith("[") && host.endsWith("]");
-        // Assume a dotted-quad is an IPv4 address and not a domain with a numeric TLD.
+        // Assume a dotted-quad is an IPv4 address and not a domain with a numeric TLD. (RFC 3986 §3.2.2)
         if (InetAddresses.isUriInetAddress(host)) {
             InetAddress ip = InetAddresses.forUriString(host);
             if (ip instanceof Inet6Address && !isBracketed) {
