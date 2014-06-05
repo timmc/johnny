@@ -6,17 +6,21 @@ import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
+import com.brightcove.johnny.parts.UserInfoParser;
 import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.PathEncoder;
 import com.brightcove.johnny.parts.PathParser;
 import com.brightcove.johnny.parts.StdPathParser;
 import com.brightcove.johnny.parts.StdPath;
+import com.brightcove.johnny.parts.StdUserInfoEncoder;
 import com.brightcove.johnny.parts.StrictHostParser;
 import com.brightcove.johnny.parts.NullIsEmptyQueryParser;
 import com.brightcove.johnny.parts.PersistentOrderedParams;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryEncoder;
 import com.brightcove.johnny.parts.QueryParser;
+import com.brightcove.johnny.parts.UserInfoEncoder;
+import com.brightcove.johnny.parts.StdUserInfoParser;
 
 
 /**
@@ -32,6 +36,8 @@ public class Urls {
     public static final UrlParser DEFAULT_URL_PARSER = new JNUriParser();
     public static final Class<? extends Url> DEFAULT_URL_REP = ImmutableUrl.class;
     public static final UrlEncoder DEFAULT_URL_ENCODER = new UrlEncoder();
+    public static final UserInfoParser DEFAULT_USERINFO_PARSER = new StdUserInfoParser();
+    public static final UserInfoEncoder DEFAULT_USERINFO_ENCODER = new StdUserInfoEncoder();
     public static final HostParser DEFAULT_HOST_PARSER = new StrictHostParser();
     public static final HostEncoder DEFAULT_HOST_ENCODER = new HostEncoder();
     public static final PathParser DEFAULT_PATH_PARSER = new StdPathParser();

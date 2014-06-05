@@ -8,6 +8,7 @@ import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
+import com.brightcove.johnny.parts.UserInfo;
 
 /**
  * A base class for manipulating piecemeal URLs with a chaining API.
@@ -39,6 +40,23 @@ public abstract class Url {
      */
     public String unparse() {
         return Urls.DEFAULT_URL_ENCODER.encode(this);
+    }
+
+    /**
+     * Parse user information component as a {@link UserInfo} object, if present.
+     * @return User info, or null if missing.
+     */
+    public UserInfo getUserInfo() {
+        String raw = getUserInfoRaw();
+        return raw == null ? null : Urls.DEFAULT_USERINFO_PARSER.parse(raw);
+    }
+
+    /**
+     * Set raw userinfo by encoding provided userinfo with standard userinfo encoder.
+     * @param userInfo Nullable
+     */
+    public Url withUserInfo(UserInfo userInfo) {
+        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_USERINFO_ENCODER.unparse(userInfo));
     }
 
     /**
