@@ -36,6 +36,9 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ## TODO
 
+- Accept suites or suite elements in parser and encoder methods.
+    - Or even allow embedding of CodecSuite instances into Url and
+      other objects?
 - Correctly round-trip absolute domain names
 - Steal tests from other URL libs
 - getHost vs. getHostRaw? (IPv6 with zone can require encoding)

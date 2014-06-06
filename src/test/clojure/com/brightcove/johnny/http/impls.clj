@@ -31,17 +31,17 @@
 ;; The defaults manips are the empty instances, except for URL (which
 ;; does not yet support empty instances.)
 
-(def default-url-parser Urls/DEFAULT_URL_PARSER)
-(def default-url-manip ImmutableUrl)
-(def default-url-encode Urls/DEFAULT_URL_ENCODER)
+(def default-url-parser (.urlParser Urls/DEFAULT_CODECS))
+(def default-url-manip (.urlRepresentation Urls/DEFAULT_CODECS))
+(def default-url-encode (.urlEncoder Urls/DEFAULT_CODECS))
 
-(def default-path-parser Urls/DEFAULT_PATH_PARSER)
-(def default-path-inst Urls/DEFAULT_EMPTY_PATH)
-(def default-path-encode Urls/DEFAULT_PATH_ENCODER)
+(def default-path-parser (.pathParser Urls/DEFAULT_CODECS))
+(def default-path-inst (.emptyPath Urls/DEFAULT_CODECS))
+(def default-path-encode (.pathEncoder Urls/DEFAULT_CODECS))
 
-(def default-q-parser Urls/DEFAULT_QUERY_PARSER)
-(def default-q-inst Urls/DEFAULT_EMPTY_PARAMS)
-(def default-q-encode Urls/DEFAULT_QUERY_ENCODER)
+(def default-q-parser (.queryParser Urls/DEFAULT_CODECS))
+(def default-q-inst (.emptyParams Urls/DEFAULT_CODECS))
+(def default-q-encode (.queryEncoder Urls/DEFAULT_CODECS))
 
 ;;;; Bindings for current preferred implementation
 

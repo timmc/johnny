@@ -36,7 +36,7 @@ public class UserInfo {
      */
     @Override
     public String toString() {
-        return Urls.DEFAULT_USERINFO_ENCODER.unparse(this);
+        return Urls.DEFAULT_CODECS.userInfoEncoder.unparse(this);
     }
 
     @Override

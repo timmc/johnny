@@ -51,7 +51,7 @@ public class Host {
 
     @Override
     public String toString() {
-        return Urls.DEFAULT_HOST_ENCODER.unparse(this);
+        return Urls.DEFAULT_CODECS.hostEncoder.unparse(this);
     }
 
     @Override

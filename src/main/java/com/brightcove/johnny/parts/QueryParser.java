@@ -3,14 +3,11 @@ package com.brightcove.johnny.parts;
 import java.util.Map;
 
 import com.brightcove.johnny.http.Url;
-import com.brightcove.johnny.http.Urls;
 
 /**
  * A parser for query components that are composed of keys and optional
  * values. Implementations may handle repeated keys and null values as
  * they wish.
- *
- * @see Urls#DEFAULT_QUERY_PARSER
  */
 public interface QueryParser {
     /**

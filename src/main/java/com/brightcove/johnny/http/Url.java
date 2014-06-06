@@ -39,7 +39,7 @@ public abstract class Url {
      * Convenience method to re-encode a URL.
      */
     public String unparse() {
-        return Urls.DEFAULT_URL_ENCODER.encode(this);
+        return Urls.DEFAULT_CODECS.urlEncoder.encode(this);
     }
 
     /**
@@ -48,7 +48,7 @@ public abstract class Url {
      */
     public UserInfo getUserInfo() {
         String raw = getUserInfoRaw();
-        return raw == null ? null : Urls.DEFAULT_USERINFO_PARSER.parse(raw);
+        return raw == null ? null : Urls.DEFAULT_CODECS.userInfoParser.parse(raw);
     }
 
     /**
@@ -56,14 +56,14 @@ public abstract class Url {
      * @param userInfo Nullable
      */
     public Url withUserInfo(UserInfo userInfo) {
-        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_USERINFO_ENCODER.unparse(userInfo));
+        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoEncoder.unparse(userInfo));
     }
 
     /**
      * Get host decoded using standard parser.
      */
     public Host getHost() {
-        return Urls.DEFAULT_HOST_PARSER.parse(getHostRaw());
+        return Urls.DEFAULT_CODECS.hostParser.parse(getHostRaw());
     }
 
     /**
@@ -78,7 +78,7 @@ public abstract class Url {
      * @param path Nullable
      */
     public Url withPath(Path path) {
-        return withPathRaw(Urls.DEFAULT_PATH_ENCODER.unparse(path));
+        return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path));
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class Url {
      * @param q Possibly null Query
      */
     public Url withQuery(Params q) {
-        return withQueryRaw(Urls.DEFAULT_QUERY_ENCODER.unparse(q));
+        return withQueryRaw(Urls.DEFAULT_CODECS.queryEncoder.unparse(q));
     }
 
     /**

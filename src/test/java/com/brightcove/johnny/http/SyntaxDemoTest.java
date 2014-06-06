@@ -56,7 +56,7 @@ public class SyntaxDemoTest {
     @Test
     public void testQSAlt() throws MalformedURLException {
         Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
-        Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(orig.getQueryRaw()));
+        Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_CODECS.queryParser.parse(orig.getQueryRaw()));
         mutable = mutable.append("foo", "bar").replace("a", null);
         assertTrue(Arrays.<String>asList(
                 "http://brightcove.com/login?foo=bar&a",

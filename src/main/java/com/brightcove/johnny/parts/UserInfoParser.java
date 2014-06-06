@@ -1,12 +1,9 @@
 package com.brightcove.johnny.parts;
 
 import com.brightcove.johnny.http.Url;
-import com.brightcove.johnny.http.Urls;
 
 /**
  * Parser for the userinfo component of a URL.
- *
- * @see Urls#DEFAULT_USERINFO_PARSER
  */
 public interface UserInfoParser {
     /**

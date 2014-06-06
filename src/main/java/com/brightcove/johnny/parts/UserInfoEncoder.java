@@ -1,12 +1,8 @@
 package com.brightcove.johnny.parts;
 
-import com.brightcove.johnny.http.Urls;
-
 /**
  * Userinfo encoder. Implementations are free to choose character sets and
  * reserved characters.
- *
- * @see Urls#DEFAULT_USERINFO_ENCODER
  */
 public interface UserInfoEncoder {
     /**

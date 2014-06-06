@@ -35,7 +35,7 @@ public class StdPathParser implements PathParser {
                 rawText = piece.substring(0, firstSemi);
                 rawParams = piece.substring(firstSemi + 1);
             }
-            Params params = Urls.DEFAULT_EMPTY_PARAMS;
+            Params params = Urls.DEFAULT_CODECS.emptyParams;
             if (!rawParams.isEmpty()) {
                 params = params.appendAll(paramParser.parse(rawParams));
             }

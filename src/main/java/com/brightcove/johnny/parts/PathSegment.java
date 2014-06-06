@@ -21,7 +21,7 @@ public class PathSegment {
      * @param text Non-null, may be empty.
      */
     public PathSegment(String text) {
-        this(text, Urls.DEFAULT_EMPTY_PARAMS);
+        this(text, Urls.DEFAULT_CODECS.emptyParams);
     }
 
     /**
@@ -52,7 +52,7 @@ public class PathSegment {
 
     @Override
     public String toString() {
-        return Urls.DEFAULT_PATH_ENCODER.unparseSegment(this);
+        return Urls.DEFAULT_CODECS.pathEncoder.unparseSegment(this);
     }
 
     @Override

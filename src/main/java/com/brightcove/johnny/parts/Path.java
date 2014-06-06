@@ -44,7 +44,7 @@ public abstract class Path {
      * @param rawPath Raw path component, to be parsed and appended.
      */
     public Path addRawPath(String rawPath) {
-        return addSegments(Urls.DEFAULT_PATH_PARSER.parse(rawPath));
+        return addSegments(Urls.DEFAULT_CODECS.pathParser.parse(rawPath));
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class Path {
 
     @Override
     public String toString() {
-        return Urls.DEFAULT_PATH_ENCODER.unparse(this);
+        return Urls.DEFAULT_CODECS.pathEncoder.unparse(this);
     }
 
     @Override

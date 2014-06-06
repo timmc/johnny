@@ -4,8 +4,16 @@
   (:import com.brightcove.johnny.http.Urls
            (com.brightcove.johnny.parts UserInfo)))
 
+(defn default-parse
+  [s]
+  (.parse (.userInfoParser Urls/DEFAULT_CODECS) s))
+
+(defn default-encode
+  [s]
+  (.unparse (.userInfoEncoder Urls/DEFAULT_CODECS) s))
+
 (deftest parsing
-  (let [parse (fn [raw] (let [ui (.parse Urls/DEFAULT_USERINFO_PARSER raw)]
+  (let [parse (fn [raw] (let [ui (default-parse raw)]
                           [(.user ui) (.password ui)]))]
     (are [in out] (= (parse in) out)
          "" ["" nil]
@@ -17,7 +25,7 @@
 
 (deftest encoding
   (let [encode (fn [[u p]] (let [ui (UserInfo. u p)]
-                             (.unparse Urls/DEFAULT_USERINFO_ENCODER ui)))]
+                             (default-encode ui)))]
     (are [in out] (= (encode in) out)
          ["" nil] ""
          ["" ""] ":"
@@ -27,12 +35,12 @@
          ["\u096e" "\u096f"] "%E0%A5%AE:%E0%A5%AF")))
 
 (deftest object-overrides
-  (let [up-a1 (.parse Urls/DEFAULT_USERINFO_PARSER "a:b")
-        up-a2 (.parse Urls/DEFAULT_USERINFO_PARSER "a:b")
-        up-b (.parse Urls/DEFAULT_USERINFO_PARSER "c:d")
-        u-a1 (.parse Urls/DEFAULT_USERINFO_PARSER "a")
-        u-a2 (.parse Urls/DEFAULT_USERINFO_PARSER "a")
-        u-b (.parse Urls/DEFAULT_USERINFO_PARSER "c")]
+  (let [up-a1 (default-parse "a:b")
+        up-a2 (default-parse "a:b")
+        up-b (default-parse "c:d")
+        u-a1 (default-parse "a")
+        u-a2 (default-parse "a")
+        u-b (default-parse "c")]
     (testing "equality"
       (testing "segregated by password nil/not nil"
         (is (= up-a1 up-a2))
