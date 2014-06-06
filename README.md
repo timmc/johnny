@@ -29,6 +29,17 @@ point.
 
 ## Why use johnny
 
+Correct handling of Unicode in domain names:
+
+```java
+// URI silently fails to decode port when it doesn't understand the host:
+new java.net.URI("http://example.網絡.cn:8080/").getPort(); //= -1
+// Johnny can handle unicode hostnames...
+Urls.parse("http://example.網絡.cn:8080/").getPort(); //= 8080
+// ...and will throw if the hostname is not valid:
+(Urls/parse "http://valid_in_dns.but_not_as_host/") //! MalformedURLException Could not parse host from authority section of URI
+```
+
 Correct decoding of query components:
 
 ```java

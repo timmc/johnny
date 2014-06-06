@@ -5,7 +5,7 @@ import com.google.common.net.InetAddresses;
 public class HostEncoder {
     public String unparse(Host host) {
         if (host.isDomain()) {
-            return host.getDomain().name(); // TODO: Encode unicode?
+            return host.getDomain().name();
         } else {
             return InetAddresses.toUriString(host.getIp());
         }

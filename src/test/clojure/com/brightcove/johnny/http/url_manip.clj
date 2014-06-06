@@ -63,6 +63,12 @@
      (testing "equals is at least string equality"
        (is (.equals ecom ecom))
        (is (not (.equals ecom enet))))
+     (testing "equals ignores empty path variation"
+       (is (.equals (Urls/parse "http://localhost/")
+                    (Urls/parse "http://localhost"))))
+     (testing "equals ignores encoding variation"
+       (is (.equals (Urls/parse "HTTP://LOCALHOST/%2B")
+                    (Urls/parse "http://localhost/%2b"))))
      (testing "equals can handle minimal URLs"
        (is (.equals minimal minimal)))
      (testing "hashcode is consistent"

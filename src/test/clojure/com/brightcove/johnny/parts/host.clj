@@ -56,6 +56,7 @@
          "[::1]" :ip
          "::1" :inv
          "[::1" :inv
+         "[192.168.1.115]" :inv
          #_ (comment ;; TODO: zone IDs (Guava's InetAddresses lacks support)
               "[0:4::1%25eth0]" :ip
               "[0:4::1%eth0]" :inv))))

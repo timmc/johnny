@@ -66,6 +66,10 @@ public abstract class Url {
         return Urls.DEFAULT_HOST_PARSER.parse(getHostRaw());
     }
 
+    public Url withHost(Host host) {
+        return withHostRaw(Urls.DEFAULT_HOST_ENCODER.unparse(host));
+    }
+
     /**
      * Parse and return the path component.
      */
