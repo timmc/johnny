@@ -41,6 +41,7 @@ johnny is managed with the [Leiningen][lein] build tool.
       other objects?
 - Correctly round-trip absolute domain names
 - Steal tests from other URL libs
+- Add fuzz tests
 - getHost vs. getHostRaw? (IPv6 with zone can require encoding)
 - Make Suites of parser, manipulators, and encoders
   - Order-preserving query suite
@@ -74,8 +75,9 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Expansion to other kinds of URIs.
 - Relative URLs
 - StringBuilder-backed impls (store offsets for fast getters)
-- Parsing of paths and queries based on templates,
+- Parsing/matching of paths and queries based on templates,
   e.g. `"/video/{id}/sources;limit={?limit}"`
+  (remember to match across encoding, e.g. `%61` matches `a`)
 
 ### Component processing
 

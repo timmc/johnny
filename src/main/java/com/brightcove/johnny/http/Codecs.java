@@ -13,7 +13,7 @@ public class Codecs {
 
     /**
      * Naïvely decode a percent-encoded string. This is generally not safe
-     * to perform on a path, query, or user info component, since it may
+     * to perform on an entire path, query, or user info component, since it may
      * expose spurious delimiters. For example, using this to decode the path
      * <code>/one%2Fpart</code> will produce <code>/one/part</code>, which is
      * certainly not correct. Instead, use a component-specific decoder.
