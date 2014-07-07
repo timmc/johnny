@@ -134,22 +134,22 @@ public interface Params {
     //TODO: Replace these with annotations?
 
     /**
-     * @return true iff this implementation preserves repeated keys
+     * @return true only if this implementation preserves repeated keys
      */
     public boolean implPreservesRepeatedKeys();
 
     /**
-     * @return true iff this implementation preserves the order of values of each key
+     * @return true only if this implementation preserves the order of values of each key
      */
     public boolean implPreservesValueOrderPerKey();
 
     /**
-     * @return true iff this implementation preserves absolute order of key-value pairs
+     * @return true only if this implementation preserves absolute order of key-value pairs
      */
     public boolean implPreservesPairOrder();
 
     /**
-     * @return true iff this implementation is immutable
+     * @return true only if this implementation is immutable
      */
     public boolean implImmutable();
 }
