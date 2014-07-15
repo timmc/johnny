@@ -8,6 +8,10 @@ import com.google.common.net.InternetDomainName;
 
 import com.brightcove.johnny.http.Codecs;
 
+/**
+ * Host parser that is generally more restrictive, e.g. not allowing IPv6 hosts without brackets.
+ * TODO: Characterize strictness.
+ */
 public class StrictHostParser implements HostParser {
 
     public Host parse(String hostRaw) {
