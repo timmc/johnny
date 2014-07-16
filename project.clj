@@ -8,6 +8,8 @@
   :source-paths []
   :test-paths ["src/test/clojure"]
   ;; We have a tiny bit of Java for testing
-  :profiles {:dev {:dependencies [[junit/junit "4.11"]]}}
+  :profiles {:dev {:dependencies [[junit/junit "4.11"]
+                                  [org.timmc/handy "1.6.0"]
+                                  [org.clojure/test.check "0.5.8"]]}}
   :plugins [[lein-junit "1.1.6"]]
   :junit ["src/test/java"])
