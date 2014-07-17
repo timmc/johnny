@@ -47,20 +47,6 @@ public class Codecs {
     }
 
     /**
-     * Minimally encode username portion of HTTP URL.
-     */
-    public static String encodeUsername(String username) {
-        return naivePercentEncode(username); //FIXME use minimal encoder
-    }
-
-    /**
-     * Minimally encode password portion of HTTP URL.
-     */
-    public static String encodePassword(String password) {
-        return naivePercentEncode(password); //FIXME use minimal encoder
-    }
-
-    /**
      * Minimally encode path portion of HTTP URL.
      */
     public static String encodePathSegment(String pathSegment) {
