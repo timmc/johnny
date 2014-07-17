@@ -43,8 +43,6 @@ johnny is managed with the [Leiningen][lein] build tool.
     - Or even allow embedding of CodecSuite instances into Url and
       other objects?
 - Correctly round-trip absolute domain names
-- Steal tests from other URL libs
-- Add fuzz tests/generative tests
 - getHost vs. getHostRaw? (IPv6 with zone can require encoding)
 - Make Suites of parser, manipulators, and encoders
   - Order-preserving query suite
@@ -70,9 +68,14 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Ensure GC hygiene re: substrings (an Url impl might hand back
   substrings that hold reference to their (larger) parent strings)
 - Harden query impls against HashDoS attack
+
+### Tests
+
+- Steal tests from other URL libs
+- Add fuzz tests/generative tests
 - Test that `;` is escaped in at least one query encoder
 
-## Features to add
+### Features
 
 - Use of File as path (encode segments to avoid production of matrix
   params)
