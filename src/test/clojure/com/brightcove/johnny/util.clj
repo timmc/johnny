@@ -1,4 +1,5 @@
 (ns com.brightcove.johnny.util
+  "Utilities for testing."
   (:require [clojure.test :as test]))
 
 (def url-getters

@@ -86,7 +86,7 @@
        ""       e
        "\u0000" (.set e 0)
        ;; TODO: Test surrogate pairs, or leave unspecified?
-       " ℠"     (-> e (.set 16r20) (.set 16r2120))))
+       " ℠"     (-> e (.set 0x20) (.set 0x2120))))
 
 (defn char-range-i
   "Inclusive range of char codes."
