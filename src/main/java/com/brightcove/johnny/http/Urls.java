@@ -6,7 +6,7 @@ import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PathEncoder;
+import com.brightcove.johnny.parts.PluggablePathEncoder;
 import com.brightcove.johnny.parts.StdPathParser;
 import com.brightcove.johnny.parts.StdPath;
 import com.brightcove.johnny.parts.PluggableUserInfoEncoder;
@@ -38,7 +38,7 @@ public class Urls {
             new HostEncoder(),
             new StdPathParser(),
             StdPath.EMPTY,
-            new PathEncoder(),
+            PluggablePathEncoder.INSTANCE,
             new NullIsEmptyQueryParser(),
             PersistentOrderedParams.EMPTY,
             new BasicQueryEncoder());

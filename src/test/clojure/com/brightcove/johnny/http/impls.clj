@@ -5,7 +5,7 @@
             Url ImmutableUrl MutableUrl
             UrlEncoder))
   (:import (com.brightcove.johnny.parts
-            StdPathParser StdPath PathEncoder
+            StdPathParser StdPath PluggablePathEncoder
             NullableValueQueryParser NullIsEmptyQueryParser
             PersistentOrderedParams MutableMultimapParams
             PersistentMultimapParams
@@ -21,7 +21,7 @@
 
 (def path-parse-impls #{(StdPathParser.)})
 (def path-manip-impls #{StdPath})
-(def path-encode-impls #{(PathEncoder.)})
+(def path-encode-impls #{(PluggablePathEncoder.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
 (def q-manip-impls #{PersistentOrderedParams MutableMultimapParams

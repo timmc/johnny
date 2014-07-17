@@ -2,9 +2,9 @@ package com.brightcove.johnny.http;
 
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
+import com.brightcove.johnny.parts.PathEncoder;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PathEncoder;
 import com.brightcove.johnny.parts.PathParser;
 import com.brightcove.johnny.parts.QueryEncoder;
 import com.brightcove.johnny.parts.QueryParser;

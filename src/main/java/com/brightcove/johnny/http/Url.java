@@ -68,6 +68,7 @@ public abstract class Url {
 
     /**
      * Parse and return the path component.
+     * @return Non-null
      */
     public Path getPath() {
         return Urls.parsePath(getPathRaw());
@@ -75,7 +76,7 @@ public abstract class Url {
 
     /**
      * Set raw path by encoding provided path with standard path encoder.
-     * @param path Nullable
+     * @param path Non-null
      */
     public Url withPath(Path path) {
         return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path));
@@ -217,7 +218,7 @@ public abstract class Url {
      * start with <code>/</code>. Not null.
      * To decode a path into segments and path parameters, use
      * {@link Path}. Do not simply percent-decode the raw path,
-     * as that may exposed encoded slashes.
+     * as that may expose encoded slashes.
      */
     //TODO: implement SimplePath and MatrixPath
     public abstract String getPathRaw();

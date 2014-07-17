@@ -84,6 +84,7 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ### Features
 
+- Compatibility: Support treating + as a space (opt-in)
 - Use of File as path (encode segments to avoid production of matrix
   params)
 - Expansion to other kinds of URIs.
