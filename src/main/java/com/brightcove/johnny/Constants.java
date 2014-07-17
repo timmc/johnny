@@ -37,4 +37,11 @@ public class Constants {
     public static final ImmutableBitSet RFC3986_RESERVED = RFC3986_GEN_DELIMS.or(RFC3986_SUB_DELIMS);
     /** Unreserved characters in RFC 3986 URIs. */
     public static final ImmutableBitSet RFC3986_UNRESERVED = ASCII_ALPHANUMERIC.or(BitSetUtils.fromChars("-._~"));
+    /**
+     * Characters allowed to be left unencoded in an RFC 3986 userinfo
+     * subcomponent. Includes ':', although that must be encoded in the
+     * username subcomponent to avoid ambiguity.
+     */
+    public static final ImmutableBitSet RFC3986_UNENCODED_USERINFO = RFC3986_UNRESERVED.or(RFC3986_SUB_DELIMS).or(BitSetUtils.fromChars(":"));
+
 }

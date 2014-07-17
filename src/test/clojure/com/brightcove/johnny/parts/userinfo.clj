@@ -1,16 +1,17 @@
 (ns com.brightcove.johnny.parts.userinfo
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
-  (:import com.brightcove.johnny.http.Urls
-           (com.brightcove.johnny.parts UserInfo)))
+  (:import (com.brightcove.johnny Constants StringEncoder)
+           com.brightcove.johnny.http.Urls
+           (com.brightcove.johnny.parts UserInfo PluggableUserInfoEncoder)))
 
 (defn default-parse
   [s]
   (.parse (.userInfoParser Urls/DEFAULT_CODECS) s))
 
 (defn default-encode
-  [s]
-  (.unparse (.userInfoEncoder Urls/DEFAULT_CODECS) s))
+  [ui]
+  (.unparse (.userInfoEncoder Urls/DEFAULT_CODECS) ui))
 
 (deftest parsing
   (let [parse (fn [raw] (let [ui (default-parse raw)]
@@ -29,10 +30,33 @@
     (are [in out] (= (encode in) out)
          ["" nil] ""
          ["" ""] ":"
-         ;; TODO Test for minimal encoding ["" ":::"] "::::"
+         ["" ":::"] "::::"
          ["%" nil] "%25"
-         ;; TODO more minimality tests ["ab:cd" "ef:gh:ij"] "ab%3Acd:ef:gh:ij"
-         ["\u096e" "\u096f"] "%E0%A5%AE:%E0%A5%AF")))
+         ["ab:cd" "ef:gh:ij"] "ab%3Acd:ef:gh:ij"
+         ["\u096e" "\u096f"] "%E0%A5%AE:%E0%A5%AF")
+    (testing "minimality"
+      (let [interesting (map char
+                             (iterator-seq
+                              (.iterator
+                               (.andNot Constants/ASCII
+                                        Constants/ASCII_ALPHANUMERIC))))]
+        (testing "username"
+          (is (= (set (remove #(.contains (encode [(str %) ""]) "%")
+                              interesting))
+                 (set "-._~!$&'()*+,;="))))
+        (testing "password (adds colon)"
+          (is (= (set (remove #(.contains (encode ["" (str %)]) "%")
+                              interesting))
+                 (set "-._~!$&'()*+,;=:")))))))
+  (testing "alt encoders"
+    (let [bad (reify StringEncoder
+                (encode [_this s] "_"))]
+      (is (= (.unparse (PluggableUserInfoEncoder. bad bad)
+                       (UserInfo. "123" "abc"))
+             "_:_"))))
+  (testing "null rejection"
+    (is (thrown? NullPointerException
+                 (default-encode nil)))))
 
 (deftest object-overrides
   (let [up-a1 (default-parse "a:b")

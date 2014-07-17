@@ -9,7 +9,7 @@ import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.PathEncoder;
 import com.brightcove.johnny.parts.StdPathParser;
 import com.brightcove.johnny.parts.StdPath;
-import com.brightcove.johnny.parts.StdUserInfoEncoder;
+import com.brightcove.johnny.parts.PluggableUserInfoEncoder;
 import com.brightcove.johnny.parts.StrictHostParser;
 import com.brightcove.johnny.parts.NullIsEmptyQueryParser;
 import com.brightcove.johnny.parts.PersistentOrderedParams;
@@ -33,7 +33,7 @@ public class Urls {
             ImmutableUrl.class,
             new UrlEncoder(),
             new StdUserInfoParser(),
-            new StdUserInfoEncoder(),
+            PluggableUserInfoEncoder.INSTANCE,
             new StrictHostParser(),
             new HostEncoder(),
             new StdPathParser(),
