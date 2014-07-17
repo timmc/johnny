@@ -8,6 +8,10 @@ import com.brightcove.johnny.http.Url;
  * A parser for query components that are composed of keys and optional
  * values. Implementations may handle repeated keys and null values as
  * they wish.
+ * <p>
+ * <strong>Warning:</strong>: Do not use this for parsing POST bodies of
+ * HTTP requests! <code>application/x-www-form-urlencoded</code> uses a
+ * slightly different encoding, specifically around the "+" character.
  */
 public interface QueryParser {
     /**

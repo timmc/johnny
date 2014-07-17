@@ -74,6 +74,13 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Steal tests from other URL libs
 - Add fuzz tests/generative tests
 - Test that `;` is escaped in at least one query encoder
+- Test that NPE is thrown whereever null is not accepted
+
+### Documentation
+
+- Strong warnings around not using Query encoders/decoders for parsing
+  `application/x-www-form-urlencoded` POST bodies. (Supply an
+  alternative.)
 
 ### Features
 

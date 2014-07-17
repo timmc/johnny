@@ -24,7 +24,7 @@ public class Codecs {
             return ""; // TODO Correct behavior?
         } else {
             try {
-                return URLDecoder.decode(part, "UTF-8");
+                return URLDecoder.decode(part.replace("+", "%2B"), "UTF-8");
             } catch (UnsupportedEncodingException uee) {
                 throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
             }
@@ -34,12 +34,13 @@ public class Codecs {
     /*== Encoders ==*/
 
     /** Naively percent-encode for inclusion in any portion of a URL. */
+    @Deprecated
     private static String naivePercentEncode(String part) {
         if (part == null) {
             return ""; // TODO Correct behavior?
         } else {
             try {
-                return URLEncoder.encode(part, "UTF-8");
+                return URLEncoder.encode(part, "UTF-8").replace("+", "%2B");
             } catch (UnsupportedEncodingException uee) {
                 throw new RuntimeException("Unexpected encoding exception: UTF-8 not available?");
             }
@@ -49,6 +50,7 @@ public class Codecs {
     /**
      * Minimally encode path portion of HTTP URL.
      */
+    @Deprecated
     public static String encodePathSegment(String pathSegment) {
         return naivePercentEncode(pathSegment); //FIXME use minimal encoder
     }
@@ -56,6 +58,7 @@ public class Codecs {
     /**
      * Minimally encode path parameter key for an HTTP URL.
      */
+    @Deprecated
     public static String encodePathParamKey(String pathParamKey) {
         return naivePercentEncode(pathParamKey); //FIXME use minimal encoder
     }
@@ -63,6 +66,7 @@ public class Codecs {
     /**
      * Minimally encode path parameter value for an HTTP URL.
      */
+    @Deprecated
     public static String encodePathParamValue(String pathParamValue) {
         return naivePercentEncode(pathParamValue); //FIXME use minimal encoder
     }
@@ -70,6 +74,7 @@ public class Codecs {
     /**
      * Minimally encode query parameter key for an HTTP URL.
      */
+    @Deprecated
     public static String encodeQueryKey(String queryKey) {
         return naivePercentEncode(queryKey); //FIXME use minimal encoder
     }
@@ -77,6 +82,7 @@ public class Codecs {
     /**
      * Minimally encode query parameter value for an HTTP URL.
      */
+    @Deprecated
     public static String encodeQueryValue(String queryValue) {
         return naivePercentEncode(queryValue); //FIXME use minimal encoder
     }
@@ -84,6 +90,7 @@ public class Codecs {
     /**
      * Minimally encode fragment portion of HTTP URL.
      */
+    @Deprecated
     public static String encodeFragment(String fragment) {
         return naivePercentEncode(fragment); //FIXME use minimal encoder
     }
