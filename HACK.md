@@ -12,8 +12,10 @@ tests.
 
 johnny is managed with the [Leiningen][lein] build tool.
 
-- Build: `lein do clean, deps, javac`
-- Test: `lein test`
+- Build: `lein do clean, deps, javac` (not usually necessary, but if
+  you encounter surprising behavior during tests, you may want to do
+  this clean rebuild)
+- Test: `lein test` (should incrementally recompile)
 - Package: `lein do pom, jar`
 - Enter an interactive Clojure session, `lein repl`
 
@@ -25,7 +27,8 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Allow parsing/construction without validation
 - Use immutable data structures, ideally persistent (that means
   structure-sharing, not persisted-to-disk!)
-- UTF-8 always
+- UTF-8 always (but provide facilities to allow users to introduce
+  other encodings)
 
 ## Pending design decisions
 
@@ -41,7 +44,7 @@ johnny is managed with the [Leiningen][lein] build tool.
       other objects?
 - Correctly round-trip absolute domain names
 - Steal tests from other URL libs
-- Add fuzz tests
+- Add fuzz tests/generative tests
 - getHost vs. getHostRaw? (IPv6 with zone can require encoding)
 - Make Suites of parser, manipulators, and encoders
   - Order-preserving query suite
@@ -55,6 +58,7 @@ johnny is managed with the [Leiningen][lein] build tool.
             - Fast lookup of values, in order
     - Could also have index on values
 - Equality & comparators (see RFC 3986 section 6)
+- Normalizers (e.g. decode all unreserved chars)
 - File path parser (drop empty segments including final; treat
   semicolons as non-delimiters)
 - Cloning
@@ -73,7 +77,7 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Use of File as path (encode segments to avoid production of matrix
   params)
 - Expansion to other kinds of URIs.
-- Relative URLs
+    - or just support generic URI syntax
 - StringBuilder-backed impls (store offsets for fast getters)
 - Parsing/matching of paths and queries based on templates,
   e.g. `"/video/{id}/sources;limit={?limit}"`
@@ -85,7 +89,7 @@ Parse and manipulate components:
 
 - path (/-delimited)
     - collapsing of /./ segments (RFC 3986)
-    - relative URI resolution (RFC 3986)
+    - relative reference resolution (RFC 3986)
 - querystring
     - &-delimited or ;-delimited
     - keep or collapse duplicate keys
@@ -156,3 +160,21 @@ I have evaluated these and found them unuseful for this project:
 - Apache HttpCore & HttpClient
 - Urly (mostly the API choices)
 - https://github.com/mikaelhg/urlbuilder
+
+## Compliance
+
+### Unresolved questions
+
+What does this mean in RFC 3986?
+
+> All URI references are parsed by generic syntax parsers when used.
+> However, because hierarchical processing has no effect on an
+> absolute URI used in a reference unless it contains one or more
+> dot-segments (complete path segments of "." or "..", as described in
+> Section 3.3), URI scheme specifications can define opaque
+> identifiers by disallowing use of slash characters, question mark
+> characters, and the URIs "scheme:." and "scheme:..".
+
+Is it allowed to have unencoded "?" in the query component? §2.2
+implies no. Compliant impls should be able to parse it just fine, but
+maybe are not allowed to produce it.
