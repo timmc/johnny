@@ -1,7 +1,7 @@
 (ns com.brightcove.johnny.http.impls  
   (:import (com.brightcove.johnny.http
             Urls
-            UrlParser JNUrlParser JNUriParser
+            UrlParser JNUrlParser JNUriParser SchemeSpecificUriParser
             Url ImmutableUrl MutableUrl
             UrlEncoder))
   (:import (com.brightcove.johnny.parts
@@ -15,7 +15,8 @@
 
 ;; Parsers are listed by instance, manipulation impls by class.
 
-(def url-parse-impls #{(JNUrlParser.) (JNUriParser.)})
+(def url-parse-impls #{(JNUrlParser.) (JNUriParser.)
+                       (SchemeSpecificUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
 (def url-encode-impls #{(UrlEncoder.)})
 

@@ -3,7 +3,7 @@ package com.brightcove.johnny.parts;
 import com.brightcove.johnny.http.Urls;
 
 /**
- * Represents a username/password pair from the userinfo component of a URL's
+ * Represents a username/password pair from the userinfo component of a URI's
  * authority section.
  */
 public class UserInfo {
