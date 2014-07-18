@@ -18,13 +18,13 @@ import com.brightcove.johnny.parts.UserInfo;
  * implementation class that relies on mutation. Client code should always use
  * a chaining technique, which will work with mutable versions as well:
  * <p>
- * <code>url.withProtocol("http").withHost("example.net").unparse()</code>
+ * <code>url.withScheme("http").withHost("example.net").unparse()</code>
  * <p>
  * Implementations SHOULD have the following:
  * <ul>
- *   <li>constructor <code>(String protocol, String host)</code></li>
+ *   <li>constructor <code>(String scheme, String host)</code></li>
  *   <li>factory method <code>from(String url, UrlParser parser)</code></li>
- *   <li>constructor <code>(String protocol, String userInfoRaw, String host,
+ *   <li>constructor <code>(String scheme, String userInfoRaw, String host,
  *       Integer port, String pathRaw, String queryRaw, String fragment)</code>
  *       </li>
  * </ul>
@@ -157,7 +157,7 @@ public abstract class Url {
             return false;
         }
         Url other = (Url) o;
-        return Util.equiv(getProtocol(), other.getProtocol()) &&
+        return Util.equiv(getScheme(), other.getScheme()) &&
                 Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
                 Util.equiv(getHost(), other.getHost()) &&
                 Util.equiv(getPort(), other.getPort()) &&
@@ -176,7 +176,7 @@ public abstract class Url {
         if (cachedHashCode != null) {
             return cachedHashCode;
         }
-        cachedHashCode = Util.hash(getProtocol()) + Util.hash(getUserInfoRaw()) +
+        cachedHashCode = Util.hash(getScheme()) + Util.hash(getUserInfoRaw()) +
                 Util.hash(getHostRaw()) + Util.hash(getPort()) +
                 Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragment());
         return cachedHashCode;
@@ -184,11 +184,11 @@ public abstract class Url {
 
     /*== Accessors ==*/
 
-    /** Protocol (scheme) of URL: http or https. Not null. */
-    public abstract String getProtocol();
+    /** Scheme of URL: http or https. Not null. */
+    public abstract String getScheme();
 
-    /** See {@link #getProtocol()}. */
-    public abstract Url withProtocol(String protocol);
+    /** See {@link #getScheme()}. */
+    public abstract Url withScheme(String scheme);
 
     /**
      * Undecoded user info of URL, excluding "@" separator. Nullable.

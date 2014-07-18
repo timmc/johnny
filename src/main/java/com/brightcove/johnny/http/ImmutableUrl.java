@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
  * are created in.
  */
 public class ImmutableUrl extends Url {
-    private final String protocol;
+    private final String scheme;
     private final String userInfoRaw;
     private final String hostRaw;
     private final Integer port;
@@ -20,7 +20,7 @@ public class ImmutableUrl extends Url {
      * Create a URL piecewise, with no validation. See accessors for
      * allowable values; parameters are here only described as nullable
      * or not.
-     * @param protocol Non-null
+     * @param scheme Non-null
      * @param userInfoRaw Nullable
      * @param hostRaw Non-null
      * @param port Nullable
@@ -28,10 +28,10 @@ public class ImmutableUrl extends Url {
      * @param queryRaw Nullable
      * @param fragment Nullable
      */
-    public ImmutableUrl(String protocol, String userInfoRaw, String hostRaw,
+    public ImmutableUrl(String scheme, String userInfoRaw, String hostRaw,
                         Integer port, String pathRaw, String queryRaw,
                         String fragment) {
-        this.protocol = protocol;
+        this.scheme = scheme;
         this.userInfoRaw = userInfoRaw;
         this.hostRaw = hostRaw;
         this.port = port;
@@ -45,8 +45,8 @@ public class ImmutableUrl extends Url {
      * validation. See accessors for allowable values. No parameters may
      * by null.
      */
-    public ImmutableUrl(String protocol, String hostRaw) {
-        this(protocol, null, hostRaw, null, "", null, null);
+    public ImmutableUrl(String scheme, String hostRaw) {
+        this(scheme, null, hostRaw, null, "", null, null);
     }
 
     /** Parse a string as a URL and extract the fields. */
@@ -57,45 +57,45 @@ public class ImmutableUrl extends Url {
                 (String) args[5], (String) args[6]);
     }
 
-    public String getProtocol() { return protocol; }
+    public String getScheme() { return scheme; }
 
-    public ImmutableUrl withProtocol(String protocol) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+    public ImmutableUrl withScheme(String scheme) {
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public String getUserInfoRaw() { return userInfoRaw; }
 
     public ImmutableUrl withUserInfoRaw(String userInfoRaw) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public String getHostRaw() { return hostRaw; }
 
     public ImmutableUrl withHostRaw(String hostRaw) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public Integer getPort() { return port; }
 
     public ImmutableUrl withPort(Integer port) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public String getPathRaw() { return pathRaw; }
 
     public ImmutableUrl withPathRaw(String pathRaw) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public String getQueryRaw() { return queryRaw; }
 
     public ImmutableUrl withQueryRaw(String queryRaw) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 
     public String getFragment() { return fragment; }
 
     public ImmutableUrl withFragment(String fragment) {
-        return new ImmutableUrl(protocol, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
 }

@@ -7,7 +7,7 @@ public class UrlValidator {
 
     /** Validate {@link Url} constructor arguments by parts. */
     void validateAllParts(Object[] args) {
-        validateProtocol((String) args[0]);
+        validateScheme((String) args[0]);
         validateUserInfoRaw((String) args[1]);
         validateHostRaw((String) args[2]);
         validatePort((Integer) args[3]);
@@ -18,11 +18,11 @@ public class UrlValidator {
 
     /*== Validations for arguments. ==*/
 
-    void validateProtocol(String protocol) {
-        if (protocol == null) {
-            throw new IllegalArgumentException("protocol must not be null");
-        } else if (!protocol.equals("http") && !protocol.equals("https")) {
-            throw new IllegalArgumentException("protocol must be http or https"); //XXX -- true?
+    void validateScheme(String scheme) {
+        if (scheme == null) {
+            throw new IllegalArgumentException("scheme must not be null");
+        } else if (!scheme.equals("http") && !scheme.equals("https")) {
+            throw new IllegalArgumentException("scheme must be http or https"); //XXX -- true?
         }
     }
 

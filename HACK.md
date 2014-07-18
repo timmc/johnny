@@ -32,7 +32,7 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ## Pending design decisions
 
-- Case-fold protocol and host? -- RFC 3986 prefers lowercase
+- Case-fold scheme and host? -- RFC 3986 prefers lowercase
 - Checked or unchecked exceptions?
 - Validate by default?
 - Which parsers and encoders accept null inputs?

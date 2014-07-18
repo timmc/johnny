@@ -4,12 +4,12 @@
 
 (def url-getters
   "In order, the getters on http.Url."
-  [#(.getProtocol %) #(.getUserInfoRaw %) #(.getHostRaw %) #(.getPort %)
+  [#(.getScheme %) #(.getUserInfoRaw %) #(.getHostRaw %) #(.getPort %)
    #(.getPathRaw %) #(.getQueryRaw %) #(.getFragment %)])
 
 (def url-setters
   "In order, the chaining 'setters' on http.Url."
-  [#(.withProtocol % %2) #(.withUserInfoRaw % %2)
+  [#(.withScheme % %2) #(.withUserInfoRaw % %2)
    #(.withHostRaw % %2) #(.withPort % (and %2 (int %2)))
    #(.withPathRaw % %2) #(.withQueryRaw % %2) #(.withFragment % %2)])
 

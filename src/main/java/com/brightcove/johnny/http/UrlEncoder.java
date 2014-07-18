@@ -10,7 +10,7 @@ public class UrlEncoder { //TODO convert to interface?
      */
     public String encode(Url url) {
         StringBuilder build = new StringBuilder();
-        build.append(url.getProtocol()).append("://");
+        build.append(url.getScheme()).append("://");
         if (url.getUserInfoRaw() != null) {
             build.append(url.getUserInfoRaw()).append("@");
         }

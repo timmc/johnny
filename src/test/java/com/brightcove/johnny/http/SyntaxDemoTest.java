@@ -30,7 +30,7 @@ public class SyntaxDemoTest {
     public void testWorkflow() throws MalformedURLException {
         Url result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
                          .withPort(8443)
-                         .withProtocol("https")
+                         .withScheme("https")
                          .querySetKey("unicode", "☃");
         assertEquals("https://brightcove.com:8443/login?email=jrh%40example.net&unicode=%E2%98%83", result.unparse());
     }

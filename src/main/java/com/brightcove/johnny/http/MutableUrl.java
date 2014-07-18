@@ -11,13 +11,13 @@ import java.net.MalformedURLException;
  * client code should still use a chaining technique (allowing a safe and easy
  * transition to supporting immutable {@link Url} implementations as well):
  * <p>
- * <code>mutableUrl.withProtocol("http").withHostRaw("example.net").unparse()</code>
+ * <code>mutableUrl.withScheme("http").withHostRaw("example.net").unparse()</code>
  * <p>
  * Methods beginning with "set" are provided only for bean compability and
  * should have the same performance characteristics as the "with" methods.
  */
 public class MutableUrl extends Url {
-    private String protocol;
+    private String scheme;
     private String userInfoRaw;
     private String hostRaw;
     private Integer port;
@@ -26,7 +26,7 @@ public class MutableUrl extends Url {
     private String fragment;
 
     /**
-     * Create an invalid URL (null protocol and host). Provided for bean
+     * Create an invalid URL (null scheme and host). Provided for bean
      * compatibility.
      */
     public MutableUrl() {
@@ -37,7 +37,7 @@ public class MutableUrl extends Url {
      * Create a URL piecewise, with no validation. See accessors for
      * allowable values; parameters are here only described as nullable
      * or not.
-     * @param protocol Non-null
+     * @param scheme Non-null
      * @param userInfoRaw Nullable
      * @param hostRaw Non-null
      * @param port Nullable
@@ -45,10 +45,10 @@ public class MutableUrl extends Url {
      * @param queryRaw Nullable
      * @param fragment Nullable
      */
-    public MutableUrl(String protocol, String userInfoRaw, String hostRaw,
+    public MutableUrl(String scheme, String userInfoRaw, String hostRaw,
                       Integer port, String pathRaw, String queryRaw,
                       String fragment) {
-        this.protocol = protocol;
+        this.scheme = scheme;
         this.userInfoRaw = userInfoRaw;
         this.hostRaw = hostRaw;
         this.port = port;
@@ -65,12 +65,12 @@ public class MutableUrl extends Url {
                 (String) args[5], (String) args[6]);
     }
 
-    public String getProtocol() { return protocol; }
+    public String getScheme() { return scheme; }
     /** Setter provided for bean compatibility. */
-    public void setProtocol(String protocol) { this.protocol = protocol; }
+    public void setScheme(String scheme) { this.scheme = scheme; }
 
-    public MutableUrl withProtocol(String protocol) {
-        setProtocol(protocol);
+    public MutableUrl withScheme(String scheme) {
+        setScheme(scheme);
         return this;
     }
 
