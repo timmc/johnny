@@ -32,9 +32,7 @@ import clojure.lang.PersistentVector;
  */
 public class Paths {
 
-    static {
-        ClojureHelper.init();
-    }
+    static { ClojureHelper.init(); }
 
     private static final List<String> EMPTY_STRS = Collections.unmodifiableList(Arrays.<String>asList());
 

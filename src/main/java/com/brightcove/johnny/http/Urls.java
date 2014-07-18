@@ -2,7 +2,6 @@ package com.brightcove.johnny.http;
 
 import java.net.MalformedURLException;
 
-import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.TextPathEncoder;
@@ -21,10 +20,6 @@ import com.brightcove.johnny.parts.TextPathParser;
  * Start by calling {@link #parse(String)}, then use builder methods on the return value.
  */
 public class Urls {
-
-    static {
-        ClojureHelper.init(); // XXX but see init()'s docs
-    }
 
     /** Default suite of parsers, representations, and encoders. */
     public static final CodecSuite DEFAULT_CODECS = new CodecSuite(

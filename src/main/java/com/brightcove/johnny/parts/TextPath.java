@@ -22,6 +22,8 @@ import com.brightcove.johnny.http.Urls;
  */
 public class TextPath {
 
+    static { ClojureHelper.init(); }
+
     /** A non-null sequence of non-null, non-empty Strings. */
     private final APersistentVector segments;
 

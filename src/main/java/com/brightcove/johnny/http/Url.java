@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import clojure.lang.Util;
 
+import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
@@ -32,6 +33,8 @@ import com.brightcove.johnny.parts.UserInfo;
  * @author timmc
  */
 public abstract class Url {
+
+    static { ClojureHelper.init(); }
 
     /*== Convenience ==*/
 

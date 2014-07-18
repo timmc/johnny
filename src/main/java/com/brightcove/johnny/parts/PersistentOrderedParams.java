@@ -26,6 +26,8 @@ import clojure.lang.PersistentVector;
  */
 public class PersistentOrderedParams implements Params {
 
+    static { ClojureHelper.init(); }
+
     /**
      * A blank instance.
      */
