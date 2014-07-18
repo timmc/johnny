@@ -41,7 +41,7 @@ public class Paths {
     /**
      * Explode a raw path (component or reference) without decoding it. This
      * will lose information about whether a path reference started with a
-     * slash; see {@link #isAbsoluteReference(String)}.
+     * slash; see {@link #isAbsolute(String)}.
      * @param path Raw path, possibly relative. Not null.
      * @return Raw segments of path, including empty and traversal segments.
      */
@@ -61,7 +61,7 @@ public class Paths {
      * @param pathRef Non-null string.
      * @return true iff path is absolute
      */
-    public static boolean isAbsoluteReference(String pathRef) {
+    public static boolean isAbsolute(String pathRef) {
         return pathRef.startsWith("/");
     }
 
@@ -114,7 +114,7 @@ public class Paths {
      */
     public static PathEffect effectOf(String pathRef) {
         if (pathRef == null) { throw new NullPointerException("path reference may not be null."); }
-        boolean absolute = pathRef.startsWith("/");
+        boolean absolute = isAbsolute(pathRef);
         PathEffect effect = effectOf(decodeEach(explode(pathRef)));
         return new PathEffect(absolute, absolute ? 0 : effect.backwards, effect.added);
     }

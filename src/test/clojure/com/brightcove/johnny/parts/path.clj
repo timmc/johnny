@@ -1,8 +1,35 @@
 (ns com.brightcove.johnny.parts.path
   "Tests for path parsing, manipulation, and encoding."
   (:require [clojure.test :refer :all])
-  (:import com.brightcove.johnny.http.Urls
+  (:import (com.brightcove.johnny Paths)
+           com.brightcove.johnny.http.Urls
            (com.brightcove.johnny.parts TextPath)))
+
+(deftest path-utils
+  (are [i o] (= (Paths/explode i) o)
+       "" []
+       "/" [""]
+       "//a" ["" "a"]
+       "/a/b/c" ["a" "b" "c"]
+       ".././a%2Fb/..b/c../.d/" [".." "." "a%2Fb" "..b" "c.." ".d" ""])
+  (is (thrown? NullPointerException
+               (Paths/explode nil)))
+  (are [i o] (= (Paths/isAbsolute i) o)
+       "" false
+       "/" true
+       "//" true
+       "../../" false
+       "a" false)
+  (is (thrown? NullPointerException
+               (Paths/isAbsolute nil)))
+  (are [path abs back added] (= (let [effect (Paths/effectOf path)]
+                                  [(.absolute effect)
+                                   (.backwards effect)
+                                   (.added effect)])
+                                [abs back added])
+       "" false 0 []))
+
+;; TODO: Test Paths, TextPath, and parsers and encoders
 
 (deftest parsing
   (is (= (.getPathRaw (Urls/parse "http://google.com")) ""))
@@ -12,6 +39,12 @@
            ["foo;page=1;sort=asc" ";=&" "ba/r"])))
   (is (thrown? NullPointerException
                (Urls/parsePath nil))))
+
+(deftest manipulation
+  (is (= (.getSegments
+          (.addSegments (TextPath. ["a" "b" ".." "c"])
+                        ["." "" "d" "e" ".."]))
+         ["a" "c" "d"])))
 
 (deftest regression-urlencode-spaces
   (let [path (.addSegments TextPath/EMPTY ["foo" "bar baz"])]
