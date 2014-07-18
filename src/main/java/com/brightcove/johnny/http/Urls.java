@@ -6,9 +6,9 @@ import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PluggablePathEncoder;
-import com.brightcove.johnny.parts.StdPathParser;
-import com.brightcove.johnny.parts.StdPath;
+import com.brightcove.johnny.parts.PluggablePathParser;
+import com.brightcove.johnny.parts.TextPathEncoder;
+import com.brightcove.johnny.parts.TextPath;
 import com.brightcove.johnny.parts.PluggableUserInfoEncoder;
 import com.brightcove.johnny.parts.StrictHostParser;
 import com.brightcove.johnny.parts.NullIsEmptyQueryParser;
@@ -36,9 +36,10 @@ public class Urls {
             PluggableUserInfoEncoder.INSTANCE,
             new StrictHostParser(),
             new HostEncoder(),
-            new StdPathParser(),
-            StdPath.EMPTY,
-            PluggablePathEncoder.INSTANCE,
+            new PluggablePathParser<String>(TextPathSegmentParser.INSTANCE),
+            TextPathSegmentParser.INSTANCE,
+            TextPath.EMPTY,
+            TextPathEncoder.INSTANCE,
             new NullIsEmptyQueryParser(),
             PersistentOrderedParams.EMPTY,
             new BasicQueryEncoder());
@@ -58,7 +59,8 @@ public class Urls {
      * using the default parser.
      * @param pathRaw Non-null path component
      */
-    public static Path parsePath(String pathRaw) {
+    @SuppressWarnings("unchecked")
+    public static Path<String> parsePath(String pathRaw) {
         return DEFAULT_CODECS.emptyPath.addSegments(DEFAULT_CODECS.pathParser.parse(pathRaw));
     }
 

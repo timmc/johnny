@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
  * Percent-encodes a string a character at a time, referring to a
  * {@link CharOracle} to determine which to allow through unencoded.
  */
-public class ByCharPercentEncoder implements StringEncoder {
+public class ByCharPercentEncoder implements Encoder<String> {
     private final CharOracle passthrough;
     private final Charset encoding;
 

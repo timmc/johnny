@@ -1,20 +1,15 @@
 package com.brightcove.johnny.parts;
 
+import com.brightcove.johnny.Encoder;
+
 /**
  * Encoder for {@link Path}s.
  */
-public interface PathEncoder {
-    /**
-     * Encode just one segment of a path to its raw form.
-     * @param segment Non-null.
-     * @return Raw path segment. Must not contain any "/" characters.
-     */
-    String unparseSegment(PathSegment segment);
-
+public interface PathEncoder<E> {
     /**
      * Encode a {@link Path} into a raw path string.
      * @param path Not null.
      * @return Raw path string, either empty or starting with "/".
      */
-    String unparse(Path path);
+    String unparse(Path<E> path, Encoder<E> segmentEncoder);
 }

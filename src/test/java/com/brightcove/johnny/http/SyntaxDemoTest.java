@@ -51,6 +51,16 @@ public class SyntaxDemoTest {
     }
 
     /**
+     * Demonstrate path manipulation.
+     */
+    @Test
+    public void testPath() throws MalformedURLException {
+        Url orig = Urls.parse("http://brightcove.com/video/123");
+        Url result = orig.withPath(orig.getPath().addOneSegment("images"));
+        assertEquals("http://brightcove.com/video/123/images", result.unparse());
+    }
+
+    /**
      * Demonstrate alternative query representation.
      */
     @Test

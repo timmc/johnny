@@ -2,6 +2,7 @@ package com.brightcove.johnny.http;
 
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
+import com.brightcove.johnny.parts.Parser;
 import com.brightcove.johnny.parts.PathEncoder;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.Path;
@@ -18,6 +19,7 @@ import com.brightcove.johnny.parts.UserInfoParser;
  *
  * @see Urls#DEFAULT_CODECS
  */
+@SuppressWarnings("rawtypes")
 public class CodecSuite {
     /**
      * Create a new suite by specifying all fields. It may be more convenient
@@ -33,6 +35,7 @@ public class CodecSuite {
             HostParser hostParser,
             HostEncoder hostEncoder,
             PathParser pathParser,
+            Parser pathSegmentParser,
             Path emptyPath,
             PathEncoder pathEncoder,
             QueryParser queryParser,
@@ -47,6 +50,7 @@ public class CodecSuite {
         this.hostParser = hostParser;
         this.hostEncoder = hostEncoder;
         this.pathParser = pathParser;
+        this.pathSegmentParser = pathSegmentParser;
         this.emptyPath = emptyPath;
         this.pathEncoder = pathEncoder;
         this.queryParser = queryParser;
@@ -70,6 +74,8 @@ public class CodecSuite {
     public final HostEncoder hostEncoder;
     /** Set the default path parser. */
     public final PathParser pathParser;
+    /** Set the default path segment parser. */
+    public final Parser pathSegmentParser;
     /** Set the default empty path value. */
     public final Path emptyPath; // TODO refactor this?
     /** Set the default path encoder. */
@@ -83,66 +89,71 @@ public class CodecSuite {
 
     /** Return a new suite with the specified URL parser. */
     public CodecSuite withUrlParser(UrlParser urlParser) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified URL representation class. */
     public CodecSuite withUrlRepresentation(Class<? extends Url> urlRepresentation) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified URL encoder. */
     public CodecSuite withUrlEncoder(UrlEncoder urlEncoder) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified userinfo parser. */
     public CodecSuite withUserInfoParser(UserInfoParser userInfoParser) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified userinfo encoder. */
     public CodecSuite withUserInfoEncoder(UserInfoEncoder userInfoEncoder) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified host parser. */
     public CodecSuite withHostParser(HostParser hostParser) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified host encoder. */
     public CodecSuite withHostEncoder(HostEncoder hostEncoder) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+    }
+
+    /** Return a new suite with the specified path segment parser. */
+    public CodecSuite withPathSegmentParser(PathSegmentParser pathSegmentParser) {
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified path parser. */
     public CodecSuite withPathParser(PathParser pathParser) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified empty path value. */
     public CodecSuite withEmptyPath(Path emptyPath) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified path encoder. */
     public CodecSuite withPathEncoder(PathEncoder pathEncoder) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified query parser. */
     public CodecSuite withQueryParser(QueryParser queryParser) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified empty params value. */
     public CodecSuite withEmptyParams(Params emptyParams) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified query encoder. */
     public CodecSuite withQueryEncoder(QueryEncoder queryEncoder) {
-        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
+        return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, pathSegmentParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 }

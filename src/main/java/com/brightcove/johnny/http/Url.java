@@ -70,7 +70,7 @@ public abstract class Url {
      * Parse and return the path component.
      * @return Non-null
      */
-    public Path getPath() {
+    public Path<String> getPath() {
         return Urls.parsePath(getPathRaw());
     }
 
@@ -78,7 +78,7 @@ public abstract class Url {
      * Set raw path by encoding provided path with standard path encoder.
      * @param path Non-null
      */
-    public Url withPath(Path path) {
+    public Url withPath(Path<String> path) {
         return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path));
     }
 

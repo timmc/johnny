@@ -3,8 +3,8 @@ package com.brightcove.johnny.parts;
 import com.brightcove.johnny.Ascii7Oracle;
 import com.brightcove.johnny.ByCharPercentEncoder;
 import com.brightcove.johnny.Constants;
+import com.brightcove.johnny.Encoder;
 import com.brightcove.johnny.ImmutableBitSet;
-import com.brightcove.johnny.StringEncoder;
 
 /**
  * Pluggable encoder for {@link UserInfo}s that uses minimal encoding by default.
@@ -17,14 +17,14 @@ public class PluggableUserInfoEncoder implements UserInfoEncoder {
     public static final ImmutableBitSet DEFAULT_PASS_PASSWORD = Constants.RFC3986_UNENCODED_USERINFO;
 
     /** Default encoder for username subcomponent. */
-    public static final StringEncoder DEFAULT_ENC_USERNAME = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_USERNAME));
+    public static final Encoder<String> DEFAULT_ENC_USERNAME = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_USERNAME));
     /** Default encoder for password subcomponent. */
-    public static final StringEncoder DEFAULT_ENC_PASSWORD = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_PASSWORD));
+    public static final Encoder<String> DEFAULT_ENC_PASSWORD = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_PASSWORD));
 
-    /** Encoder for username subcomponent. */
-    public final StringEncoder usernameEnc;
-    /** Encoder for password subcomponent. */
-    public final StringEncoder passwordEnc;
+    /** Encoder<String> for username subcomponent. */
+    public final Encoder<String> usernameEnc;
+    /** Encoder<String> for password subcomponent. */
+    public final Encoder<String> passwordEnc;
 
     /** Instance using all defaults. */
     public static final PluggableUserInfoEncoder INSTANCE = new PluggableUserInfoEncoder();
@@ -32,7 +32,7 @@ public class PluggableUserInfoEncoder implements UserInfoEncoder {
     /**
      * Specify custom encoders for {@link #usernameEnc} and {@link #passwordEnc}.
      */
-    public PluggableUserInfoEncoder(StringEncoder usernameEnc, StringEncoder passwordEnc) {
+    public PluggableUserInfoEncoder(Encoder<String> usernameEnc, Encoder<String> passwordEnc) {
         this.usernameEnc = usernameEnc;
         this.passwordEnc = passwordEnc;
     }

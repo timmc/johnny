@@ -5,8 +5,8 @@ import java.util.Map;
 import com.brightcove.johnny.Ascii7Oracle;
 import com.brightcove.johnny.ByCharPercentEncoder;
 import com.brightcove.johnny.Constants;
+import com.brightcove.johnny.Encoder;
 import com.brightcove.johnny.ImmutableBitSet;
-import com.brightcove.johnny.StringEncoder;
 
 /**
  * Pluggable encoder for {@link Path}s that uses minimal encoding by default.
@@ -22,26 +22,26 @@ public class PluggablePathEncoder implements PathEncoder {
     public static final ImmutableBitSet DEFAULT_PASS_VAL = Constants.RFC3986_UNRESERVED;
 
     /** Default encoder for text segments. */
-    public static final StringEncoder DEFAULT_ENC_TEXT = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_TEXT));
+    public static final Encoder<String> DEFAULT_ENC_TEXT = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_TEXT));
     /** Default encoder for param keys. */
-    public static final StringEncoder DEFAULT_ENC_KEY = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_KEY));
+    public static final Encoder<String> DEFAULT_ENC_KEY = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_KEY));
     /** Default encoder for param values. */
-    public static final StringEncoder DEFAULT_ENC_VAL = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_VAL));
+    public static final Encoder<String> DEFAULT_ENC_VAL = new ByCharPercentEncoder(new Ascii7Oracle(DEFAULT_PASS_VAL));
 
     /** Instance using all defaults. */
     public static final PathEncoder INSTANCE = new PluggablePathEncoder();
 
     /** Encoder for text segments. */
-    public final StringEncoder textEnc;
+    public final Encoder<String> textEnc;
     /** Encoder for param keys. */
-    public final StringEncoder keyEnc;
+    public final Encoder<String> keyEnc;
     /** Encoder for param values. */
-    public final StringEncoder valEnc;
+    public final Encoder<String> valEnc;
 
     /**
      * Specify custom encoders for {@link #textEnc}, {@link #keyEnc}, and {@link #valEnc}.
      */
-    public PluggablePathEncoder(StringEncoder textEnc, StringEncoder keyEnc, StringEncoder valEnc) {
+    public PluggablePathEncoder(Encoder<String>  textEnc, Encoder<String> keyEnc, Encoder<String> valEnc) {
         this.textEnc = textEnc;
         this.keyEnc = keyEnc;
         this.valEnc = valEnc;
