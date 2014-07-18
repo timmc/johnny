@@ -1,9 +1,16 @@
 package com.brightcove.johnny.http;
 
+import com.brightcove.johnny.Ascii7Oracle;
+import com.brightcove.johnny.ByCharPercentEncoder;
+import com.brightcove.johnny.Constants;
+import com.brightcove.johnny.StringEncoder;
+
 /**
  * Whole-URL encoder.
  */
 public class UrlEncoder { //TODO convert to interface?
+
+    private final StringEncoder enc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
 
     /**
      * Encode a {@link Url} to a string.
@@ -23,7 +30,7 @@ public class UrlEncoder { //TODO convert to interface?
             build.append("?").append(url.getQueryRaw());
         }
         if (url.getFragment() != null) {
-            build.append("#").append(Codecs.encodeFragment(url.getFragment()));
+            build.append("#").append(enc.encode(url.getFragment()));
         }
         return build.toString();
     }
