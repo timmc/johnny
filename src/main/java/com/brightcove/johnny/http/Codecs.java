@@ -48,30 +48,6 @@ public class Codecs {
     }
 
     /**
-     * Minimally encode path portion of HTTP URL.
-     */
-    @Deprecated
-    public static String encodePathSegment(String pathSegment) {
-        return naivePercentEncode(pathSegment); //FIXME use minimal encoder
-    }
-
-    /**
-     * Minimally encode path parameter key for an HTTP URL.
-     */
-    @Deprecated
-    public static String encodePathParamKey(String pathParamKey) {
-        return naivePercentEncode(pathParamKey); //FIXME use minimal encoder
-    }
-
-    /**
-     * Minimally encode path parameter value for an HTTP URL.
-     */
-    @Deprecated
-    public static String encodePathParamValue(String pathParamValue) {
-        return naivePercentEncode(pathParamValue); //FIXME use minimal encoder
-    }
-
-    /**
      * Minimally encode query parameter key for an HTTP URL.
      */
     @Deprecated

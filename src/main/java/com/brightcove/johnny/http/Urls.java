@@ -5,16 +5,15 @@ import java.net.MalformedURLException;
 import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.BasicQueryEncoder;
 import com.brightcove.johnny.parts.HostEncoder;
-import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PluggablePathEncoder;
-import com.brightcove.johnny.parts.StdPathParser;
-import com.brightcove.johnny.parts.StdPath;
+import com.brightcove.johnny.parts.TextPathEncoder;
 import com.brightcove.johnny.parts.PluggableUserInfoEncoder;
 import com.brightcove.johnny.parts.StrictHostParser;
 import com.brightcove.johnny.parts.NullIsEmptyQueryParser;
 import com.brightcove.johnny.parts.PersistentOrderedParams;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.StdUserInfoParser;
+import com.brightcove.johnny.parts.TextPath;
+import com.brightcove.johnny.parts.TextPathParser;
 
 
 /**
@@ -36,9 +35,9 @@ public class Urls {
             PluggableUserInfoEncoder.INSTANCE,
             new StrictHostParser(),
             new HostEncoder(),
-            new StdPathParser(),
-            StdPath.EMPTY,
-            PluggablePathEncoder.INSTANCE,
+            TextPathParser.INSTANCE,
+            TextPath.EMPTY,
+            TextPathEncoder.INSTANCE,
             new NullIsEmptyQueryParser(),
             PersistentOrderedParams.EMPTY,
             new BasicQueryEncoder());
@@ -58,7 +57,7 @@ public class Urls {
      * using the default parser.
      * @param pathRaw Non-null path component
      */
-    public static Path parsePath(String pathRaw) {
+    public static TextPath parsePath(String pathRaw) {
         return DEFAULT_CODECS.emptyPath.addSegments(DEFAULT_CODECS.pathParser.parse(pathRaw));
     }
 

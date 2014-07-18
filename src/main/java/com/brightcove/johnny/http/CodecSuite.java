@@ -2,10 +2,10 @@ package com.brightcove.johnny.http;
 
 import com.brightcove.johnny.parts.HostEncoder;
 import com.brightcove.johnny.parts.HostParser;
-import com.brightcove.johnny.parts.PathEncoder;
+import com.brightcove.johnny.parts.TextPathEncoder;
 import com.brightcove.johnny.parts.Params;
-import com.brightcove.johnny.parts.Path;
-import com.brightcove.johnny.parts.PathParser;
+import com.brightcove.johnny.parts.TextPath;
+import com.brightcove.johnny.parts.TextPathParser;
 import com.brightcove.johnny.parts.QueryEncoder;
 import com.brightcove.johnny.parts.QueryParser;
 import com.brightcove.johnny.parts.UserInfoEncoder;
@@ -32,9 +32,9 @@ public class CodecSuite {
             UserInfoEncoder userInfoEncoder,
             HostParser hostParser,
             HostEncoder hostEncoder,
-            PathParser pathParser,
-            Path emptyPath,
-            PathEncoder pathEncoder,
+            TextPathParser pathParser,
+            TextPath emptyPath,
+            TextPathEncoder pathEncoder,
             QueryParser queryParser,
             Params emptyParams,
             QueryEncoder queryEncoder) {
@@ -69,11 +69,11 @@ public class CodecSuite {
     /** Set the default host encoder. */
     public final HostEncoder hostEncoder;
     /** Set the default path parser. */
-    public final PathParser pathParser;
+    public final TextPathParser pathParser;
     /** Set the default empty path value. */
-    public final Path emptyPath; // TODO refactor this?
+    public final TextPath emptyPath; // TODO refactor this?
     /** Set the default path encoder. */
-    public final PathEncoder pathEncoder;
+    public final TextPathEncoder pathEncoder;
     /** Set the default quey parser. */
     public final QueryParser queryParser;
     /** Set the default empty params value. */
@@ -117,17 +117,17 @@ public class CodecSuite {
     }
 
     /** Return a new suite with the specified path parser. */
-    public CodecSuite withPathParser(PathParser pathParser) {
+    public CodecSuite withPathParser(TextPathParser pathParser) {
         return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified empty path value. */
-    public CodecSuite withEmptyPath(Path emptyPath) {
+    public CodecSuite withEmptyPath(TextPath emptyPath) {
         return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 
     /** Return a new suite with the specified path encoder. */
-    public CodecSuite withPathEncoder(PathEncoder pathEncoder) {
+    public CodecSuite withPathEncoder(TextPathEncoder pathEncoder) {
         return new CodecSuite(urlParser, urlRepresentation, urlEncoder, userInfoParser, userInfoEncoder, hostParser, hostEncoder, pathParser, emptyPath, pathEncoder, queryParser, emptyParams, queryEncoder);
     }
 

@@ -43,5 +43,8 @@ public class Constants {
      * username subcomponent to avoid ambiguity.
      */
     public static final ImmutableBitSet RFC3986_UNENCODED_USERINFO = RFC3986_UNRESERVED.or(RFC3986_SUB_DELIMS).or(BitSetUtils.fromChars(":"));
-
+    /**
+     * Characters allowed to be left unencoded in an RFC 3986 path segment.
+     */
+    public static final ImmutableBitSet RFC3986_UNENCODED_PATH_SEGMENT = RFC3986_UNRESERVED.or(RFC3986_SUB_DELIMS).or(BitSetUtils.fromChars(":@"));
 }

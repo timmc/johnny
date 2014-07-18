@@ -5,7 +5,7 @@
             Url ImmutableUrl MutableUrl
             UrlEncoder))
   (:import (com.brightcove.johnny.parts
-            StdPathParser StdPath PluggablePathEncoder
+            TextPathParser TextPath TextPathEncoder
             NullableValueQueryParser NullIsEmptyQueryParser
             PersistentOrderedParams MutableMultimapParams
             PersistentMultimapParams
@@ -19,9 +19,9 @@
 (def url-manip-impls #{MutableUrl ImmutableUrl})
 (def url-encode-impls #{(UrlEncoder.)})
 
-(def path-parse-impls #{(StdPathParser.)})
-(def path-manip-impls #{StdPath})
-(def path-encode-impls #{(PluggablePathEncoder.)})
+(def path-parse-impls #{(TextPathParser.)})
+(def path-manip-impls #{TextPath})
+(def path-encode-impls #{(TextPathEncoder.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
 (def q-manip-impls #{PersistentOrderedParams MutableMultimapParams
@@ -104,8 +104,7 @@
 (defn parse-p
   "Parse a string as a Path."
   [^String s]
-  (.appendAll (create-p) (.parse *path-parser* s)))
-
+  (.addSegments (create-p) (.parse *path-parser* s)))
 
 (defn create-q
   "Construct a Query of the current impl."
