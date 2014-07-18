@@ -28,11 +28,12 @@ public class SyntaxDemoTest {
      */
     @Test
     public void testWorkflow() throws MalformedURLException {
-        Url result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
+        Url result = Urls.parse("http://brightcove.com/login/ext/cas?email=jrh@example.net")
                          .withPort(8443)
                          .withScheme("https")
-                         .querySetKey("unicode", "☃");
-        assertEquals("https://brightcove.com:8443/login?email=jrh%40example.net&unicode=%E2%98%83", result.unparse());
+                         .querySetKey("unicode", "☃")
+                         .pathJump("../saml");
+        assertEquals("https://brightcove.com:8443/login/ext/saml?email=jrh%40example.net&unicode=%E2%98%83", result.unparse());
     }
 
     /**
@@ -48,6 +49,16 @@ public class SyntaxDemoTest {
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"
                 ).contains(result.unparse()));
+
+        Url uri = Urls.parse("http://www.example.com?ord=1&middle=interloper&ord=2&a=b=c");
+        Params q = uri.getQuery();
+        assertEquals(q.getLast("ord"), "2");
+        assertEquals(q.getAll("ord"), Arrays.asList("1", "2"));
+        assertEquals(q.getLast("a"), "b=c");
+
+        Params mod = q.replaceLast("ord", "3").append("ord", "15").removeAll("middle");
+        assertEquals(uri.withQuery(mod).toString(),
+                     "http://www.example.com?ord=1&ord=3&a=b=c&ord=15");
     }
 
     /**

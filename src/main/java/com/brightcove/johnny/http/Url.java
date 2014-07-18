@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import clojure.lang.Util;
 
+import com.brightcove.johnny.Paths;
 import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.Host;
 import com.brightcove.johnny.parts.Params;
@@ -83,6 +84,14 @@ public abstract class Url {
      */
     public Url withPath(TextPath path) {
         return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path.getSegments()));
+    }
+
+    /**
+     * Set the path by applying a relative or absolute raw path reference.
+     * @param pathReference Non-null path reference as defined by {@link Paths}
+     */
+    public Url pathJump(String pathReference) {
+        return withPath(getPath().addRawPath(pathReference));
     }
 
     /**
