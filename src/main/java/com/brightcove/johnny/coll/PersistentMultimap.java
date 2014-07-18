@@ -40,6 +40,8 @@ import clojure.lang.SeqIterator;
  */
 public class PersistentMultimap<K, V> implements Multimap<K, V>{
 
+    static { ClojureHelper.init(); }
+
     /** Map of K to PersistentVector of V. */
     private final IPersistentMap store;
     private final int count;

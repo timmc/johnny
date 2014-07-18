@@ -18,8 +18,11 @@ public class ClojureHelper {
      * Initialize Clojure. We shouldn't have to have this! But otherwise we get a weird error in
      * PersistentTreeSet's class init about contains? not being defined for PersistentList. This
      * might only happen during JUnit tests, though.
+     * <p>
+     * This method should be called at class init from any class that wants to use Clojure
+     * data structures.
      */
-    public static void init() { // XXX
+    public static void init() {
         RT.keyword("force", "load"); // some trivial operation to force loading
     }
 

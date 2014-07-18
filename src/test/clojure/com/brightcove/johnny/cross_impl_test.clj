@@ -28,8 +28,8 @@
   (cross-all
    (testing "+ character"
      (let [orig "http://example.com/blue+light%20blue?k=blue%2Blight+blue"]
-       (is (= (-> (i/parse-u orig) .getPath .getSegments first .text)
-              "blue+light blue"))
+       (is (= (-> (i/parse-u orig) .getPath .getSegments)
+              ["blue+light blue"]))
        (is (= (.queryGetLast (i/parse-u orig) "k") "blue+light+blue"))))))
 
 (deftest workflow

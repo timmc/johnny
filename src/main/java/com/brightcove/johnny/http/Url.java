@@ -4,10 +4,11 @@ import java.util.Collection;
 
 import clojure.lang.Util;
 
+import com.brightcove.johnny.coll.ClojureHelper;
 import com.brightcove.johnny.parts.Host;
-import com.brightcove.johnny.parts.Path;
 import com.brightcove.johnny.parts.Params;
 import com.brightcove.johnny.parts.QueryParser;
+import com.brightcove.johnny.parts.TextPath;
 import com.brightcove.johnny.parts.UserInfo;
 
 /**
@@ -32,6 +33,8 @@ import com.brightcove.johnny.parts.UserInfo;
  * @author timmc
  */
 public abstract class Url {
+
+    static { ClojureHelper.init(); }
 
     /*== Convenience ==*/
 
@@ -70,7 +73,7 @@ public abstract class Url {
      * Parse and return the path component.
      * @return Non-null
      */
-    public Path getPath() {
+    public TextPath getPath() {
         return Urls.parsePath(getPathRaw());
     }
 
@@ -78,8 +81,8 @@ public abstract class Url {
      * Set raw path by encoding provided path with standard path encoder.
      * @param path Non-null
      */
-    public Url withPath(Path path) {
-        return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path));
+    public Url withPath(TextPath path) {
+        return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path.getSegments()));
     }
 
     /**
@@ -217,10 +220,9 @@ public abstract class Url {
      * Undecoded path portion of URL, possibly empty. If not empty, must
      * start with <code>/</code>. Not null.
      * To decode a path into segments and path parameters, use
-     * {@link Path}. Do not simply percent-decode the raw path,
+     * {@link TextPath}. Do not simply percent-decode the raw path,
      * as that may expose encoded slashes.
      */
-    //TODO: implement SimplePath and MatrixPath
     public abstract String getPathRaw();
 
     /** See {@link #getPathRaw()}. */
