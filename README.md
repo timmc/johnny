@@ -17,7 +17,7 @@ The goal is to be able to write this:
 Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").unparse() // "http://brightcove.com/search?q=url&foo=bar#fragment"
 ```
 
-...but the library is **nowhere near ready**. **DO NOT USE**.  It
+...but the library is **not ready**. **DO NOT USE**.  It
 needs further API development and grooming, a good long sit-down with
 some RFCs, careful selection of supporting libraries, a huge number of
 careful tests, and way more eyeballs.
@@ -49,7 +49,7 @@ Urls.parse("http://example.net/").equals(Urls.parse("http://example.org/")) //= 
 
 Correctly encodes for different URL components:
 
-(TODO: Example with j.n.URLEncoder incorrectly encoding spaces as `+`.)
+(TODO: Example with j.n.URLEncoder incorrectly encoding spaces as `+` in paths.)
 
 ## Goals
 
@@ -76,4 +76,16 @@ See [HACK.md](HACK.md).
 
 ## License
 
-FIXME (will be Apache or MIT)
+Copyright 2013–2014 Brightcove, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
