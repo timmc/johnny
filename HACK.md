@@ -39,6 +39,9 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ## TODO
 
+- Test that we don't fall victim to java.net.URI's constructor bug:
+  There is no `x` such that
+  `java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26")`.
 - Accept suites or suite elements in parser and encoder methods.
     - Or even allow embedding of CodecSuite instances into Url and
       other objects?

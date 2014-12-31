@@ -8,8 +8,8 @@ manipulate URLs. The result is that everyone ends up writing their own
 URL library, and the result of that is security flaws and subtly
 broken apps. (java.net.URL accepts `८०` as a port number; java.net.URI
 helpfully offers to decode paths wholesale instead of segmenting them
-first; innumerable querystring APIs mishandle duplicate keys or
-missing values.)
+first and has an outright broken multipart constructor; innumerable
+querystring APIs mishandle duplicate keys or missing values.)
 
 The goal is to be able to write this:
 
@@ -47,7 +47,14 @@ new java.net.URL("http://example.net/").equals(new java.net.URL("http://example.
 Urls.parse("http://example.net/").equals(Urls.parse("http://example.org/")) //= false
 ```
 
-Correctly encodes for different URL components:
+Correctly assembles URLs from components:
+
+```java
+// There is no value for x that will make this true:
+// java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26");
+// Johnny correctly assembles URIs without any second-guessing:
+new ImmutableUrl("http", null, "example.com", null, "/", "ampersand=%26", null);
+```
 
 (TODO: Example with j.n.URLEncoder incorrectly encoding spaces as `+` in paths.)
 
