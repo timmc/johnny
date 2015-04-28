@@ -1,4 +1,4 @@
-(defproject com.brightcove/johnny "0.0.1-SNAPSHOT"
+(defproject org.timmc/johnny "0.1.0-SNAPSHOT"
   :min-lein-version  "2.0.0"
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [com.google.guava/guava "14.0.1"]]
