@@ -34,7 +34,7 @@ public class TextPath {
      * Assumes segments is normalized and non-null.
      * The {@link Void} arg is to distinguish the constructor signature.
      */
-    private TextPath(APersistentVector segments, Void _) {
+    private TextPath(APersistentVector segments, Void _unused) {
         this.segments = segments;
     }
 
