@@ -10,8 +10,8 @@
   :source-paths []
   :test-paths ["src/test/clojure"]
   ;; We have a tiny bit of Java for testing
-  :profiles {:dev {:dependencies [[junit/junit "4.11"]]}}
-  :plugins [[lein-junit "1.1.6"]]
+  :profiles {:dev {:dependencies [[junit/junit "4.12"]]}}
+  :plugins [[lein-junit "1.1.8"]]
   :junit ["src/test/java"]
   :license {:name "Apache License, Version 2.0"
             :url "http://www.apache.org/licenses/LICENSE-2.0"
