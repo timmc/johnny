@@ -16,16 +16,19 @@
   :junit ["src/test/java"]
   :omit-source true
   :classifiers
-  {:sources {:java-source-paths ^:replace []
-             :resource-paths ["src/main/java"]}
-   :javadoc {:plugins [[lein-javadoc "0.1.1"]]
-             :resource-paths ^:replace ["target/javadoc/javadoc"]
-             :javadoc-opts {:package-names ["org.timmc.johnny"]
-                            :output-dir "target/javadoc/javadoc"
-                            :additional-args ["-Xdoclint:-missing" "-version" "-charset" "UTF-8"
-                                              "-docencoding" "UTF-8" "-encoding" "UTF-8"]}
-             ;; why? :javac-options ["-target" "1.5" "-source" "1.5"]
-             :prep-tasks ["javadoc"]}}
+  {:sources
+   {:java-source-paths ^:replace []
+    :resource-paths ["src/main/java"]}
+   :javadoc
+   {:plugins [[lein-javadoc "0.1.1"]]
+    :resource-paths ^:replace ["target/javadoc/javadoc"]
+    :javadoc-opts
+    {:package-names ["org.timmc.johnny"]
+     :output-dir "target/javadoc/javadoc"
+     :additional-args ["-Xdoclint:-missing" "-version" "-charset" "UTF-8"
+                       "-docencoding" "UTF-8" "-encoding" "UTF-8"]}
+    ;; why? :javac-options ["-target" "1.5" "-source" "1.5"]
+    :prep-tasks ["javadoc"]}}
   :license {:name "Apache License, Version 2.0"
             :url "http://www.apache.org/licenses/LICENSE-2.0"
             :distribution :repo}
@@ -38,7 +41,9 @@
     [:organization "Brightcove Inc."]
     [:organizationUrl "https://www.brightcove.com/"]]]
   :deploy-repositories
-  [["releases" {:url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-                :creds :gpg}]
-   ["snapshots" {:url "https://oss.sonatype.org/content/repositories/snapshots/"
-                 :creds :gpg}]])
+  [["releases"
+    {:url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+     :creds :gpg}]
+   ["snapshots"
+    {:url "https://oss.sonatype.org/content/repositories/snapshots/"
+     :creds :gpg}]])
