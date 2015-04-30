@@ -19,6 +19,10 @@
   {:sources
    {:java-source-paths ^:replace []
     :resource-paths ["src/main/java"]}
+   ;; FIXME: Includes with tools.jar and sa-jdi.jar in javadoc jar
+   ;; even with jar exclusions.
+   ;; https://github.com/davidsantiago/lein-javadoc/issues/1
+   ;; https://github.com/pallet/lein-jdk-tools/issues/2
    :javadoc
    {:plugins [[lein-javadoc "0.1.1"]]
     :resource-paths ^:replace ["target/javadoc/javadoc"]
