@@ -3,3 +3,5 @@
 /.project
 /.classpath
 /.lein-*
+/pom.xml
+/pom.xml.*
