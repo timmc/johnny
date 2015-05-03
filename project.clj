@@ -1,5 +1,5 @@
 (defproject com.brightcove/johnny "0.2.0-SNAPSHOT"
-  :min-lein-version  "2.5.1" ;; for sources and javadoc jars
+  :min-lein-version  "2.1.0" ;; 2.1.0 introduced jar classifiers
   :description "A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use."
   :url "https://github.com/brightcove/johnny"
   :dependencies [[org.clojure/clojure "1.5.1"]
@@ -27,7 +27,7 @@
     :javadoc-opts
     {:package-names ["com.brightcove.johnny"]
      :output-dir "target/javadoc/javadoc"
-     :additional-args ["-Xdoclint:-missing" "-version" "-charset" "UTF-8"
+     :additional-args ["-version" "-charset" "UTF-8"
                        "-docencoding" "UTF-8" "-encoding" "UTF-8"]}
     :prep-tasks ["javadoc"]}}
   :deploy-repositories
