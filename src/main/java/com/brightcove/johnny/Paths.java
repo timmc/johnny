@@ -18,9 +18,9 @@ import clojure.lang.PersistentVector;
  * <ul>
  * <li>"." and ".." are referred to as traversal segments,
  * in reference to their use in filesystem traversal.</li>
- * <li>A <def>path component</def> is the path from a valid URI. It
+ * <li>A <dfn>path component</dfn> is the path from a valid URI. It
  * <em>must</em> either be empty or begin with a slash.</li>
- * <li>A <def>path reference</def> is a URI relative reference with only
+ * <li>A <dfn>path reference</dfn> is a URI relative reference with only
  * a path element. If it starts with a slash it is an absolute path reference;
  * otherwise it is a relative path reference (including if empty.)</li>
  * <li>Paths are composed of raw segments separate by slashes. Segments
