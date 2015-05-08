@@ -22,6 +22,10 @@ needs further API development and grooming, a good long sit-down with
 some RFCs, careful selection of supporting libraries, a huge number of
 careful tests, and way more eyeballs.
 
+Johnny is published with groupId `org.timmc` and artifactId
+`johnny`. The latest version is `0.1.1` and is considered alpha
+quality. The API may change at any time.
+
 If you're willing to help out, let me know! I'm also considering
 opening up a Bitcoin bug bounty once the library is at the alpha
 stage, and I would appreciate both deposits and withdrawals at that
