@@ -1,4 +1,4 @@
-(defproject org.timmc/johnny "0.1.1"
+(defproject org.timmc/johnny "0.1.2-SNAPSHOT"
   :min-lein-version  "2.5.1" ;; for classified jars
   :description "A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use."
   :url "https://github.com/timmc/johnny"
