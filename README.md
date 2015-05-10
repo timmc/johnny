@@ -87,7 +87,9 @@ See [HACK.md](HACK.md).
 
 ## License
 
-Copyright 2013–2014 Brightcove, Inc.
+Copyright 2013–2015 Brightcove, Inc. (where commits authored using
+brightcove.com email address) and Tim McCormack (where using personal
+address.)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
