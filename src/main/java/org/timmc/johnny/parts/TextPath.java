@@ -15,6 +15,8 @@ import org.timmc.johnny.Paths.PathEffect;
  * contains the segments <code>["foo", "bar", "ba/z", ""]</code>.
  * <p>
  * TextPath will attempt to keep itself in normalized form.
+ * <p>
+ * This implementation of path parsing does *not* respect path parameters.
  */
 public class TextPath {
 
