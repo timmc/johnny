@@ -3,15 +3,15 @@ package org.timmc.johnny.parts;
 import com.google.common.net.InetAddresses;
 
 /**
- * Encoder of {@link Host} instances into raw host component strings.
+ * Formatter of {@link Host} instances into raw host component strings.
  */
-public class HostEncoder {
+public class HostFormatter {
     /**
-     * Convert a Host instance into a string suitable for use directly as a URL's host component.
+     * Format a Host instance into a string suitable for use directly as a URL's host component.
      * @param host Non-null host
      * @return Non-null
      */
-    public String unparse(Host host) {
+    public String format(Host host) {
         if (host.isDomain()) {
             return host.getDomain().name(); // TODO: Encode unicode?
         } else {

@@ -7,23 +7,23 @@ import org.timmc.johnny.Paths;
 import org.timmc.johnny.StringEncoder;
 
 /**
- * Encoder for paths.
+ * Formatter for paths.
  */
-public class TextPathEncoder {
+public class TextPathFormatter {
     /** Default encoder for path segments. */
     public static final StringEncoder DEFAULT_SEGMENT_ENCODER =
             new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_PATH_SEGMENT));
 
-    /** Shared instance of path encoder. */
-    public static final TextPathEncoder INSTANCE = new TextPathEncoder();
+    /** Shared instance of path formatter. */
+    public static final TextPathFormatter INSTANCE = new TextPathFormatter();
 
     /**
-     * Encode a sequence of segments into a normalized raw path string.
-     * @param segments Non-null sequence of non-null decoded path segments,
+     * Format a sequence of segments into a normalized raw path string.
+     * @param segments Non-null sequence of non-null parsed path segments,
      *  probably from a {@link TextPath}.
      * @return Raw path string, either empty or starting with "/".
      */
-    public String unparse(Iterable<String> segments) {
+    public String format(Iterable<String> segments) {
         segments = Paths.isNormalized(segments) ? segments : Paths.normalize(segments);
         StringBuilder ret = new StringBuilder();
         for (String seg : segments) {

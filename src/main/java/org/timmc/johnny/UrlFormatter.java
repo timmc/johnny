@@ -2,16 +2,16 @@ package org.timmc.johnny;
 
 
 /**
- * Whole-URL encoder.
+ * Whole-URL formatter.
  */
-public class UrlEncoder { //TODO convert to interface?
+public class UrlFormatter { //TODO convert to interface?
 
-    private final StringEncoder enc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
+    private final StringEncoder fragEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
 
     /**
-     * Encode a {@link Url} to a string.
+     * Format a {@link Url} to a string.
      */
-    public String encode(Url url) {
+    public String format(Url url) {
         StringBuilder build = new StringBuilder();
         build.append(url.getScheme()).append("://");
         if (url.getUserInfoRaw() != null) {
@@ -26,7 +26,7 @@ public class UrlEncoder { //TODO convert to interface?
             build.append("?").append(url.getQueryRaw());
         }
         if (url.getFragment() != null) {
-            build.append("#").append(enc.encode(url.getFragment()));
+            build.append("#").append(fragEnc.encode(url.getFragment()));
         }
         return build.toString();
     }

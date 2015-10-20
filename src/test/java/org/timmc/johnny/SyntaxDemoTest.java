@@ -32,7 +32,7 @@ public class SyntaxDemoTest {
                          .withPort(8443)
                          .withScheme("https")
                          .querySetKey("unicode", "☃");
-        assertEquals("https://brightcove.com:8443/login?email=jrh%40example.net&unicode=%E2%98%83", result.unparse());
+        assertEquals("https://brightcove.com:8443/login?email=jrh%40example.net&unicode=%E2%98%83", result.format());
     }
 
     /**
@@ -47,7 +47,7 @@ public class SyntaxDemoTest {
         assertTrue(Arrays.<String>asList(
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"
-                ).contains(result.unparse()));
+                ).contains(result.format()));
     }
 
     /**
@@ -61,6 +61,6 @@ public class SyntaxDemoTest {
         assertTrue(Arrays.<String>asList(
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"
-                ).contains(orig.withQuery(mutable).unparse()));
+                ).contains(orig.withQuery(mutable).format()));
     }
 }

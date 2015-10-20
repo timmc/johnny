@@ -2,15 +2,15 @@
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
   (:import (org.timmc.johnny Constants StringEncoder Urls)
-           (org.timmc.johnny.parts UserInfo PluggableUserInfoEncoder)))
+           (org.timmc.johnny.parts UserInfo PluggableUserInfoFormatter)))
 
 (defn default-parse
   [s]
   (.parse (.userInfoParser Urls/DEFAULT_CODECS) s))
 
-(defn default-encode
+(defn default-format
   [ui]
-  (.unparse (.userInfoEncoder Urls/DEFAULT_CODECS) ui))
+  (.format (.userInfoFormatter Urls/DEFAULT_CODECS) ui))
 
 (deftest parsing
   (let [parse (fn [raw] (let [ui (default-parse raw)]
@@ -23,10 +23,10 @@
          "ab%3Acd:ef%3Agh:ij" ["ab:cd" "ef:gh:ij"]
          "%E0%A5%AE:%E0%A5%AF" ["\u096e" "\u096f"])))
 
-(deftest encoding
-  (let [encode (fn [[u p]] (let [ui (UserInfo. u p)]
-                             (default-encode ui)))]
-    (are [in out] (= (encode in) out)
+(deftest formatting
+  (let [fmt (fn [[u p]] (let [ui (UserInfo. u p)]
+                          (default-format ui)))]
+    (are [in out] (= (fmt in) out)
          ["" nil] ""
          ["" ""] ":"
          ["" ":::"] "::::"
@@ -40,22 +40,22 @@
                                (.andNot Constants/ASCII
                                         Constants/ASCII_ALPHANUMERIC))))]
         (testing "username"
-          (is (= (set (remove #(.contains (encode [(str %) ""]) "%")
+          (is (= (set (remove #(.contains (fmt [(str %) ""]) "%")
                               interesting))
                  (set "-._~!$&'()*+,;="))))
         (testing "password (adds colon)"
-          (is (= (set (remove #(.contains (encode ["" (str %)]) "%")
+          (is (= (set (remove #(.contains (fmt ["" (str %)]) "%")
                               interesting))
                  (set "-._~!$&'()*+,;=:")))))))
-  (testing "alt encoders"
+  (testing "alt formatters"
     (let [bad (reify StringEncoder
                 (encode [_this s] "_"))]
-      (is (= (.unparse (PluggableUserInfoEncoder. bad bad)
-                       (UserInfo. "123" "abc"))
+      (is (= (.format (PluggableUserInfoFormatter. bad bad)
+                      (UserInfo. "123" "abc"))
              "_:_"))))
   (testing "null rejection"
     (is (thrown? NullPointerException
-                 (default-encode nil)))))
+                 (default-format nil)))))
 
 (deftest object-overrides
   (let [up-a1 (default-parse "a:b")

@@ -21,7 +21,7 @@
     ;; check that the unencoded characters are appropriate.
     (cross-all
      (let [lunatech-example "http://example.com/:@-._~!$&'()*+,=;:@-._~!$&'()*+,=:@-._~!$&'()*+,==?/?:@-._~!$'()*+,;=/?:@-._~!$'()*+,;==#/?:@-._~!$&'()*+,;="]
-       (is (= (.unparse (i/parse-u lunatech-example))
+       (is (= (.format (i/parse-u lunatech-example))
               lunatech-example))))))
 
 (deftest differential-encoding

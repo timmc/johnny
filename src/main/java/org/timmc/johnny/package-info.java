@@ -17,7 +17,7 @@
  * Url result = orig.withQuery(orig.getQuery()
  *                                 .append("foo", "bar")
  *                                 .replace("a", null));
- * result.unparse(); // "http://brightcove.com/login?a&amp;foo=bar"</code></pre>
+ * result.format(); // "http://brightcove.com/login?a&amp;foo=bar"</code></pre>
  * <p>
  * These manipulations use persistent data structures (structure-sharing immutable objects)
  * so they are thread-safe by default. (You may opt into mutable data structures, but should
@@ -33,7 +33,7 @@
  * <pre><code>Url orig = Urls.parse("http://brightcove.com/login?a=b=c&amp;a=?d");
  * Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_QUERY_PARSER.parse(orig.getQueryRaw()));
  * mutable = mutable.append("foo", "bar").replace("a", null);
- * orig.withQuery(mutable).unparse(); // "http://brightcove.com/login?a&amp;foo=bar"
+ * orig.withQuery(mutable).format(); // "http://brightcove.com/login?a&amp;foo=bar"
  * </code></pre>
  */
 package org.timmc.johnny;

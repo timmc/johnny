@@ -3,12 +3,12 @@
             Urls
             UrlParser JNUrlParser JNUriParser SchemeSpecificUriParser
             Url ImmutableUrl MutableUrl
-            UrlEncoder))
+            UrlFormatter))
   (:import (org.timmc.johnny.parts
-            TextPathParser TextPath TextPathEncoder
+            TextPathParser TextPath TextPathFormatter
             NullableValueQueryParser NullIsEmptyQueryParser
             MutableMultimapParams ImmutableOrderedParams
-            BasicQueryEncoder)))
+            BasicQueryFormatter)))
 
 ;;;; Known implementations
 
@@ -17,30 +17,30 @@
 (def url-parse-impls #{(JNUrlParser.) (JNUriParser.)
                        (SchemeSpecificUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
-(def url-encode-impls #{(UrlEncoder.)})
+(def url-format-impls #{(UrlFormatter.)})
 
 (def path-parse-impls #{(TextPathParser.)})
 (def path-manip-impls #{TextPath})
-(def path-encode-impls #{(TextPathEncoder.)})
+(def path-format-impls #{(TextPathFormatter.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
 (def q-manip-impls #{MutableMultimapParams ImmutableOrderedParams})
-(def q-encode-impls #{(BasicQueryEncoder.)})
+(def q-format-impls #{(BasicQueryFormatter.)})
 
 ;; The defaults manips are the empty instances, except for URL (which
 ;; does not yet support empty instances.)
 
 (def default-url-parser (.urlParser Urls/DEFAULT_CODECS))
 (def default-url-manip (.urlRepresentation Urls/DEFAULT_CODECS))
-(def default-url-encode (.urlEncoder Urls/DEFAULT_CODECS))
+(def default-url-format (.urlFormatter Urls/DEFAULT_CODECS))
 
 (def default-path-parser (.pathParser Urls/DEFAULT_CODECS))
 (def default-path-inst (.emptyPath Urls/DEFAULT_CODECS))
-(def default-path-encode (.pathEncoder Urls/DEFAULT_CODECS))
+(def default-path-format (.pathFormatter Urls/DEFAULT_CODECS))
 
 (def default-q-parser (.queryParser Urls/DEFAULT_CODECS))
 (def default-q-inst (.emptyParams Urls/DEFAULT_CODECS))
-(def default-q-encode (.queryEncoder Urls/DEFAULT_CODECS))
+(def default-q-format (.queryFormatter Urls/DEFAULT_CODECS))
 
 ;;;; Bindings for current preferred implementation
 
@@ -49,11 +49,11 @@
 
 (def ^:dynamic *path-parser* nil)
 (def ^:dynamic *path-manip* nil)
-(def ^:dynamic *path-encoder* nil)
+(def ^:dynamic *path-formatter* nil)
 
 (def ^:dynamic *query-parser* nil)
 (def ^:dynamic *query-manip* nil)
-(def ^:dynamic *query-encoder* nil)
+(def ^:dynamic *query-formatter* nil)
 
 ;;;; Binding sets
 
@@ -64,12 +64,12 @@
 (def path-impl-bindings
   {#'*path-parser* path-parse-impls
    #'*path-manip* path-manip-impls
-   #'*path-encoder* path-encode-impls})
+   #'*path-formatter* path-format-impls})
 
 (def query-impl-bindings
   {#'*query-parser* q-parse-impls
    #'*query-manip* q-manip-impls
-   #'*query-encoder* q-encode-impls})
+   #'*query-formatter* q-format-impls})
 
 ;;;; Parsing
 

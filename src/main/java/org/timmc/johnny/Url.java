@@ -16,7 +16,7 @@ import org.timmc.johnny.parts.UserInfo;
  * implementation class that relies on mutation. Client code should always use
  * a chaining technique, which will work with mutable versions as well:
  * <p>
- * <code>url.withScheme("http").withHost("example.net").unparse()</code>
+ * <code>url.withScheme("http").withHost("example.net").format()</code>
  * <p>
  * Implementations SHOULD have the following:
  * <ul>
@@ -34,10 +34,10 @@ public abstract class Url {
     /*== Convenience ==*/
 
     /**
-     * Convenience method to re-encode a URL.
+     * Format this URL back into a string using default settings.
      */
-    public String unparse() {
-        return Urls.DEFAULT_CODECS.urlEncoder.encode(this);
+    public String format() {
+        return Urls.DEFAULT_CODECS.urlFormatter.format(this);
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Url {
      * @param userInfo Nullable
      */
     public Url withUserInfo(UserInfo userInfo) {
-        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoEncoder.unparse(userInfo));
+        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoFormatter.format(userInfo));
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class Url {
      * @param path Non-null
      */
     public Url withPath(TextPath path) {
-        return withPathRaw(Urls.DEFAULT_CODECS.pathEncoder.unparse(path.getSegments()));
+        return withPathRaw(Urls.DEFAULT_CODECS.pathFormatter.format(path.getSegments()));
     }
 
     /**
@@ -96,7 +96,7 @@ public abstract class Url {
      * @param q Possibly null Query
      */
     public Url withQuery(Params q) {
-        return withQueryRaw(Urls.DEFAULT_CODECS.queryEncoder.unparse(q));
+        return withQueryRaw(Urls.DEFAULT_CODECS.queryFormatter.format(q));
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class Url {
 
     @Override
     public String toString() {
-        return unparse();
+        return format();
     }
 
     @Override

@@ -118,7 +118,7 @@ public class TextPath {
 
     @Override
     public String toString() {
-        return Urls.DEFAULT_CODECS.pathEncoder.unparse(getSegments());
+        return Urls.DEFAULT_CODECS.pathFormatter.format(getSegments());
     }
 
     @Override

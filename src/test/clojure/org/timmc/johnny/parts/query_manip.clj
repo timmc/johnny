@@ -43,7 +43,7 @@
 
 (deftest construction
   (cross
-   {#'i/*query-encoder* [nil]}
+   {#'i/*query-formatter* [nil]}
    (let [val (i/parse-q "a=5&b=&a=6")]
      (is (= (.countKeys val) 2))
      (is (.hasKey val "a"))
@@ -65,7 +65,7 @@
   ;; Detailed tests of .appendAll first
   (cross
    {#'i/*query-parser* [nil]
-    #'i/*query-encoder* [nil]}
+    #'i/*query-formatter* [nil]}
    ;; Empty
    (doseq [[which val] {:fresh (i/create-q)
                         :append-nothing (.appendAll (i/create-q) [])}]

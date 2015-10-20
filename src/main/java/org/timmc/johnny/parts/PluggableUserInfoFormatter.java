@@ -7,9 +7,9 @@ import org.timmc.johnny.ImmutableBitSet;
 import org.timmc.johnny.StringEncoder;
 
 /**
- * Pluggable encoder for {@link UserInfo}s that uses minimal encoding by default.
+ * Pluggable formatter for {@link UserInfo}s that uses minimal encoding by default.
  */
-public class PluggableUserInfoEncoder implements UserInfoEncoder {
+public class PluggableUserInfoFormatter implements UserInfoFormatter {
 
     /** Default set of unencoded characters for username subcomponent. */
     public static final ImmutableBitSet DEFAULT_PASS_USERNAME = Constants.RFC3986_UNENCODED_USERINFO.clear(':');
@@ -27,22 +27,22 @@ public class PluggableUserInfoEncoder implements UserInfoEncoder {
     public final StringEncoder passwordEnc;
 
     /** Instance using all defaults. */
-    public static final PluggableUserInfoEncoder INSTANCE = new PluggableUserInfoEncoder();
+    public static final PluggableUserInfoFormatter INSTANCE = new PluggableUserInfoFormatter();
 
     /**
      * Specify custom encoders for {@link #usernameEnc} and {@link #passwordEnc}.
      */
-    public PluggableUserInfoEncoder(StringEncoder usernameEnc, StringEncoder passwordEnc) {
+    public PluggableUserInfoFormatter(StringEncoder usernameEnc, StringEncoder passwordEnc) {
         this.usernameEnc = usernameEnc;
         this.passwordEnc = passwordEnc;
     }
 
     /** Prefer {@link #INSTANCE}. */
-    public PluggableUserInfoEncoder() {
+    public PluggableUserInfoFormatter() {
         this(DEFAULT_ENC_USERNAME, DEFAULT_ENC_PASSWORD);
     }
 
-    public String unparse(UserInfo userInfo) {
+    public String format(UserInfo userInfo) {
         StringBuilder ret = new StringBuilder();
         ret.append(usernameEnc.encode(userInfo.user));
         if (userInfo.password != null) {

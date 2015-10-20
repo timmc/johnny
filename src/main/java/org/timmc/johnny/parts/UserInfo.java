@@ -32,11 +32,11 @@ public class UserInfo {
      * Return a readable view of the username and password. May or may not be suitable for inclusion
      * in a URL.
      *
-     * @see UserInfoEncoder
+     * @see UserInfoFormatter
      */
     @Override
     public String toString() {
-        return Urls.DEFAULT_CODECS.userInfoEncoder.unparse(this);
+        return Urls.DEFAULT_CODECS.userInfoFormatter.format(this);
     }
 
     @Override

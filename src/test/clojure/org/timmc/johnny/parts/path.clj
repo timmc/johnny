@@ -48,13 +48,13 @@
 (deftest regression-urlencode-spaces
   (let [path (.addSegments TextPath/EMPTY ["foo" "bar baz"])]
     (is (= (-> Urls/DEFAULT_CODECS
-               (.pathEncoder)
-               (.unparse (.getSegments path)))
+               (.pathFormatter)
+               (.format (.getSegments path)))
            "/foo/bar%20baz"))))
 
 (deftest integration
   (let [url (Urls/parse "http://[::1]/foo/bar")]
-    (is (= (.unparse (.withPath url (-> (.getPath url)
-                                        (.addRawPath "baz;a=b/quux")
+    (is (= (.format (.withPath url (-> (.getPath url)
+                                       (.addRawPath "baz;a=b/quux")
                                         (.addOneSegment "/a?;"))))
            "http://[::1]/foo/bar/baz;a=b/quux/%2Fa%3F;"))))

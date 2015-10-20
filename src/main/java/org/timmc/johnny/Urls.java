@@ -2,11 +2,11 @@ package org.timmc.johnny;
 
 import java.net.MalformedURLException;
 
-import org.timmc.johnny.parts.BasicQueryEncoder;
-import org.timmc.johnny.parts.HostEncoder;
+import org.timmc.johnny.parts.BasicQueryFormatter;
+import org.timmc.johnny.parts.HostFormatter;
 import org.timmc.johnny.parts.ImmutableOrderedParams;
-import org.timmc.johnny.parts.TextPathEncoder;
-import org.timmc.johnny.parts.PluggableUserInfoEncoder;
+import org.timmc.johnny.parts.TextPathFormatter;
+import org.timmc.johnny.parts.PluggableUserInfoFormatter;
 import org.timmc.johnny.parts.StrictHostParser;
 import org.timmc.johnny.parts.NullIsEmptyQueryParser;
 import org.timmc.johnny.parts.Params;
@@ -25,17 +25,17 @@ public class Urls {
     public static final CodecSuite DEFAULT_CODECS = new CodecSuite(
             new JNUriParser(),
             ImmutableUrl.class,
-            new UrlEncoder(),
+            new UrlFormatter(),
             new StdUserInfoParser(),
-            PluggableUserInfoEncoder.INSTANCE,
+            PluggableUserInfoFormatter.INSTANCE,
             new StrictHostParser(),
-            new HostEncoder(),
+            new HostFormatter(),
             TextPathParser.INSTANCE,
             TextPath.EMPTY,
-            TextPathEncoder.INSTANCE,
+            TextPathFormatter.INSTANCE,
             new NullIsEmptyQueryParser(),
             ImmutableOrderedParams.EMPTY,
-            new BasicQueryEncoder());
+            new BasicQueryFormatter());
 
     private Urls() { }
 

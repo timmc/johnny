@@ -3,15 +3,15 @@ package org.timmc.johnny.parts;
 import org.timmc.johnny.Url;
 
 /**
- * Query encoder. Implementations are free to choose character sets,
+ * Query formatter. Implementations are free to choose character sets,
  * reserved characters, and delimiters.
  */
-public interface QueryEncoder {
+public interface QueryFormatter {
     /**
-     * Encode a query to a raw query string.
+     * Format a query as a raw query string.
      * @param q Query object (nullable)
      * @return String (possibly null) suitable for
      *  {@link Url#withQueryRaw(String)}
      */
-    public String unparse(Params q);
+    public String format(Params q);
 }

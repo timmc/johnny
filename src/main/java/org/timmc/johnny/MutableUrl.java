@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
  * client code should still use a chaining technique (allowing a safe and easy
  * transition to supporting immutable {@link Url} implementations as well):
  * <p>
- * <code>mutableUrl.withScheme("http").withHostRaw("example.net").unparse()</code>
+ * <code>mutableUrl.withScheme("http").withHostRaw("example.net").format()</code>
  * <p>
  * Methods beginning with "set" are provided only for bean compability and
  * should have the same performance characteristics as the "with" methods.
