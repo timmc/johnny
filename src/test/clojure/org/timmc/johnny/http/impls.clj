@@ -8,7 +8,7 @@
             TextPathParser TextPath TextPathEncoder
             NullableValueQueryParser NullIsEmptyQueryParser
             PersistentOrderedParams MutableMultimapParams
-            PersistentMultimapParams
+            PersistentMultimapParams ImmutableOrderedParams
             BasicQueryEncoder)))
 
 ;;;; Known implementations
@@ -26,7 +26,7 @@
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
 (def q-manip-impls #{PersistentOrderedParams MutableMultimapParams
-                     PersistentMultimapParams})
+                     PersistentMultimapParams ImmutableOrderedParams})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
 ;; The defaults manips are the empty instances, except for URL (which
