@@ -3,12 +3,12 @@ package org.timmc.johnny;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.timmc.johnny.Uri.BadUriException.UriError;
+import org.timmc.johnny.Rfc3986Uri.BadUriException.UriError;
 
 /**
  * RFC 3986 URI representation and parsing.
  */
-public class Uri {
+public class Rfc3986Uri {
     /** Scheme component, not null. */
     public final String scheme;
     /** Raw authority component, nullable. */
@@ -23,7 +23,7 @@ public class Uri {
     /**
      * Create a URI from raw components.
      */
-    public Uri(String scheme, String authority, String path, String query, String fragment) {
+    public Rfc3986Uri(String scheme, String authority, String path, String query, String fragment) {
         if (scheme == null) { throw new NullPointerException("Scheme may not be null."); }
         if (path == null) { throw new NullPointerException("Path may not be null."); }
 
@@ -46,7 +46,7 @@ public class Uri {
     /**
      * Parse a URI based on generic syntax (not scheme-specific.)
      */
-    public static Uri parseGeneric(String uri) {
+    public static Rfc3986Uri parseGeneric(String uri) {
         if (uri == null) { throw new NullPointerException("uri may not be null."); }
 
         Matcher m = absSyntax.matcher(uri);
@@ -73,7 +73,7 @@ public class Uri {
             path = hierarchy;
         }
 
-        return new Uri(scheme, authority, path, query, fragment);
+        return new Rfc3986Uri(scheme, authority, path, query, fragment);
     }
 
     private static void validate(boolean valid, UriError checking) {
@@ -89,7 +89,10 @@ public class Uri {
         return UriAuthority.parseGeneric(authority);
     }
 
+    @SuppressWarnings("javadoc")
     public static class BadUriException extends RuntimeException {
+        private static final long serialVersionUID = -7325768119011066780L;
+
         public enum UriError {
             PARSE_FAILED("Could not determine basic structure of URI"),
             SCHEME_EMPTY("Scheme component was empty"),

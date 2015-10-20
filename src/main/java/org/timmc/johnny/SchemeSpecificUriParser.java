@@ -4,21 +4,21 @@ import java.net.MalformedURLException;
 
 
 /**
- * A URL parser based on the generic {@link Uri} parser.
+ * A URL parser based on the generic {@link Rfc3986Uri} parser.
  */
 public class SchemeSpecificUriParser implements UrlParser {
 
     public Object[] parse(String url) throws MalformedURLException {
-        Uri uri;
+        Rfc3986Uri uri;
         UriAuthority authority;
         try {
-            uri = Uri.parseGeneric(url);
+            uri = Rfc3986Uri.parseGeneric(url);
             if (uri.authority == null) {
                 throw new MalformedURLException("Generic URI did not have an authority component.");
             } else {
                 authority = uri.parseAuthority();
             }
-        } catch (Uri.BadUriException bue) {
+        } catch (Rfc3986Uri.BadUriException bue) {
             throw (MalformedURLException) new MalformedURLException().initCause(bue);
         }
         Integer port = (authority.port == null || authority.port.isEmpty())
