@@ -81,6 +81,14 @@ new ImmutableUrl("http", null, "example.com", null, "/", "ampersand=%26", null);
 
 FIXME
 
+## Building
+
+Johnny is built using Leiningen with Java 7 compatibility:
+
+```sh
+JAVA_CMD=/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java lein jar
+```
+
 ## Contributing
 
 See [HACK.md](HACK.md).

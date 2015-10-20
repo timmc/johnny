@@ -5,13 +5,14 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [com.google.guava/guava "14.0.1"]]
   :plugins [[lein-junit "1.1.8"]
-            [lein-javadoc "0.2.0"]]
+            [lein-javadoc "0.2.1-SNAPSHOT"]]
   ;; Implementation is actually in Java, but most tests are written in
   ;; Clojure. There's one junit test in Java just to demonstrate
   ;; syntax.
   :java-source-paths ["src/main/java"]
   :source-paths []
   :test-paths ["src/test/clojure"]
+  :javac-options ["-target" "1.7" "-source" "1.7"]
   :profiles {:dev {:dependencies [[junit/junit "4.12"]]
                    :java-source-paths ["src/test/java"]}}
   :junit ["src/test/java"]
