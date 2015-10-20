@@ -7,8 +7,7 @@
   (:import (org.timmc.johnny.parts
             TextPathParser TextPath TextPathEncoder
             NullableValueQueryParser NullIsEmptyQueryParser
-            PersistentOrderedParams MutableMultimapParams
-            PersistentMultimapParams ImmutableOrderedParams
+            MutableMultimapParams ImmutableOrderedParams
             BasicQueryEncoder)))
 
 ;;;; Known implementations
@@ -25,8 +24,7 @@
 (def path-encode-impls #{(TextPathEncoder.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
-(def q-manip-impls #{PersistentOrderedParams MutableMultimapParams
-                     PersistentMultimapParams ImmutableOrderedParams})
+(def q-manip-impls #{MutableMultimapParams ImmutableOrderedParams})
 (def q-encode-impls #{(BasicQueryEncoder.)})
 
 ;; The defaults manips are the empty instances, except for URL (which

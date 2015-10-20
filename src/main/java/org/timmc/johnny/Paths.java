@@ -6,10 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.timmc.johnny.coll.ClojureHelper;
 import org.timmc.johnny.http.Codecs;
-
-import clojure.lang.PersistentVector;
 
 /**
  * Utilities for working with standard RFC 3986 paths.
@@ -31,8 +28,6 @@ import clojure.lang.PersistentVector;
  * </ul>
  */
 public class Paths {
-
-    static { ClojureHelper.init(); }
 
     private static final List<String> EMPTY_STRS = Collections.unmodifiableList(Arrays.<String>asList());
 
@@ -75,22 +70,20 @@ public class Paths {
      */
     public static PathEffect effectOf(Iterable<String> pathRefSegs) {
         int removed = 0;
-        PersistentVector build = PersistentVector.EMPTY;
+        List<String> added = new ArrayList<String>();
         for (String seg : pathRefSegs) {
             if (seg == null || seg.isEmpty() || seg.equals(".")) {
                 continue;
             } else if (seg.equals("..")) {
-                if (build.isEmpty()) {
+                if (added.isEmpty()) {
                     removed++;
                 } else {
-                    build = build.pop();
+                    added.remove(added.size() - 1);
                 }
             } else {
-                build = build.cons(seg);
+                added.add(seg);
             }
         }
-        @SuppressWarnings("unchecked")
-        List<String> added = build;
         return new PathEffect(false, removed, added);
     }
 

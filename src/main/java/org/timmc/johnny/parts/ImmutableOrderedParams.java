@@ -45,11 +45,10 @@ public class ImmutableOrderedParams implements Params {
     private final Map<String, NavigableSet<Integer>> keylocs;
 
     /** Create a new, empty params (prefer to use {@link #EMPTY}.) */
-    @SuppressWarnings("unchecked")
     public ImmutableOrderedParams() {
-        entries = Collections.EMPTY_LIST;
+        entries = Collections.emptyList();
         deleted = 0;
-        keylocs = Collections.EMPTY_MAP;
+        keylocs = Collections.emptyMap();
     }
 
     /** Mutation constructor. */
