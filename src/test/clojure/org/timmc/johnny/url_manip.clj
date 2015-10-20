@@ -1,9 +1,9 @@
-(ns org.timmc.johnny.http.url-manip
+(ns org.timmc.johnny.url-manip
   "Tests for URL manipulation."
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.http.impls :as i])
-  (:import (org.timmc.johnny.http Urls MutableUrl)))
+            [org.timmc.johnny.impls :as i])
+  (:import (org.timmc.johnny Urls MutableUrl)))
 
 (defmacro cross
   [binding-overlay & body]

@@ -2,15 +2,15 @@
  * A library for parsing and manipulating web URLs (http/https) correctly
  * and usefully.
  * <p>
- * The main class is {@link org.timmc.johnny.http.Urls}.
+ * The main class is {@link org.timmc.johnny.Urls}.
  * <p>
  * <b>Overview</b>
  * <p>
  * This library is organized around the successive parsing of nested structural elements.
- * Given a URL string, {@link org.timmc.johnny.http.Urls#parse(String)} converts it
- * into a {@link org.timmc.johnny.http.Url} data structure that may be inspected,
+ * Given a URL string, {@link org.timmc.johnny.Urls#parse(String)} converts it
+ * into a {@link org.timmc.johnny.Url} data structure that may be inspected,
  * manipulated, and re-encoded as a string using a builder API.
- * {@link org.timmc.johnny.http.Url} contains 7 components, some of which have internal
+ * {@link org.timmc.johnny.Url} contains 7 components, some of which have internal
  * structure. These may be further parsed and manipulated:
  * <p>
  * <pre><code>Url orig = Urls.parse("http://brightcove.com/login?a=b=c&amp;a=?d");
@@ -36,5 +36,5 @@
  * orig.withQuery(mutable).unparse(); // "http://brightcove.com/login?a&amp;foo=bar"
  * </code></pre>
  */
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 

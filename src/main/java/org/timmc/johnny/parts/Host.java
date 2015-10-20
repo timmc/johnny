@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 import com.google.common.net.InternetDomainName;
 
-import org.timmc.johnny.http.Urls;
+import org.timmc.johnny.Urls;
 
 /**
  * The host component of a URL (e.g. "example.com" or an IP address.)

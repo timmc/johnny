@@ -1,5 +1,5 @@
-(ns org.timmc.johnny.http.impls  
-  (:import (org.timmc.johnny.http
+(ns org.timmc.johnny.impls
+  (:import (org.timmc.johnny
             Urls
             UrlParser JNUrlParser JNUriParser SchemeSpecificUriParser
             Url ImmutableUrl MutableUrl

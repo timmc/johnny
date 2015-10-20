@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.timmc.johnny.http.Codecs;
 
 /**
  * Utilities for working with standard RFC 3986 paths.

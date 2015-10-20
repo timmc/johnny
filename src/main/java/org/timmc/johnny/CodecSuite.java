@@ -1,4 +1,4 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
 import org.timmc.johnny.parts.HostEncoder;
 import org.timmc.johnny.parts.HostParser;

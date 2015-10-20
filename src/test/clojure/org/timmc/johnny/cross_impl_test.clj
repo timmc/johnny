@@ -2,7 +2,7 @@
   "This should be split up."
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.http.impls :as i]
+            [org.timmc.johnny.impls :as i]
             [clojure.string :as str]))
 
 (defmacro cross

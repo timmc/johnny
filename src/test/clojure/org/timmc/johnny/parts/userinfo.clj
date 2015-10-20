@@ -1,8 +1,7 @@
 (ns org.timmc.johnny.parts.userinfo
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Constants StringEncoder)
-           org.timmc.johnny.http.Urls
+  (:import (org.timmc.johnny Constants StringEncoder Urls)
            (org.timmc.johnny.parts UserInfo PluggableUserInfoEncoder)))
 
 (defn default-parse

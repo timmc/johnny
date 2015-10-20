@@ -1,4 +1,4 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
 /**
  * Deeper validation of Url components.

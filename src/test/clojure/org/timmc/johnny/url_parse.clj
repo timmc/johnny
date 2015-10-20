@@ -1,9 +1,9 @@
-(ns org.timmc.johnny.http.url-parse
+(ns org.timmc.johnny.url-parse
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.http.impls :as i]
+            [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny.http ImmutableUrl)))
+  (:import (org.timmc.johnny ImmutableUrl)))
 
 (defmacro default-others
   [& body]

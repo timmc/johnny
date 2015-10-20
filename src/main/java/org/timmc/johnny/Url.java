@@ -1,8 +1,7 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
 import java.util.Collection;
 
-import org.timmc.johnny.Util;
 import org.timmc.johnny.parts.Host;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;

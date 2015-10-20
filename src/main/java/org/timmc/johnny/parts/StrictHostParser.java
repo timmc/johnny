@@ -6,7 +6,7 @@ import java.net.InetAddress;
 import com.google.common.net.InetAddresses;
 import com.google.common.net.InternetDomainName;
 
-import org.timmc.johnny.http.Codecs;
+import org.timmc.johnny.Codecs;
 
 /**
  * Host parser that is generally more restrictive, e.g. not allowing IPv6 hosts without brackets.

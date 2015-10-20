@@ -2,7 +2,7 @@ package org.timmc.johnny.parts;
 
 import java.util.Map;
 
-import org.timmc.johnny.http.Url;
+import org.timmc.johnny.Url;
 
 /**
  * A parser for query components that are composed of keys and optional

@@ -1,7 +1,7 @@
-(ns org.timmc.johnny.http.defaults
+(ns org.timmc.johnny.defaults
   "Tests for default implementations."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny.http Urls)))
+  (:import (org.timmc.johnny Urls)))
 
 (deftest immutable-url-by-default
   (let [orig (Urls/parse "http://brightcove.com")

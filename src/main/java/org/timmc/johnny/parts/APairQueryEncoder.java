@@ -2,7 +2,7 @@ package org.timmc.johnny.parts;
 
 import java.util.Map;
 
-import org.timmc.johnny.http.Url;
+import org.timmc.johnny.Url;
 
 /**
  * Adds the assumption that a Query is made of key-value pairs.

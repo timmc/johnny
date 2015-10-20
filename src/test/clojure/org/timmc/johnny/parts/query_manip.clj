@@ -2,9 +2,9 @@
   "Tests for query manipulation."
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.http.impls :as i])
+            [org.timmc.johnny.impls :as i])
   (:import (org.timmc.johnny.coll MapEntry)
-           (org.timmc.johnny.http Urls)))
+           (org.timmc.johnny Urls)))
 (.importClass *ns* 'ME org.timmc.johnny.coll.MapEntry)
 
 (defmacro cross

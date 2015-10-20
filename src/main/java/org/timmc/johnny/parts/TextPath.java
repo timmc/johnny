@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.timmc.johnny.Paths;
+import org.timmc.johnny.Urls;
 import org.timmc.johnny.Paths.PathEffect;
-import org.timmc.johnny.http.Urls;
 
 /**
  * The path component of a URL, consisting of a possibly-empty series of

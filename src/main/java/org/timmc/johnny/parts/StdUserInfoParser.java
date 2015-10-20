@@ -1,6 +1,6 @@
 package org.timmc.johnny.parts;
 
-import org.timmc.johnny.http.Codecs;
+import org.timmc.johnny.Codecs;
 
 /**
  * Standard {@link UserInfoParser}.

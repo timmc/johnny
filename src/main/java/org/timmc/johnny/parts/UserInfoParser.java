@@ -1,6 +1,6 @@
 package org.timmc.johnny.parts;
 
-import org.timmc.johnny.http.Url;
+import org.timmc.johnny.Url;
 
 /**
  * Parser for the userinfo component of a URL.

@@ -1,9 +1,7 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
 import java.net.MalformedURLException;
 
-import org.timmc.johnny.Uri;
-import org.timmc.johnny.UriAuthority;
 
 /**
  * A URL parser based on the generic {@link Uri} parser.

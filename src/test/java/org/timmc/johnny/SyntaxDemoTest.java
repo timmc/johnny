@@ -1,4 +1,4 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
 import static org.junit.Assert.*;
 

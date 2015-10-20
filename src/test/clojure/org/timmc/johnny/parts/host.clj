@@ -1,7 +1,7 @@
 (ns org.timmc.johnny.parts.host
   "Tests for host parsing."
   (:require [clojure.test :refer :all])
-  (:import org.timmc.johnny.http.Urls
+  (:import org.timmc.johnny.Urls
            org.timmc.johnny.parts.Host
            java.net.InetAddress
            com.google.common.net.InternetDomainName))

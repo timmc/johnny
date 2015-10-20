@@ -1,6 +1,6 @@
 package org.timmc.johnny.parts;
 
-import org.timmc.johnny.http.Url;
+import org.timmc.johnny.Url;
 
 /**
  * Query encoder. Implementations are free to choose character sets,

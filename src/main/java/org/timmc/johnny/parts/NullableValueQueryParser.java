@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.timmc.johnny.Codecs;
 import org.timmc.johnny.coll.MapEntry;
-import org.timmc.johnny.http.Codecs;
 
 /**
  * A query parser that allows keys that are missing values (e.g. the second

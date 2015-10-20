@@ -1,9 +1,5 @@
-package org.timmc.johnny.http;
+package org.timmc.johnny;
 
-import org.timmc.johnny.Ascii7Oracle;
-import org.timmc.johnny.ByCharPercentEncoder;
-import org.timmc.johnny.Constants;
-import org.timmc.johnny.StringEncoder;
 
 /**
  * Whole-URL encoder.

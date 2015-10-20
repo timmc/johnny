@@ -1,6 +1,6 @@
 package org.timmc.johnny.parts;
 
-import org.timmc.johnny.http.Urls;
+import org.timmc.johnny.Urls;
 
 /**
  * Represents a username/password pair from the userinfo component of a URI's
