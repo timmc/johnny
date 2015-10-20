@@ -1,44 +1,38 @@
 package org.timmc.johnny.parts;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
-import org.timmc.johnny.coll.ClojureHelper;
 import org.timmc.johnny.coll.MapEntry;
-
-import clojure.lang.IPersistentCollection;
-import clojure.lang.IPersistentMap;
-import clojure.lang.ITransientMap;
-import clojure.lang.ITransientVector;
-import clojure.lang.PersistentHashMap;
-import clojure.lang.PersistentTreeSet;
-import clojure.lang.PersistentVector;
 
 /**
  * An immutable params representation that maintains the original order
  * of key-value pairs, appends to the end, and can replace existing
  * pairs in-place. Accepts null values. Finding the last value for a key
- * takes sublinear time.
+ * takes linear time in the # of values for the key.
  */
-public class PersistentOrderedParams implements Params {
-
-    static { ClojureHelper.init(); }
+public class ImmutableOrderedParams implements Params {
 
     /**
      * A blank instance.
      */
-    public static final PersistentOrderedParams EMPTY = new PersistentOrderedParams();
+    public static final ImmutableOrderedParams EMPTY = new ImmutableOrderedParams();
 
     /**
      * Ordered list of key-value entries (Entry), with nulls indicating
      * deleted entries. NB: Null param values are not the same as null entries
      * in this collection.
      */
-    private final PersistentVector entries;
+    private final List<Entry<String, String>> entries;
     /**
      * Number of nil entries in {@link #entries}.
      */
@@ -48,24 +42,24 @@ public class PersistentOrderedParams implements Params {
      * Map of string keys to non-empty {@link PersistentTreeSet}
      * of {@link #entries} indices ({@link Integer}) where values lie.
      */
-    private final PersistentHashMap keylocs;
+    private final Map<String, NavigableSet<Integer>> keylocs;
 
     /** Create a new, empty params (prefer to use {@link #EMPTY}.) */
-    public PersistentOrderedParams() {
-        entries = PersistentVector.EMPTY;
+    public ImmutableOrderedParams() {
+        entries = Collections.emptyList();
         deleted = 0;
-        keylocs = PersistentHashMap.EMPTY;
+        keylocs = Collections.emptyMap();
     }
 
     /** Mutation constructor. */
-    private PersistentOrderedParams(IPersistentCollection entries, int deleted, IPersistentMap keylocs) {
-        this.entries = (PersistentVector) entries;
+    private ImmutableOrderedParams(List<Entry<String, String>> entries, int deleted, Map<String, NavigableSet<Integer>> keylocs) {
+        this.entries = entries;
         this.deleted = deleted;
-        this.keylocs = (PersistentHashMap) keylocs;
+        this.keylocs = keylocs;
     }
 
-    private PersistentTreeSet indicesFor(String key) {
-        return (PersistentTreeSet) keylocs.get(key);
+    private NavigableSet<Integer> indicesFor(String key) {
+        return keylocs.get(key);
     }
 
     /*== Functional ==*/
@@ -93,30 +87,28 @@ public class PersistentOrderedParams implements Params {
     /*== Accessors ==*/
 
     /** Return highest index, or null if indices is empty or null. */
-    private Integer maxIndex(PersistentTreeSet indices) {
-        return indices == null ? null : (Integer) indices.rseq().first();
+    private Integer maxIndex(NavigableSet<Integer> indices) {
+        return indices == null ? null : indices.descendingSet().first();
     }
 
     /** Return val at index; null if null index, null value, or null entry. */
-    @SuppressWarnings("unchecked")
     private String valAtIndex(Integer i) {
         if (i == null) {
             return null;
         }
-        Entry<String, String> e = (Entry<String, String>) entries.get(i);
+        Entry<String, String> e = entries.get(i);
         if (e == null) {
             return null;
         }
         return e.getValue();
     }
 
-    @SuppressWarnings("unchecked")
     private Integer findLast(String key, String val) {
-        PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
+        NavigableSet<Integer> indices = keylocs.get(key);
         if (indices == null) {
             return null;
         }
-        for (Integer i : (Iterable<Integer>) indices.rseq()) {
+        for (Integer i : indices.descendingSet()) {
             String curv = valAtIndex(i);
             if (val == null ? curv == null : val.equals(curv)) {
                 return i;
@@ -128,7 +120,7 @@ public class PersistentOrderedParams implements Params {
     /*== Interface implementation ==*/
 
     public boolean hasKey(String key) {
-        PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
+        NavigableSet<Integer> indices = keylocs.get(key);
         return indices != null;
     }
 
@@ -137,7 +129,7 @@ public class PersistentOrderedParams implements Params {
     }
 
     public String getLast(String key) {
-        PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
+        NavigableSet<Integer> indices = keylocs.get(key);
         if (indices == null) {
             return null;
         } else { // if present, not empty
@@ -146,16 +138,14 @@ public class PersistentOrderedParams implements Params {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public Collection<String> getAll(String key) {
-        return map((Set<Integer>) indicesFor(key), new F2<Integer, String>() {
+        return map(indicesFor(key), new F2<Integer, String>() {
             public String f(Integer in) {
                 return valAtIndex(in);
             }
         });
     }
 
-    @SuppressWarnings("unchecked")
     public Collection<Entry<String, String>> getPairs() {
         LinkedList<Entry<String, String>> ret = new LinkedList<Entry<String,String>>();
         for (Entry<String, String> e : (Collection<Entry<String, String>>) entries) {
@@ -174,95 +164,99 @@ public class PersistentOrderedParams implements Params {
         return entries.size() - deleted;
     }
 
-    public PersistentOrderedParams empty() {
+    public ImmutableOrderedParams empty() {
         return EMPTY;
     }
 
-    @SuppressWarnings("unchecked")
-    public PersistentOrderedParams removeAll(String key) {
-        PersistentTreeSet indices = indicesFor(key);
+    public ImmutableOrderedParams removeAll(String key) {
+        NavigableSet<Integer> indices = indicesFor(key);
         if (indices == null) {
             return this;
         }
-        ITransientVector newEntries = entries.asTransient();
-        for (Integer i : (Set<Integer>) indices) {
-            newEntries = newEntries.assocN(i, null);
+        List<Entry<String, String>> newEntries = new ArrayList<Entry<String, String>>(entries);
+        for (Integer i : indices) {
+            newEntries.set(i, null);
         }
-        return new PersistentOrderedParams(
-                newEntries.persistent(),
-                deleted + indices.size(),
-                keylocs.without(key));
+        Map<String, NavigableSet<Integer>> newKeylocs = new HashMap<String, NavigableSet<Integer>>(keylocs);
+        newKeylocs.remove(key);
+        return new ImmutableOrderedParams(newEntries, deleted + indices.size(), newKeylocs);
     }
 
-    @SuppressWarnings("unchecked")
-    public PersistentOrderedParams removeAll(String key, String val) {
-        PersistentTreeSet indices = indicesFor(key);
+    public ImmutableOrderedParams removeAll(String key, String val) {
+        NavigableSet<Integer> indices = indicesFor(key);
         if (indices == null) {
             return this;
         }
+        NavigableSet<Integer> newIndices = new TreeSet<Integer>(indices);
         int removed = 0;
-        ITransientVector newEntries = entries.asTransient();
-        for (Integer i : (Set<Integer>) indices) {
-            Entry<String, String> e = (Entry<String, String>) entries.get(i);
+        List<Entry<String, String>> newEntries = new ArrayList<Entry<String, String>>(entries);
+        for (Integer i : indices) {
+            Entry<String, String> e = entries.get(i);
             // trust that entry is not null, since it was referred to by index
             String curv = e.getValue();
             if (val == null ? curv == null : val.equals(curv)) {
-                newEntries = newEntries.assocN(i, null);
+                newEntries.set(i, null);
                 removed++;
-                indices = (PersistentTreeSet) indices.disjoin(i);
+                newIndices.remove(i);
             }
         }
-        return new PersistentOrderedParams(
-                newEntries.persistent(),
-                deleted + removed,
-                indices.isEmpty() ? keylocs.without(key)
-                                  : keylocs.assoc(key, indices));
-    }
-
-    public PersistentOrderedParams append(String key, String val) {
-        PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
-        if (indices == null) {
-            indices = PersistentTreeSet.EMPTY;
+        Map<String, NavigableSet<Integer>> newKeylocs = new HashMap<String, NavigableSet<Integer>>(keylocs);
+        if (newIndices.isEmpty()) {
+            newKeylocs.remove(key);
+        } else {
+            newKeylocs.put(key, newIndices);
         }
-        return new PersistentOrderedParams(
-                entries.cons(new MapEntry<String, String>(key, val)),
-                deleted,
-                keylocs.assoc(key, indices.cons(entries.size())));
+        return new ImmutableOrderedParams(newEntries, deleted + removed, newKeylocs);
     }
 
-    public PersistentOrderedParams appendAll(Iterable<Entry<String, String>> source) {
-        ITransientMap keylocsT = keylocs.asTransient();
+    public ImmutableOrderedParams append(String key, String val) {
+        List<Entry<String, String>> newEntries = new ArrayList<Entry<String, String>>(entries);
+        newEntries.add(new MapEntry<String, String>(key, val));
+        Map<String, NavigableSet<Integer>> newKeylocs = new HashMap<String, NavigableSet<Integer>>(keylocs);
+        NavigableSet<Integer> indices = keylocs.get(key);
+        if (indices == null) {
+            indices = new TreeSet<Integer>();
+            newKeylocs.put(key, indices);
+        }
+        indices.add(entries.size());
+        return new ImmutableOrderedParams(newEntries, deleted, newKeylocs);
+    }
+
+    public ImmutableOrderedParams appendAll(Iterable<Entry<String, String>> source) {
+        Map<String, NavigableSet<Integer>> newKeylocs = new HashMap<String, NavigableSet<Integer>>(keylocs);
+        List<Entry<String, String>> newEntries = new ArrayList<Map.Entry<String,String>>(entries);
         int nextIndex = entries.size();
         for (Iterator<Entry<String, String>> iter = source.iterator(); iter.hasNext(); ) {
             Entry<String, String> e = iter.next();
-            PersistentTreeSet indices = (PersistentTreeSet) keylocsT.valAt(e.getKey());
+            NavigableSet<Integer> indices = newKeylocs.get(e.getKey());
             if (indices == null) {
-                indices = PersistentTreeSet.EMPTY;
+                indices = new TreeSet<Integer>();
+                newKeylocs.put(e.getKey(), indices);
             }
-            keylocsT = keylocsT.assoc(e.getKey(), indices.cons(nextIndex));
+            indices.add(nextIndex);
+            // Ensure Entry objects themselves are immutable.
+            newEntries.add(new MapEntry<String, String>(e.getKey(), e.getValue()));
             nextIndex++;
         }
-        return new PersistentOrderedParams(
-                ClojureHelper.into(entries, source.iterator()),
+        return new ImmutableOrderedParams(
+                newEntries,
                 deleted,
-                keylocsT.persistent());
+                newKeylocs);
     }
 
-    public PersistentOrderedParams replace(String key, String val) {
+    public ImmutableOrderedParams replace(String key, String val) {
         return removeAll(key).append(key, val);
     }
 
-    public PersistentOrderedParams replaceLast(String key, String val) {
-        PersistentTreeSet indices = (PersistentTreeSet) keylocs.get(key);
+    public ImmutableOrderedParams replaceLast(String key, String val) {
+        NavigableSet<Integer> indices = keylocs.get(key);
         if (indices == null) {
             return append(key, val);
         } else {
             Integer lastMatchingIndex = maxIndex(indices);
-            return new PersistentOrderedParams(
-                    entries.assocN(lastMatchingIndex,
-                                   new MapEntry<String, String>(key, val)),
-                    deleted,
-                    keylocs);
+            List<Entry<String, String>> newEntries = new ArrayList<Entry<String,String>>(entries);
+            newEntries.set(lastMatchingIndex, new MapEntry<String, String>(key, val));
+            return new ImmutableOrderedParams(newEntries, deleted, keylocs);
         }
     }
 

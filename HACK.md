@@ -40,10 +40,6 @@ johnny is managed with the [Leiningen][lein] build tool.
 ## TODO
 
 - Compile with Java 6 source compatibility
-- Get rid of Clojure dependency -- replace use of PersistentHashMap
-  and similar with array-copying. We're not going to have tons of
-  querystrings larger than 32 elements, so we don't get any perf
-  benefits from PHM anyhow!
 - No checked exceptions -- switch to unchecked.
 - 
 - Test that we don't fall victim to java.net.URI's constructor bug:

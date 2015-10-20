@@ -4,11 +4,11 @@ import java.net.MalformedURLException;
 
 import org.timmc.johnny.parts.BasicQueryEncoder;
 import org.timmc.johnny.parts.HostEncoder;
+import org.timmc.johnny.parts.ImmutableOrderedParams;
 import org.timmc.johnny.parts.TextPathEncoder;
 import org.timmc.johnny.parts.PluggableUserInfoEncoder;
 import org.timmc.johnny.parts.StrictHostParser;
 import org.timmc.johnny.parts.NullIsEmptyQueryParser;
-import org.timmc.johnny.parts.PersistentOrderedParams;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.StdUserInfoParser;
 import org.timmc.johnny.parts.TextPath;
@@ -34,7 +34,7 @@ public class Urls {
             TextPath.EMPTY,
             TextPathEncoder.INSTANCE,
             new NullIsEmptyQueryParser(),
-            PersistentOrderedParams.EMPTY,
+            ImmutableOrderedParams.EMPTY,
             new BasicQueryEncoder());
 
     private Urls() { }

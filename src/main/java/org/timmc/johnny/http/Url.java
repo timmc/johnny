@@ -2,9 +2,7 @@ package org.timmc.johnny.http;
 
 import java.util.Collection;
 
-import clojure.lang.Util;
-
-import org.timmc.johnny.coll.ClojureHelper;
+import org.timmc.johnny.Util;
 import org.timmc.johnny.parts.Host;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;
@@ -33,8 +31,6 @@ import org.timmc.johnny.parts.UserInfo;
  * @author timmc
  */
 public abstract class Url {
-
-    static { ClojureHelper.init(); }
 
     /*== Convenience ==*/
 

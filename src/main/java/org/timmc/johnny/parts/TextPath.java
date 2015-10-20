@@ -1,16 +1,12 @@
 package org.timmc.johnny.parts;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import clojure.lang.APersistentVector;
-import clojure.lang.IPersistentVector;
-import clojure.lang.PersistentVector;
-import clojure.lang.RT;
 
 import org.timmc.johnny.Paths;
 import org.timmc.johnny.Paths.PathEffect;
-import org.timmc.johnny.coll.ClojureHelper;
 import org.timmc.johnny.http.Urls;
 
 /**
@@ -22,10 +18,8 @@ import org.timmc.johnny.http.Urls;
  */
 public class TextPath {
 
-    static { ClojureHelper.init(); }
-
     /** A non-null sequence of non-null, non-empty Strings. */
-    private final APersistentVector segments;
+    private final List<String> segments;
 
     /** Empty path instance. */
     public static final TextPath EMPTY = new TextPath();
@@ -34,7 +28,7 @@ public class TextPath {
      * Assumes segments is normalized and non-null.
      * The {@link Void} arg is to distinguish the constructor signature.
      */
-    private TextPath(APersistentVector segments, Void _unused) {
+    private TextPath(List<String> segments, Void _unused) {
         this.segments = segments;
     }
 
@@ -47,18 +41,16 @@ public class TextPath {
     }
 
     TextPath() {
-        this(PersistentVector.EMPTY, null);
+        this(Collections.<String> emptyList(), null);
     }
 
-    /** Normalize (if necessary) and cast or convert to {@link APersistentVector}. */
-    private static APersistentVector normComponent(Iterable<String> input) {
+    /** Normalize (if necessary). */
+    private static List<String> normComponent(List<String> input) {
         if (input == null) { throw new NullPointerException("segments may not be null"); }
         if (!Paths.isNormalized(input)) {
-            input = Paths.normalize(input);
+            return Paths.normalize(input);
         }
-        return input instanceof APersistentVector
-                ? (APersistentVector) input
-                : ClojureHelper.into(PersistentVector.EMPTY, input.iterator());
+        return input;
     }
 
     /**
@@ -67,24 +59,27 @@ public class TextPath {
      * @return Non-null, possibly empty normalized sequence of non-null
      *  segments.
      */
-    @SuppressWarnings("unchecked")
     public List<String> getSegments() {
         return segments;
     }
 
     private TextPath applyEffect(PathEffect effect) {
-        IPersistentVector build = segments;
+        List<String> build = new ArrayList<String>(segments);
         if (effect.absolute) { // won't happen here
-            build = ClojureHelper.into((APersistentVector) segments.empty(), effect.added.iterator());
+            build = new ArrayList<String>(effect.added);
         } else {
             if (effect.backwards > 0) {
-                build = RT.subvec(build, 0, build.length() - effect.backwards);
+                int lastIndex = build.size() - 1;
+                int truncateTo = build.size() - effect.backwards;
+                for (int i = lastIndex; i >= truncateTo; i++) {
+                    build.remove(i);
+                }
             }
             for (String addl : effect.added) {
-                build = build.cons(addl);
+                build.add(addl);
             }
         }
-        return new TextPath((APersistentVector) build, null);
+        return new TextPath(build, null);
     }
 
     /**
