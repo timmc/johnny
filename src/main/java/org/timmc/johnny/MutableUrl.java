@@ -3,9 +3,12 @@ package org.timmc.johnny;
 import java.net.MalformedURLException;
 
 /**
- * A non-concurrency-safe UrlBits implementation. Methods are generally not
- * thread-safe, and instances should not be shared outside of the scope they
- * are created in (as a best practice.)
+ * A non-concurrency-safe UrlBits implementation. Use with <strong>great
+ * caution</strong>. Not only are methods generally not thread-safe, but
+ * instances should not be shared outside of the scope they are created
+ * in unless you can guarantee the behavior of the other scope: Consumers
+ * of Url objects might assume they are immutable and call with* methods
+ * on them not knowing that they are mutating the object.
  * <p>
  * Even though the "setters" always return the same instance they are called on,
  * client code should still use a chaining technique (allowing a safe and easy
@@ -140,5 +143,10 @@ public class MutableUrl extends Url {
     public MutableUrl withFragment(String fragment) {
         setFragment(fragment);
         return this;
+    }
+
+    @Override
+    public boolean implImmutable() {
+        return false;
     }
 }

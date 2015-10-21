@@ -171,7 +171,7 @@ public abstract class Url {
         // No need for synchronization, this is just an optimization. (Even if
         // this is changed to write a primitive int, that's a 32-bit operation
         // and therefore still atomic. (Writes to longs are not atomic.)
-        if (cachedHashCode != null) {
+        if (implImmutable() && cachedHashCode != null) {
             return cachedHashCode;
         }
         cachedHashCode = Util.hash(getScheme()) + Util.hash(getUserInfoRaw()) +
@@ -238,4 +238,14 @@ public abstract class Url {
     /** See {@link #getFragment()}. */
     public abstract Url withFragment(String fragment);
 
+    /*== Implementation inspectors ==*/
+
+    /**
+     * Answer if implementation is immutable. Consumers of Url objects from third-party code MAY use
+     * this before deciding whether to use with* methods on the original object instead of copying
+     * into an immutable version first, but are not required to.
+     * 
+     * @return true only if this implementation is immutable
+     */
+    public abstract boolean implImmutable();
 }

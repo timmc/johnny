@@ -112,4 +112,9 @@ public class ImmutableUrl extends Url {
     public ImmutableUrl withFragment(String fragment) {
         return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
     }
+
+    @Override
+    public boolean implImmutable() {
+        return true;
+    }
 }
