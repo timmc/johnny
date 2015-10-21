@@ -65,64 +65,78 @@ public class MutableUrl extends Url {
                 (String) args[5], (String) args[6]);
     }
 
+    @Override
     public String getScheme() { return scheme; }
     /** Setter provided for bean compatibility. */
     public void setScheme(String scheme) { this.scheme = scheme; }
 
+    @Override
     public MutableUrl withScheme(String scheme) {
         setScheme(scheme);
         return this;
     }
 
+    @Override
     public String getUserInfoRaw() { return userInfoRaw; }
     /** Setter provided for bean compatibility. */
     public void setUserInfoRaw(String userInfoRaw) { this.userInfoRaw = userInfoRaw; }
 
+    @Override
     public MutableUrl withUserInfoRaw(String userInfoRaw) {
         setUserInfoRaw(userInfoRaw);
         return this;
     }
 
+    @Override
     public String getHostRaw() { return hostRaw; }
     /** Setter provided for bean compatibility. */
     public void setHostRaw(String hostRaw) { this.hostRaw = hostRaw; }
 
+    @Override
     public MutableUrl withHostRaw(String hostRaw) {
         setHostRaw(hostRaw);
         return this;
     }
 
+    @Override
     public Integer getPort() { return port; }
     /** Setter provided for bean compatibility. */
     public void setPort(Integer port) { this.port = port; }
 
+    @Override
     public MutableUrl withPort(Integer port) {
         setPort(port);
         return this;
     }
 
+    @Override
     public String getPathRaw() { return pathRaw; }
     /** Setter provided for bean compatibility. */
     public void setPathRaw(String pathRaw) { this.pathRaw = pathRaw; }
 
+    @Override
     public MutableUrl withPathRaw(String pathRaw) {
         setPathRaw(pathRaw);
         return this;
     }
 
+    @Override
     public String getQueryRaw() { return queryRaw; }
     /** Setter provided for bean compatibility. */
     public void setQueryRaw(String queryRaw) { this.queryRaw = queryRaw; }
 
+    @Override
     public MutableUrl withQueryRaw(String queryRaw) {
         setQueryRaw(queryRaw);
         return this;
     }
 
+    @Override
     public String getFragment() { return fragment; }
     /** Setter provided for bean compatibility. */
     public void setFragment(String fragment) { this.fragment = fragment; }
 
+    @Override
     public MutableUrl withFragment(String fragment) {
         setFragment(fragment);
         return this;
