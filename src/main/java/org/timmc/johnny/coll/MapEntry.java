@@ -43,16 +43,15 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
         throw new UnsupportedOperationException("Mutation is not supported on MapEntry.");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         // as required by interface
         if (o == null) {
             return false;
         }
-        Map.Entry<Object, Object> e;
-        if (o instanceof Map.Entry<?, ?>) {
-            e = (Map.Entry<Object, Object>) o;
+        Map.Entry<?, ?> e;
+        if (o instanceof Map.Entry) {
+            e = (Map.Entry<?, ?>) o;
         } else {
             return false;
         }
