@@ -14,7 +14,7 @@ querystring APIs mishandle duplicate keys or missing values.)
 The goal is to be able to write this:
 
 ```java
-Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").unparse() // "http://brightcove.com/search?q=url&foo=bar#fragment"
+Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").format() // "http://brightcove.com/search?q=url&foo=bar#fragment"
 ```
 
 ...but the library is **not ready**. **DO NOT USE**.  It
