@@ -7,23 +7,23 @@ import java.util.regex.Pattern;
  */
 public class UriAuthority {
     /** Userinfo component, nullable. */
-    public final String userinfo;
+    public final String userinfoRaw;
     /** Raw host component, not null. */
-    public final String host;
+    public final String hostRaw;
     /** Raw port component, nullable and possibly empty. */
-    public final String port;
+    public final String portRaw;
 
     /**
      * Create a URI authority component from raw subcomponents.
      */
-    public UriAuthority(String userinfo, String host, String port) {
-        if (host == null) { throw new NullPointerException("Host may not be null."); }
+    public UriAuthority(String userinfoRaw, String hostRaw, String portRaw) {
+        if (hostRaw == null) { throw new NullPointerException("Host may not be null."); }
 
         //TODO validate
 
-        this.userinfo = userinfo;
-        this.host = host;
-        this.port = port;
+        this.userinfoRaw = userinfoRaw;
+        this.hostRaw = hostRaw;
+        this.portRaw = portRaw;
     }
 
     private static final Pattern digits = Pattern.compile("[0-9]*");
