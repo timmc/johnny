@@ -2,6 +2,8 @@ package org.timmc.johnny.coll;
 
 import java.util.Map;
 
+import org.timmc.johnny.Util;
+
 /**
  * Immutable implementation of {@link java.util.Map.Entry} -- essentially,
  * a 2-tuple.
@@ -52,19 +54,13 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
         }
         Object ek = e.getKey();
         Object ev = e.getValue();
-        if (key == null ? ek == null : key.equals(ek)) {
-            if (val == null ? ev == null : val.equals(ev)) {
-                return true;
-            }
-        }
-        return false;
+        return Util.equiv(key,  ek) && Util.equiv(val,  ev);
     }
 
     @Override
     public int hashCode() {
         // as required by interface
-        return (key == null ? 0 : key.hashCode()) ^
-               (val == null ? 0 : val.hashCode());
+        return Util.hash(key) ^ Util.hash(val);
     }
 
     @Override

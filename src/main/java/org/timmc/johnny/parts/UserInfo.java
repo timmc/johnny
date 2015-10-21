@@ -1,6 +1,7 @@
 package org.timmc.johnny.parts;
 
 import org.timmc.johnny.Urls;
+import org.timmc.johnny.Util;
 
 /**
  * Represents a username/password pair from the userinfo component of a URI's
@@ -45,8 +46,7 @@ public class UserInfo {
             return false;
         }
         UserInfo other = (UserInfo) o;
-        return user.equals(other.user) &&
-               (password == null ? other.password == null : password.equals(other.password));
+        return user.equals(other.user) && Util.equiv(password, other.password);
     }
 
     @Override

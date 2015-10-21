@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
+import org.timmc.johnny.Util;
 import org.timmc.johnny.coll.MapEntry;
 
 /**
@@ -110,7 +111,7 @@ public class ImmutableOrderedParams implements Params {
         }
         for (Integer i : indices.descendingSet()) {
             String curv = valAtIndex(i);
-            if (val == null ? curv == null : val.equals(curv)) {
+            if (Util.equiv(val,  curv)) {
                 return i;
             }
         }
@@ -194,7 +195,7 @@ public class ImmutableOrderedParams implements Params {
             Entry<String, String> e = entries.get(i);
             // trust that entry is not null, since it was referred to by index
             String curv = e.getValue();
-            if (val == null ? curv == null : val.equals(curv)) {
+            if (Util.equiv(val, curv)) {
                 newEntries.set(i, null);
                 removed++;
                 newIndices.remove(i);

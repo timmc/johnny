@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.timmc.johnny.Util;
 import org.timmc.johnny.coll.MapEntry;
 
 /**
@@ -52,7 +53,7 @@ public class MutableMultimapParams implements Params {
     private Integer findLast(List<String> haystack, String needle) {
         for (int i = haystack.size() - 1; i >= 0; i--) {
             String cur = haystack.get(i);
-            if (needle == null ? cur == null : needle.equals(cur)) {
+            if (Util.equiv(needle, cur)) {
                 return Integer.valueOf(i);
             }
         }
@@ -119,7 +120,7 @@ public class MutableMultimapParams implements Params {
         }
         for(Iterator<String> iter = victim.iterator(); iter.hasNext(); ) {
             String cur = iter.next();
-            if (val == null ? cur == null : val.equals(cur)) {
+            if (Util.equiv(val, cur)) {
                 iter.remove();
                 pairCount--;
             }
