@@ -23,7 +23,7 @@ public class Urls {
 
     /** Default suite of parsers, representations, and encoders. */
     public static final CodecSuite DEFAULT_CODECS = new CodecSuite(
-            new JNUriParser(),
+            new SchemeSpecificUriParser(),
             ImmutableUrl.class,
             new UrlFormatter(),
             new StdUserInfoParser(),
