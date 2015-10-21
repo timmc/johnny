@@ -35,8 +35,12 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
         return new MapEntry<K, V>(key, val);
     }
 
+    /**
+     * Throws exception -- mutation is not supported on this subclass.
+     */
+    @Deprecated
     public V setValue(V value) {
-        throw new UnsupportedOperationException("Mutation is not supported on PersistentMultimap$Entry.");
+        throw new UnsupportedOperationException("Mutation is not supported on MapEntry.");
     }
 
     @SuppressWarnings("unchecked")
