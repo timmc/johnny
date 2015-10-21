@@ -2,7 +2,7 @@ package org.timmc.johnny;
 
 import java.net.MalformedURLException;
 
-import org.timmc.johnny.parts.BasicQueryFormatter;
+import org.timmc.johnny.parts.PairQueryFormatter;
 import org.timmc.johnny.parts.HostFormatter;
 import org.timmc.johnny.parts.ImmutableOrderedParams;
 import org.timmc.johnny.parts.TextPathFormatter;
@@ -35,7 +35,7 @@ public class Urls {
             TextPathFormatter.INSTANCE,
             new NullIsEmptyQueryParser(),
             ImmutableOrderedParams.EMPTY,
-            new BasicQueryFormatter());
+            new PairQueryFormatter());
 
     private Urls() { }
 

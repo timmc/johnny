@@ -8,7 +8,7 @@
             TextPathParser TextPath TextPathFormatter
             NullableValueQueryParser NullIsEmptyQueryParser
             MutableMultimapParams ImmutableOrderedParams
-            BasicQueryFormatter)))
+            PairQueryFormatter)))
 
 ;;;; Known implementations
 
@@ -25,7 +25,7 @@
 
 (def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
 (def q-manip-impls #{MutableMultimapParams ImmutableOrderedParams})
-(def q-format-impls #{(BasicQueryFormatter.)})
+(def q-format-impls #{(PairQueryFormatter.)})
 
 ;; The defaults manips are the empty instances, except for URL (which
 ;; does not yet support empty instances.)

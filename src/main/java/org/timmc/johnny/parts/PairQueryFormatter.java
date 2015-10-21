@@ -7,12 +7,13 @@ import org.timmc.johnny.BitSetUtils;
 import org.timmc.johnny.ByCharPercentEncoder;
 import org.timmc.johnny.Constants;
 import org.timmc.johnny.StringEncoder;
+import org.timmc.johnny.Url;
 
 /**
  * Encodes queries in the standard fashion, defaulting to ampersand and equals
  * as delimiters and allowing null values.
  */
-public class BasicQueryFormatter extends APairQueryFormatter {
+public class PairQueryFormatter implements QueryFormatter {
 
     private String pairSep;
     private final char kSep = '=';
@@ -21,12 +22,12 @@ public class BasicQueryFormatter extends APairQueryFormatter {
     private final StringEncoder valEnc;
 
     /** Construct with default key-value pair separator (ampersand). */
-    public BasicQueryFormatter() {
+    public PairQueryFormatter() {
         this("&");
     }
 
     /** Construct with arbitrary key-value pair separator. */
-    public BasicQueryFormatter(String pairSep) {
+    public PairQueryFormatter(String pairSep) {
         this.pairSep = pairSep;
         keyEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_QUERY.or(BitSetUtils.fromChars(pairSep + kSep))));
         valEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_QUERY.or(BitSetUtils.fromChars(pairSep))));
@@ -36,7 +37,11 @@ public class BasicQueryFormatter extends APairQueryFormatter {
         return q == null ? null : format(q.getPairs());
     }
 
-    @Override
+    /**
+     * Format query pairs to a raw query string.
+     * @param pairs Key-value pairs (possibly with null values)
+     * @return String suitable for {@link Url#withQueryRaw(String)}
+     */
     public String format(Iterable<Entry<String, String>> pairs) {
         StringBuilder ret = new StringBuilder();
         boolean writtenFirst = false;
