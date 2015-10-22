@@ -37,6 +37,38 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Validate by default?
 - Which parsers and encoders accept null inputs?
 
+### Host parsing
+
+Host parsing turns out to be tricky for the following reasons:
+
+- The host component is a reg-name or an ip. Registered names are
+  *usually* domain names (or at least the subset of domain names that
+  *can* be hostnames, e.g. those without underscores), but RFC 3986
+  allows for `*( unreserved / pct-encoded / sub-delims )` which has
+  delimiters that might be permissible as data in some scheme. Therefore
+  we cannot blindly percent-decode it.
+- IPv6 addresses can have a zone identifier.  RFC 6874 describes how
+  to include these in RFC 3986 URIs, and it involves having an encoded
+  `%` char, which means IPv6 definitely has an encoded vs. decoded
+  form.
+- Java's Inet6Address cannot be constructed with a zone identifier
+  that is not available on the current system (!) and in any event
+  doesn't have a nice way to build/format objects. The latter problem
+  also applies to IPv4, although those are easier to work with so it's
+  not as much of a concern. Google's Guava lib could help here a bit,
+  although it does not support zone identifiers (at least in v14).
+- All host types can have encoded characters, although some should
+  not. For instance, non-ASCII in a domain name can and should be
+  encoded. (Or perhaps should be represented in punycode...) An IPv4
+  address could even have a number encoded, although a compliant
+  formatter must not produce such a thing.
+- Need to decide how to capture absolute vs. non-absolute nature of
+  domain names (ending in `.` or not).
+
+See commit `13523afcc3789b` ("Delete Host{,Parser,Formatter} support
+for now.") for abandoned code and tests that were working towards this
+feature.
+
 ## TODO
 
 - Compile with Java 6 source compatibility
