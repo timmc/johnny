@@ -16,7 +16,8 @@ johnny is managed with the [Leiningen][lein] build tool.
   you encounter surprising behavior during tests, you may want to do
   this clean rebuild)
 - Test: `lein test` (should incrementally recompile)
-- Package: `lein do pom, jar`
+- Package with JDK 7 compatibility:
+  `JAVA_CMD=/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java lein do clean, pom, jar`
 - Enter an interactive Clojure session, `lein repl`
 
 [lein]: http://leiningen.org/
@@ -26,7 +27,7 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Fail fast
 - Allow parsing/construction without validation
 - Use immutable data structures, ideally persistent (that means
-  structure-sharing, not persisted-to-disk!)
+  structure-sharing, not persisted-to-disk)
 - UTF-8 always (but provide facilities to allow users to introduce
   other encodings)
 
@@ -39,7 +40,6 @@ johnny is managed with the [Leiningen][lein] build tool.
 
 ## TODO
 
-- Compile with Java 6 source compatibility
 - No checked exceptions -- switch to unchecked.
 - 
 - Test that we don't fall victim to java.net.URI's constructor bug:
