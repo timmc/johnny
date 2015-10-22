@@ -15,7 +15,7 @@ import org.timmc.johnny.Codecs;
 public class StrictHostParser implements HostParser {
 
     public Host parse(String hostRaw) {
-        String host = Codecs.percentDecode(hostRaw);
+        String host = Codecs.percentDecode(hostRaw); // XXX Bzzzt, must decode *after* unpacking IPv6 (due to zone id delimiter)
         boolean isBracketed = host.startsWith("[") && host.endsWith("]");
         // Assume a dotted-quad is an IPv4 address and not a domain with a numeric TLD. (RFC 3986 §3.2.2)
         if (InetAddresses.isUriInetAddress(host)) {
