@@ -3,11 +3,9 @@ package org.timmc.johnny;
 import java.net.MalformedURLException;
 
 import org.timmc.johnny.parts.PairQueryFormatter;
-import org.timmc.johnny.parts.HostFormatter;
 import org.timmc.johnny.parts.ImmutableOrderedParams;
 import org.timmc.johnny.parts.TextPathFormatter;
 import org.timmc.johnny.parts.PluggableUserInfoFormatter;
-import org.timmc.johnny.parts.StrictHostParser;
 import org.timmc.johnny.parts.NullIsEmptyQueryParser;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.StdUserInfoParser;
@@ -23,13 +21,11 @@ public class Urls {
 
     /** Default suite of parsers, representations, and encoders. */
     public static final CodecSuite DEFAULT_CODECS = new CodecSuite(
-            new JNUriParser(),
+            new SchemeSpecificUriParser(),
             ImmutableUrl.class,
             new UrlFormatter(),
             new StdUserInfoParser(),
             PluggableUserInfoFormatter.INSTANCE,
-            new StrictHostParser(),
-            new HostFormatter(),
             TextPathParser.INSTANCE,
             TextPath.EMPTY,
             TextPathFormatter.INSTANCE,

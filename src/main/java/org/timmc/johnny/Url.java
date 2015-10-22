@@ -2,7 +2,6 @@ package org.timmc.johnny;
 
 import java.util.Collection;
 
-import org.timmc.johnny.parts.Host;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;
 import org.timmc.johnny.parts.TextPath;
@@ -55,13 +54,6 @@ public abstract class Url {
      */
     public Url withUserInfo(UserInfo userInfo) {
         return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoFormatter.format(userInfo));
-    }
-
-    /**
-     * Get host decoded using standard parser.
-     */
-    public Host getHost() {
-        return Urls.DEFAULT_CODECS.hostParser.parse(getHostRaw());
     }
 
     /**
@@ -157,7 +149,7 @@ public abstract class Url {
         Url other = (Url) o;
         return Util.equiv(getScheme(), other.getScheme()) &&
                 Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
-                Util.equiv(getHost(), other.getHost()) &&
+                Util.equiv(getHostRaw(), other.getHostRaw()) &&
                 Util.equiv(getPort(), other.getPort()) &&
                 Util.equiv(getPathRaw(), other.getPathRaw()) &&
                 Util.equiv(getQueryRaw(), other.getQueryRaw()) &&

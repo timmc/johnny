@@ -1,7 +1,7 @@
 (ns org.timmc.johnny.impls
   (:import (org.timmc.johnny
             Urls
-            UrlParser JNUrlParser JNUriParser SchemeSpecificUriParser
+            UrlParser SchemeSpecificUriParser
             Url ImmutableUrl MutableUrl
             UrlFormatter))
   (:import (org.timmc.johnny.parts
@@ -14,8 +14,7 @@
 
 ;; Parsers are listed by instance, manipulation impls by class.
 
-(def url-parse-impls #{(JNUrlParser.) (JNUriParser.)
-                       (SchemeSpecificUriParser.)})
+(def url-parse-impls #{(SchemeSpecificUriParser.)})
 (def url-manip-impls #{MutableUrl ImmutableUrl})
 (def url-format-impls #{(UrlFormatter.)})
 

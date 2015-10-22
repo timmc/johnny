@@ -21,9 +21,9 @@ public class SchemeSpecificUriParser implements UrlParser {
         } catch (Rfc3986Uri.BadUriException bue) {
             throw (MalformedURLException) new MalformedURLException().initCause(bue);
         }
-        Integer port = (authority.port == null || authority.port.isEmpty())
-                       ? null : Integer.parseInt(authority.port);
-        return new Object[]{uri.scheme, authority.userinfo, authority.host, port,
+        Integer port = (authority.portRaw == null || authority.portRaw.isEmpty())
+                       ? null : Integer.parseInt(authority.portRaw);
+        return new Object[]{uri.scheme, authority.userinfoRaw, authority.hostRaw, port,
                             uri.path, uri.query, Codecs.percentDecode(uri.fragment)};
     }
 

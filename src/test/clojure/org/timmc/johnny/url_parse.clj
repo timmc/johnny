@@ -38,15 +38,15 @@
             "/http://localhost/"))
      (is (= (.getQueryRaw (i/parse-u "http://localhost/?foo?bar"))
             "foo?bar"))
-     #_(comment ;; TODO: A way to accept invalid fragments like this one
-         (is (= (.getFragment (i/parse-u "http://localhost/#foo%23bar#baz"))
-                "foo#bar#baz"))))))
+     (is (= (.getFragment (i/parse-u "http://localhost/#foo%23bar#baz"))
+            "foo#bar#baz")))))
 
 (deftest j-n-url-regression
-  (default-others
-    (binding [i/*url-parser* i/default-url-parser]
-      (testing "port-numerics"
-        (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
-        ;; ८० is Devanagari numerals
-        (is (thrown? java.net.MalformedURLException
-                     (i/parse-u "http://google.com:\u096E\u0966/")))))))
+  (cross
+   (testing "port-numerics"
+     (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
+     ;; ८० is Devanagari numerals
+     (is (thrown-with-msg?
+          IllegalArgumentException
+          #"^URI authority section ends in invalid port \(or is unbracketed IPv6 address\)$"
+          (i/parse-u "http://google.com:\u096E\u0966/"))))))

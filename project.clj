@@ -2,7 +2,7 @@
   :min-lein-version  "2.1.0" ;; 2.1.0 introduced jar classifiers
   :description "A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use."
   :url "https://github.com/timmc/johnny"
-  :dependencies [[com.google.guava/guava "14.0.1"]]
+  :dependencies []
   :plugins [[lein-junit "1.1.8"]
             [lein-javadoc "0.3.0"]]
   ;; Implementation is actually in Java, but most tests are written in
