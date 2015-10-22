@@ -46,5 +46,7 @@
    (testing "port-numerics"
      (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
      ;; ८० is Devanagari numerals
-     (is (thrown? java.net.MalformedURLException
-                  (i/parse-u "http://google.com:\u096E\u0966/"))))))
+     (is (thrown-with-msg?
+          IllegalArgumentException
+          #"^URI authority section ends in invalid port \(or is unbracketed IPv6 address\)$"
+          (i/parse-u "http://google.com:\u096E\u0966/"))))))
