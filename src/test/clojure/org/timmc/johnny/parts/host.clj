@@ -33,6 +33,18 @@
                                  (.hashCode (Host. (gen)))))
              mk-ip4 mk-ip6 mk-dom)))))
 
+(deftest encoding
+  ;; "URIs that differ in the replacement of an unreserved
+  ;; character with its corresponding percent-encoded US-ASCII
+  ;; octet are equivalent" ― RFC 3986 §2.3
+  ;; (Not that you *should* encode letters in a host name...)
+  (let [h (.getHost (Urls/parse "http://www.ex%61mple.com/"))]
+    (is (.isDomain h))
+    ;; TODO: We're punting on this for now with .raw -- when we
+    ;; actually parse this field, we'll need to confirm that the "%61"
+    ;; -> "a" decode happens.
+    (is (= (.raw h) "www.ex%61mple.com"))))
+
 (deftest which
   ;; Test component parsing in full-url-parsing context
   ;; to ensure that decoding happens.
@@ -41,21 +53,27 @@
                     :domain (is (.isDomain (p in)))
                     :ip (is (.isIp (p in)))
                     :inv (is (thrown? Exception (p in))))
+         ;; TODO: Add test for IPvFuture host format. (Just throw?)
          "www.example.com." :domain
+         "www.ex%61mple.com." :domain
          "localhost" :domain
-         #_ (comment ;; JNUriParser rejects this
-              "➡.ws" :domain)
+         ;; TODO: Add Codec variant to allow/disallow unencoded
+         ;; non-ASCII in URLs.
+         "➡.ws" :domain
+         "%E2%9E%A1.ws" :domain
          "xn--hgi.ws." :domain
          "www" :domain
          "www.." :inv
          ".localhost" :inv
          "256.com" :domain
          "192.168.1.115" :ip
-         #_ (comment ;; Guava rejects this -- investigate
-              "192.168.001.115" :ip)
+         ;; TODO: Add Codec variant to allow leading zeroes.
+         "192.168.001.115" :ip ;; FIXME should be :inv for leading zeroes
+         "192.168.%31.115" :ip
          "[::1]" :ip
+         "[::%31]" :ip
          "::1" :inv
          "[::1" :inv
-         #_ (comment ;; TODO: zone IDs (Guava's InetAddresses lacks support)
-              "[0:4::1%25eth0]" :ip
-              "[0:4::1%eth0]" :inv))))
+         "[0:4::1%25eth0]" :ip
+         ;; Common mistake, probably -- if anyone even uses zone identifiers.
+         "[0:4::1%eth0]" :inv)))

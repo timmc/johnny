@@ -2,11 +2,13 @@ package org.timmc.johnny.parts;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;
+import java.util.regex.Pattern;
 
 import com.google.common.net.InetAddresses;
 import com.google.common.net.InternetDomainName;
 
 import org.timmc.johnny.Codecs;
+import org.timmc.johnny.parts.Host.HostType;
 
 /**
  * Host parser that is generally more restrictive, e.g. not allowing IPv6 hosts without brackets.
