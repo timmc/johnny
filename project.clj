@@ -5,7 +5,7 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [com.google.guava/guava "14.0.1"]]
   :plugins [[lein-junit "1.1.8"]
-            [lein-javadoc "0.2.1-SNAPSHOT"]]
+            [lein-javadoc "0.3.0"]]
   ;; Implementation is actually in Java, but most tests are written in
   ;; Clojure. There's one junit test in Java just to demonstrate
   ;; syntax.
