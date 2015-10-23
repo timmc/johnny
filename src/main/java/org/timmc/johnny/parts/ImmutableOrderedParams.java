@@ -276,4 +276,8 @@ public class ImmutableOrderedParams implements Params {
     public boolean implImmutable() {
         return true;
     }
+
+    public Iterator<Entry<String, String>> iterator() {
+        return getPairs().iterator();
+    }
 }

@@ -173,4 +173,8 @@ public class MutableMultimapParams implements Params {
     public boolean implImmutable() {
         return false;
     }
+
+    public Iterator<Entry<String, String>> iterator() {
+        return getPairs().iterator();
+    }
 }

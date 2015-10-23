@@ -63,4 +63,13 @@ public class SyntaxDemoTest {
                 "http://brightcove.com/login?a&foo=bar"
                 ).contains(orig.withQuery(mutable).format()));
     }
+
+    /**
+     * Demonstrate construction with structured components.
+     */
+    @Test
+    public void testConstruction() {
+        Url u = new ImmutableUrl("https", "brightcove.com").withQuery(Queries.from("foo", "bar"));
+        assertEquals(u.format(), "https://brightcove.com?foo=bar");
+    }
 }

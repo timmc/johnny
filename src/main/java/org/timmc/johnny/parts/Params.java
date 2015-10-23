@@ -14,7 +14,7 @@ import java.util.Map;
  * Implementations are expected to have a public nullary constructor which
  * can be used in conjunction with {@link #appendAll(Iterable)}.
  */
-public interface Params {
+public interface Params extends Iterable<Map.Entry<String, String>>{
 
     /*== Value accessors ==*/
 
