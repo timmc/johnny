@@ -106,7 +106,7 @@ public interface Params {
      * Append a sequence of key-value pairs.
      * @param source Non-null iterable of key-value pairs
      */
-    public Params appendAll(Iterable<Map.Entry<String, String>> source);
+    public Params appendAll(Iterable<? extends Map.Entry<String, String>> source);
 
     /**
      * Replace all <code>key</code> pairs with a single pair containing

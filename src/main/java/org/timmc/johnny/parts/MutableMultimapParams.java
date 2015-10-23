@@ -131,7 +131,7 @@ public class MutableMultimapParams implements Params {
         return this;
     }
 
-    public MutableMultimapParams appendAll(Iterable<Entry<String, String>> source) {
+    public MutableMultimapParams appendAll(Iterable<? extends Entry<String, String>> source) {
         for (Entry<String, String> e : source) {
             append(e.getKey(), e.getValue());
         }

@@ -223,11 +223,11 @@ public class ImmutableOrderedParams implements Params {
         return new ImmutableOrderedParams(newEntries, deleted, newKeylocs);
     }
 
-    public ImmutableOrderedParams appendAll(Iterable<Entry<String, String>> source) {
+    public ImmutableOrderedParams appendAll(Iterable<? extends Entry<String, String>> source) {
         Map<String, NavigableSet<Integer>> newKeylocs = new HashMap<String, NavigableSet<Integer>>(keylocs);
         List<Entry<String, String>> newEntries = new ArrayList<Map.Entry<String,String>>(entries);
         int nextIndex = entries.size();
-        for (Iterator<Entry<String, String>> iter = source.iterator(); iter.hasNext(); ) {
+        for (Iterator<? extends Entry<String, String>> iter = source.iterator(); iter.hasNext(); ) {
             Entry<String, String> e = iter.next();
             NavigableSet<Integer> indices = newKeylocs.get(e.getKey());
             if (indices == null) {
