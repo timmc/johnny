@@ -61,6 +61,8 @@
        (do (is (= (.countPairs val) 2))
            (is (= (set (map first (.getPairs val))) #{"a" "b"})))))))
 
+;; TODO add tests for + vs. %20
+
 (deftest non-null-invariants
   ;; Detailed tests of .appendAll first
   (cross

@@ -61,7 +61,7 @@ public class Queries {
     }
 
     /**
-     * Format a
+     * Format a param collection as a raw query.
      */
     public static String formatQuery(Params p) {
         return Urls.DEFAULT_CODECS.queryFormatter.format(p);
