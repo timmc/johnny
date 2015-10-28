@@ -28,8 +28,10 @@
     :javadoc-opts
     {:package-names ["org.timmc.johnny"]
      :output-dir "target/javadoc/javadoc"
-     :additional-args ["-version" "-charset" "UTF-8"
-                       "-docencoding" "UTF-8" "-encoding" "UTF-8"]}
+     :additional-args ["-version",
+                       "-overview", "src/javadoc/overview.html",
+                       "-charset", "UTF-8",
+                       "-docencoding", "UTF-8", "-encoding", "UTF-8"]}
     :prep-tasks ["javadoc"]}}
   :deploy-repositories
   [["releases"
