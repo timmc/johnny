@@ -113,6 +113,7 @@ feature.
 - Add fuzz tests/generative tests
 - Test that `;` is escaped in at least one query encoder
 - Test that NPE is thrown whereever null is not accepted
+- Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
 
 ### Documentation
 
@@ -120,8 +121,9 @@ feature.
   `application/x-www-form-urlencoded` POST bodies. (Supply an
   alternative.)
 
-### Features
+### Wanted features
 
+- Support for extracting path parameters (aka matrix parameters)
 - Compatibility: Support treating + as a space (opt-in)
 - Use of File as path (encode segments to avoid production of matrix
   params)

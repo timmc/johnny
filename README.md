@@ -1,95 +1,104 @@
-# Why can't Johnny read URLs?
+# Johnny: Read and write URLs on the JVM
 
-**johnny: A URL parsing and manipulation library for the JVM**
+Johnny is a Java library that helps you read, modify, and write URLs
+with in a safe, efficient, and standards-compliant fashion. Here's
+Johnny replacing a host name and adding a query parameter:
+
+```java
+Urls.parse("https://google.com/search?q=url#fragment")
+    .withHostRaw("www.google.ca")
+    .querySetKey("foo", "bar")
+    .format();
+// "https://www.google.ca/search?q=url&foo=bar#fragment"
+```
+
+## Why to use Johnny
+
+- Attempts to conform to RFC 3986 ("Uniform Resource Identifier (URI):
+  Generic Syntax") and updates to that spec—see
+  "[Gallery of Bugs](doc/gallery-of-bugs.md)" for how various URL
+  libraries fail at this
+- Provides escape hatches for non-compliant use-cases
+- Uses immutable data structures by default
+- The fluent API is super nice to use
+
+## Why to not use Johnny
+
+- Despite an extensive test suite, has not been reality-tested. (Or
+  perhaps you could try it out and help remove this bullet point!)
+- Makes it slightly inconvenient to be bug-compatible with broken URL
+  implementations. Bug or feature, you decide.
+- Host parsing (domain vs. IP) is not yet provided
+- Path parsing is still clunky
+
+## Get it
+
+**Johnny is currently in alpha** and the API may change dramatically
+between sub-1.0 versions.
+
+Maven:
+
+```xml
+<dependency>
+  <groupId>org.timmc</groupId>
+  <artifactId>johnny</artifactId>
+  <version>0.1.1</version>
+</dependency>
+```
+
+Leiningen:
+
+```clojure
+[org.timmc/johnny "0.1.1"]
+```
+
+## Usage
+
+TODO: Post the generated Javadocs somewhere browseable. In the
+meantime, start with the package docs:
+
+https://github.com/timmc/johnny/blob/johnny-0.1.1/src/main/java/org/timmc/johnny/http/package-info.java
+
+## Features
+
+- Fluent builder interface for URLs and URL components
+- Optional validation
+- Minimal encoding of each URL component (e.g. querystring params can
+  have unencoded "?")
+- Support for duplicate keys in querystrings
+- Support for querystring keys without values (`foo` vs. `foo=`)
+- Use of immutable data structures so that manipulations are
+  thread-safe
+
+## Rationale
+
+Why another URL library?
 
 For a language used extensively in web-facing application, it's
 surprising that Java lacks a library that can (correctly!) parse and
 manipulate URLs. The result is that everyone ends up writing their own
-URL library, and the result of that is security flaws and subtly
-broken apps. (java.net.URL accepts `८०` as a port number; java.net.URI
-helpfully offers to decode paths wholesale instead of segmenting them
-first and has an outright broken multipart constructor; innumerable
-querystring APIs mishandle duplicate keys or missing values.)
+URL library (it's deceptively hard), and the result of that is
+security flaws and subtly (or not so subtly) broken apps.
 
-The goal is to be able to write this:
+The aspiration of Johnny is to both be correct and usable: If it's not
+correct, there's no reason to write it; if it's not usable, no one
+will use it.
 
-```java
-Urls.parse("http://google.com/search?q=url#fragment").withDomain("brightcove.com").querySetKey("foo", "bar").format() // "http://brightcove.com/search?q=url&foo=bar#fragment"
-```
-
-...but the library is **not ready**. **DO NOT USE**.  It
-needs further API development and grooming, a good long sit-down with
-some RFCs, careful selection of supporting libraries, a huge number of
-careful tests, and way more eyeballs.
-
-Johnny is published with groupId `org.timmc` and artifactId
-`johnny`. The latest version is `0.1.1` and is considered alpha
-quality. The API may change at any time.
+## Contributing
 
 If you're willing to help out, let me know! I'm also considering
 opening up a Bitcoin bug bounty once the library is at the alpha
 stage, and I would appreciate both deposits and withdrawals at that
 point.
 
-## Why use johnny
-
-Correct decoding of query components:
-
-```java
-// URI offers to decode query before destructuring it:
-new java.net.URI("http://localhost?foo=b%26ar").getQuery().split("&"); //= ["foo=b", "ar"]
-// Johnny knows not to percent-decode until the pairs are parsed:
-Urls.parse("http://localhost?foo=b%26ar").getQuery().getLast("foo"); //= "b&ar"
-```
-
-Checks equality in a reasonable fashion:
-
-```java
-// j.u.URL actually does a *DNS lookup* when you call .equals:
-new java.net.URL("http://example.net/").equals(new java.net.URL("http://example.org/")) //= true
-// Johnny uses piece-wise equality (but may implement a deeper matching option in the future)
-Urls.parse("http://example.net/").equals(Urls.parse("http://example.org/")) //= false
-```
-
-Correctly assembles URLs from components:
-
-```java
-// There is no value for x that will make this true:
-// java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26");
-// Johnny correctly assembles URIs without any second-guessing:
-new ImmutableUrl("http", null, "example.com", null, "/", "ampersand=%26", null);
-```
-
-(TODO: Example with j.n.URLEncoder incorrectly encoding spaces as `+` in paths.)
-
-## Goals
-
-* Minimal encoding of each URL component (e.g. querystring params can
-  have unencoded "?")
-* Support for extracting path parameters (aka matrix parameters)
-* Support for duplicate keys in querystrings
-* Support for querystring keys without values (`foo` vs. `foo=`)
-* Use of immutable data structures so that manipulations are
-  thread-safe
-* Attempt to balance simple interface against configurability.
-
-### More goals
-
-* Pluggable parsing, validation, manipulation, and encoding
-
-## Usage
-
-FIXME
-
-## Contributing
-
-See [HACK.md](HACK.md).
+See [HACK.md](HACK.md) for loosely arranged thoughts on the roadmap,
+extant bugs, and decisions that need to be made.
 
 ## License
 
 Copyright 2013–2015 Brightcove, Inc. (where commits authored using
 brightcove.com email address) and Tim McCormack (where using personal
-address.)
+address) as well as other contributers as commit metadata indicates.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
