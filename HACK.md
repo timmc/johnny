@@ -1,14 +1,29 @@
 # Hacking on johnny
 
-Contribution guidelines and future work.
+So you'd like to improve johnny? Great! This file will help orient you
+to the library and give you guidance on what needs work.
 
-## Structure
+## Orientation
+
+### Structure
 
 While the johnny library is written entirely in Java, the test suite
 is mostly Clojure to allow for rapid development of comprehensive
 tests.
 
-## Building
+### Development ideals:
+
+- Stick to the standards
+- ...but provide safety valves for non-compliant usage
+- Allow parsing/construction without validation
+- Use immutable data structures, ideally persistent (that means
+  structure-sharing, not persisted-to-disk)
+- UTF-8 always (but provide facilities to allow users to introduce
+  other encodings)
+
+## Contributing
+
+### Building
 
 johnny is managed with the [Leiningen][lein] build tool.
 
@@ -18,18 +33,30 @@ johnny is managed with the [Leiningen][lein] build tool.
 - Test: `lein test` (should incrementally recompile)
 - Package with JDK 7 compatibility:
   `JAVA_CMD=/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java lein do clean, pom, jar`
-- Enter an interactive Clojure session, `lein repl`
+
+The generated pom.xml file is only sufficient for basic IDE usage and
+deployment; mvn commands may not in general work properly against it.
 
 [lein]: http://leiningen.org/
 
-## Development ideals:
+### Process
 
-- Fail fast
-- Allow parsing/construction without validation
-- Use immutable data structures, ideally persistent (that means
-  structure-sharing, not persisted-to-disk)
-- UTF-8 always (but provide facilities to allow users to introduce
-  other encodings)
+All skill levels welcome. Please consider opening an issue before
+sending a pull request with a non-trivial amount of work.
+
+## What to do
+
+Work on any of the following is helpful!
+
+- Bugs
+- Standards compliance issues
+- Documentation
+- Features
+- Build tooling
+
+Reports of bugs and discussions of feature ideas are welcome even
+without a patch in hand (but resolving them may take longer, of
+course.)
 
 ## Pending design decisions
 
