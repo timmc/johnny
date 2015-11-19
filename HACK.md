@@ -168,13 +168,19 @@ Parse and manipulate components:
 - path (/-delimited)
     - collapsing of /./ segments (RFC 3986)
     - relative reference resolution (RFC 3986)
+    - appending a list of segments
 - querystring
     - &-delimited or ;-delimited
     - keep or collapse duplicate keys
     - FormEncoded utility
 - User portion
-- Hostname portion
+- Host portion
+    - Get public suffix (foo.brightcove.com -> com)
+    - Get private suffix
+    - "Is this host equal to or a subdomain of this other host/one of
+      these other hosts?"
 - Lambda support for any of the above: `withQueryChange(...lambda...)`
+- "Does the URL match this origin/one of these origins?"
 
 ### Variations
 
