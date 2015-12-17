@@ -58,42 +58,12 @@ Reports of bugs and discussions of feature ideas are welcome even
 without a patch in hand (but resolving them may take longer, of
 course.)
 
-## UNCAT
-
-- Accept suites or suite elements in parser and encoder methods.
-    - Or even allow embedding of CodecSuite instances into Url and
-      other objects?
-- Correctly round-trip absolute domain names
-- getHost vs. getHostRaw? (IPv6 with zone can require encoding)
-- Make Suites of parser, manipulators, and encoders
-  - Order-preserving query suite
-  - Conservative encoding suite
-- Efficient persistent ordered Query
-    - Two fields:
-        - PersistentVector of Map.Entry holding key-value pairs or nulls
-            - When a pair is deleted, null it out (preserve indexes)
-            - When a pair is modified, overwrite it
-        - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
-            - Fast lookup of values, in order
-    - Could also have index on values
-- Equality & comparators (see RFC 3986 section 6)
-- Normalizers (e.g. decode all unreserved chars)
-- File path parser (drop empty segments including final; treat
-  semicolons as non-delimiters)
-- Cloning
-- Roundtripping of encoding decisions. May want to preserve:
-    - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
-      uppercase
-    - Encoding of optionally-encoded chars (e.g. `?` in query)
-    - Empty query components (e.g. `&&`)
-- Ensure GC hygiene re: substrings (an Url impl might hand back
-  substrings that hold reference to their (larger) parent strings)
-
 ### Bugs
 
 
 ### Features
 
+- `getHost`/`withHost` (see Host Parsing section)
 - No checked exceptions -- switch to unchecked.
 - Support for extracting path parameters (aka matrix parameters)
 - Compatibility: Support treating + as a space (opt-in)
@@ -106,6 +76,27 @@ course.)
   e.g. `"/video/{id}/sources;limit={?limit}"`
   (remember to match across encoding, e.g. `%61` matches `a`)
 - Harden query impls against HashDoS attack
+- Equality & comparators (see RFC 3986 section 6)
+- Normalizers (e.g. decode all unreserved chars)
+
+#### Component processing
+
+Parse and manipulate components:
+
+- path (/-delimited)
+    - collapsing of /./ segments (RFC 3986)
+    - relative reference resolution (RFC 3986)
+    - appending a list of segments
+- querystring
+    - FormEncoded utility
+- User and password components
+- Host component
+    - Get public suffix (foo.brightcove.com -> com)
+    - Get private suffix
+    - "Is this host equal to or a subdomain of this other host/one of
+      these other hosts?"
+- Lambda support for any of the above: `withQueryChange(...lambda...)`
+- "Does the URL match this origin/one of these origins?"
 
 ### Tests
 
@@ -117,20 +108,43 @@ course.)
 - Test that we don't fall victim to java.net.URI's constructor bug:
   There is no `x` such that
   `java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26")`.
-
-### Research
+- Correctly round-trip absolute domain names
 
 ### Design decisions
 
 - Case-fold scheme and host? -- RFC 3986 prefers lowercase
+- How to handle empty final path component? (e.g. `/foo/bar/`)
 - Validate by default?
 - Which parsers and encoders accept null inputs?
+- Roundtrip encoding decisions? May want to preserve:
+    - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
+      uppercase
+    - Encoding of optionally-encoded chars (e.g. `?` in query)
+    - Empty query components (e.g. `&&`)
+- Configurable/composable parsers and encoders:
+    - Accept suites or suite elements in parsing, manipulation, and
+      encoding methods.
+    - Or even allow embedding of CodecSuite instances into Url and
+      other objects?
+    - Example suites and suite features:
+        - Order-preserving query manip
+        - Conservative vs. minimal encoding
+        - always/only encode provided chars (BitSet is mutable, but
+          BigInteger isn't...)
+        - only encode provided char sets for each URL component
+        - application/x-www-form-encoded variation (use + instead
+          of %20)
+        - '#' unencoded in fragment (may cause problems with some bad parsers)
+        - Charset options: Decode from non-UTF-8, encode to non-UTF-8 (do we
+          even want to allow this?)
+        - WebUrl#reEncode: Decode and then encode with various options
 
-### Host parsing
+#### Host parsing
 
 Host parsing turns out to be tricky for the following reasons:
 
-- The host component is a reg-name or an ip. Registered names are
+- The host component is a reg-name or an ip. Registered names are### Variations
+
   *usually* domain names (or at least the subset of domain names that
   *can* be hostnames, e.g. those without underscores), but RFC 3986
   allows for `*( unreserved / pct-encoded / sub-delims )` which has
@@ -164,43 +178,16 @@ feature.
   `application/x-www-form-urlencoded` POST bodies. (Supply an
   alternative.)
 
-### Component processing
+### Research
 
-Parse and manipulate components:
+### Audits to perform
 
-- path (/-delimited)
-    - collapsing of /./ segments (RFC 3986)
-    - relative reference resolution (RFC 3986)
-    - appending a list of segments
-- querystring
-    - &-delimited or ;-delimited
-    - keep or collapse duplicate keys
-    - FormEncoded utility
-- User portion
-- Host portion
-    - Get public suffix (foo.brightcove.com -> com)
-    - Get private suffix
-    - "Is this host equal to or a subdomain of this other host/one of
-      these other hosts?"
-- Lambda support for any of the above: `withQueryChange(...lambda...)`
-- "Does the URL match this origin/one of these origins?"
-
-### Variations
-
-- Encoding options:
-    - Minimal (default)
-    - conservative
-    - always/only encode provided chars (BitSet is mutable, but
-      BigInteger isn't...)
-    - only encode provided char sets for each URL component
-    - application/x-www-form-encoded variation (use + instead
-      of %20)
-    - '#' unencoded in fragment (may cause problems with some bad parsers)
-- Charset options: Decode from non-UTF-8, encode to non-UTF-8 (do we
-  even want to allow this?)
-- WebUrl#reEncode: Decode and then encode with various options
+- Ensure GC hygiene re: substrings (an Url impl might hand back
+  substrings that hold reference to their (larger) parent strings)
 
 ## Features not to add
+
+- Efficient query manipulation (for now)
 
 ### Templating
 
@@ -209,6 +196,8 @@ RFC 6570
 Belongs in another (dependent) lib.
 
 ## Specs
+
+Specifications to draw from.
 
 - RFC 3986: Generic URI Syntax -- use the http portion
 - RFC 2616: Defines HTTP URLs, makes reference to 2396 (now 3986)
