@@ -58,10 +58,71 @@ Reports of bugs and discussions of feature ideas are welcome even
 without a patch in hand (but resolving them may take longer, of
 course.)
 
-## Pending design decisions
+## UNCAT
+
+- Accept suites or suite elements in parser and encoder methods.
+    - Or even allow embedding of CodecSuite instances into Url and
+      other objects?
+- Correctly round-trip absolute domain names
+- getHost vs. getHostRaw? (IPv6 with zone can require encoding)
+- Make Suites of parser, manipulators, and encoders
+  - Order-preserving query suite
+  - Conservative encoding suite
+- Efficient persistent ordered Query
+    - Two fields:
+        - PersistentVector of Map.Entry holding key-value pairs or nulls
+            - When a pair is deleted, null it out (preserve indexes)
+            - When a pair is modified, overwrite it
+        - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
+            - Fast lookup of values, in order
+    - Could also have index on values
+- Equality & comparators (see RFC 3986 section 6)
+- Normalizers (e.g. decode all unreserved chars)
+- File path parser (drop empty segments including final; treat
+  semicolons as non-delimiters)
+- Cloning
+- Roundtripping of encoding decisions. May want to preserve:
+    - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
+      uppercase
+    - Encoding of optionally-encoded chars (e.g. `?` in query)
+    - Empty query components (e.g. `&&`)
+- Ensure GC hygiene re: substrings (an Url impl might hand back
+  substrings that hold reference to their (larger) parent strings)
+
+### Bugs
+
+
+### Features
+
+- No checked exceptions -- switch to unchecked.
+- Support for extracting path parameters (aka matrix parameters)
+- Compatibility: Support treating + as a space (opt-in)
+- Use of File as path (encode segments to avoid production of matrix
+  params)
+- Expansion to other kinds of URIs.
+    - or just support generic URI syntax
+- StringBuilder-backed impls (store offsets for fast getters)
+- Parsing/matching of paths and queries based on templates,
+  e.g. `"/video/{id}/sources;limit={?limit}"`
+  (remember to match across encoding, e.g. `%61` matches `a`)
+- Harden query impls against HashDoS attack
+
+### Tests
+
+- Steal tests from other URL libs
+- Add fuzz tests/generative tests
+- Test that `;` is escaped in at least one query encoder
+- Test that NPE is thrown whereever null is not accepted
+- Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
+- Test that we don't fall victim to java.net.URI's constructor bug:
+  There is no `x` such that
+  `java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26")`.
+
+### Research
+
+### Design decisions
 
 - Case-fold scheme and host? -- RFC 3986 prefers lowercase
-- Checked or unchecked exceptions?
 - Validate by default?
 - Which parsers and encoders accept null inputs?
 
@@ -97,69 +158,11 @@ See commit `13523afcc3789b` ("Delete Host{,Parser,Formatter} support
 for now.") for abandoned code and tests that were working towards this
 feature.
 
-## TODO
-
-- No checked exceptions -- switch to unchecked.
-- 
-- Test that we don't fall victim to java.net.URI's constructor bug:
-  There is no `x` such that
-  `java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26")`.
-- Accept suites or suite elements in parser and encoder methods.
-    - Or even allow embedding of CodecSuite instances into Url and
-      other objects?
-- Correctly round-trip absolute domain names
-- getHost vs. getHostRaw? (IPv6 with zone can require encoding)
-- Make Suites of parser, manipulators, and encoders
-  - Order-preserving query suite
-  - Conservative encoding suite
-- Efficient persistent ordered Query
-    - Two fields:
-        - PersistentVector of Map.Entry holding key-value pairs or nulls
-            - When a pair is deleted, null it out (preserve indexes)
-            - When a pair is modified, overwrite it
-        - PersistentHashMap of keys -> PersistentTreeSet of pair indexes
-            - Fast lookup of values, in order
-    - Could also have index on values
-- Equality & comparators (see RFC 3986 section 6)
-- Normalizers (e.g. decode all unreserved chars)
-- File path parser (drop empty segments including final; treat
-  semicolons as non-delimiters)
-- Cloning
-- Roundtripping of encoding decisions. May want to preserve:
-    - Case of percent-encodes (`%2f` vs. `%2F`) -- RFC 3986 prefers
-      uppercase
-    - Encoding of optionally-encoded chars (e.g. `?` in query)
-    - Empty query components (e.g. `&&`)
-- Ensure GC hygiene re: substrings (an Url impl might hand back
-  substrings that hold reference to their (larger) parent strings)
-- Harden query impls against HashDoS attack
-
-### Tests
-
-- Steal tests from other URL libs
-- Add fuzz tests/generative tests
-- Test that `;` is escaped in at least one query encoder
-- Test that NPE is thrown whereever null is not accepted
-- Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
-
 ### Documentation
 
 - Strong warnings around not using Query encoders/decoders for parsing
   `application/x-www-form-urlencoded` POST bodies. (Supply an
   alternative.)
-
-### Wanted features
-
-- Support for extracting path parameters (aka matrix parameters)
-- Compatibility: Support treating + as a space (opt-in)
-- Use of File as path (encode segments to avoid production of matrix
-  params)
-- Expansion to other kinds of URIs.
-    - or just support generic URI syntax
-- StringBuilder-backed impls (store offsets for fast getters)
-- Parsing/matching of paths and queries based on templates,
-  e.g. `"/video/{id}/sources;limit={?limit}"`
-  (remember to match across encoding, e.g. `%61` matches `a`)
 
 ### Component processing
 
