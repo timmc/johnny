@@ -6,8 +6,6 @@ package org.timmc.johnny;
  */
 public class UrlFormatter { //TODO convert to interface?
 
-    private final StringEncoder fragEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
-
     /**
      * Format a {@link Url} to a string.
      */
@@ -18,15 +16,15 @@ public class UrlFormatter { //TODO convert to interface?
             build.append(url.getUserInfoRaw()).append("@");
         }
         build.append(url.getHostRaw());
-        if (url.getPort() != null) {
-            build.append(":").append(url.getPort());
+        if (url.getPortRaw() != null) {
+            build.append(":").append(url.getPortRaw());
         }
         build.append(url.getPathRaw());
         if (url.getQueryRaw() != null) {
             build.append("?").append(url.getQueryRaw());
         }
-        if (url.getFragment() != null) {
-            build.append("#").append(fragEnc.encode(url.getFragment()));
+        if (url.getFragmentRaw() != null) {
+            build.append("#").append(url.getFragmentRaw());
         }
         return build.toString();
     }

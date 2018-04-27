@@ -8,6 +8,8 @@ import java.net.URLDecoder;
  */
 public class Codecs {
 
+    private static final StringEncoder fragEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
+
     /*== Decoders ==*/
 
     /**
@@ -30,5 +32,11 @@ public class Codecs {
                 throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
             }
         }
+    }
+
+    /*== Encoders ==*/
+
+    public static String percentEncodeFragment(String fragment) {
+        return fragEnc.encode(fragment);
     }
 }

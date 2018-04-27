@@ -23,10 +23,10 @@ public class MutableUrl extends Url {
     private String scheme;
     private String userInfoRaw;
     private String hostRaw;
-    private Integer port;
+    private String portRaw;
     private String pathRaw;
     private String queryRaw;
-    private String fragment;
+    private String fragmentRaw;
 
     /**
      * Create an invalid URL (null scheme and host). Provided for bean
@@ -43,28 +43,28 @@ public class MutableUrl extends Url {
      * @param scheme Non-null
      * @param userInfoRaw Nullable
      * @param hostRaw Non-null
-     * @param port Nullable
+     * @param portRaw Nullable
      * @param pathRaw Non-null
      * @param queryRaw Nullable
-     * @param fragment Nullable
+     * @param fragmentRaw Nullable
      */
     public MutableUrl(String scheme, String userInfoRaw, String hostRaw,
-                      Integer port, String pathRaw, String queryRaw,
-                      String fragment) {
+                      String portRaw, String pathRaw, String queryRaw,
+                      String fragmentRaw) {
         this.scheme = scheme;
         this.userInfoRaw = userInfoRaw;
         this.hostRaw = hostRaw;
-        this.port = port;
+        this.portRaw = portRaw;
         this.pathRaw = pathRaw;
         this.queryRaw = queryRaw;
-        this.fragment = fragment;
+        this.fragmentRaw = fragmentRaw;
     }
 
     /** Parse a string as a URL and extract the fields. */
     public static MutableUrl from(String url, UrlParser parser) throws MalformedURLException {
         Object[] args = parser.parse(url);
         return new MutableUrl((String) args[0], (String) args[1],
-                (String) args[2], (Integer) args[3], (String) args[4],
+                (String) args[2], (String) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
@@ -102,13 +102,13 @@ public class MutableUrl extends Url {
     }
 
     @Override
-    public Integer getPort() { return port; }
+    public String getPortRaw() { return portRaw; }
     /** Setter provided for bean compatibility. */
-    public void setPort(Integer port) { this.port = port; }
+    public void setPortRaw(String portRaw) { this.portRaw = portRaw; }
 
     @Override
-    public MutableUrl withPort(Integer port) {
-        setPort(port);
+    public MutableUrl withPortRaw(String portRaw) {
+        setPortRaw(portRaw);
         return this;
     }
 
@@ -135,13 +135,13 @@ public class MutableUrl extends Url {
     }
 
     @Override
-    public String getFragment() { return fragment; }
+    public String getFragmentRaw() { return fragmentRaw; }
     /** Setter provided for bean compatibility. */
-    public void setFragment(String fragment) { this.fragment = fragment; }
+    public void setFragmentRaw(String fragmentRaw) { this.fragmentRaw = fragmentRaw; }
 
     @Override
-    public MutableUrl withFragment(String fragment) {
-        setFragment(fragment);
+    public MutableUrl withFragmentRaw(String fragmentRaw) {
+        setFragmentRaw(fragmentRaw);
         return this;
     }
 

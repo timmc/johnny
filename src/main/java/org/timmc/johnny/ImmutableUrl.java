@@ -11,10 +11,10 @@ public class ImmutableUrl extends Url {
     private final String scheme;
     private final String userInfoRaw;
     private final String hostRaw;
-    private final Integer port;
+    private final String portRaw;
     private final String pathRaw;
     private final String queryRaw;
-    private final String fragment;
+    private final String fragmentRaw;
 
     /**
      * Create a URL piecewise, with no validation. See accessors for
@@ -23,21 +23,21 @@ public class ImmutableUrl extends Url {
      * @param scheme Non-null
      * @param userInfoRaw Nullable
      * @param hostRaw Non-null
-     * @param port Nullable
+     * @param portRaw Nullable
      * @param pathRaw Non-null
      * @param queryRaw Nullable
-     * @param fragment Nullable
+     * @param fragmentRaw Nullable
      */
     public ImmutableUrl(String scheme, String userInfoRaw, String hostRaw,
-                        Integer port, String pathRaw, String queryRaw,
-                        String fragment) {
+                        String portRaw, String pathRaw, String queryRaw,
+                        String fragmentRaw) {
         this.scheme = scheme;
         this.userInfoRaw = userInfoRaw;
         this.hostRaw = hostRaw;
-        this.port = port;
+        this.portRaw = portRaw;
         this.pathRaw = pathRaw;
         this.queryRaw = queryRaw;
-        this.fragment = fragment;
+        this.fragmentRaw = fragmentRaw;
     }
 
     /**
@@ -53,7 +53,7 @@ public class ImmutableUrl extends Url {
     public static ImmutableUrl from(String url, UrlParser parser) throws MalformedURLException {
         Object[] args = parser.parse(url);
         return new ImmutableUrl((String) args[0], (String) args[1],
-                (String) args[2], (Integer) args[3], (String) args[4],
+                (String) args[2], (String) args[3], (String) args[4],
                 (String) args[5], (String) args[6]);
     }
 
@@ -62,7 +62,7 @@ public class ImmutableUrl extends Url {
 
     @Override
     public ImmutableUrl withScheme(String scheme) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ImmutableUrl extends Url {
 
     @Override
     public ImmutableUrl withUserInfoRaw(String userInfoRaw) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
@@ -78,15 +78,15 @@ public class ImmutableUrl extends Url {
 
     @Override
     public ImmutableUrl withHostRaw(String hostRaw) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
-    public Integer getPort() { return port; }
+    public String getPortRaw() { return portRaw; }
 
     @Override
-    public ImmutableUrl withPort(Integer port) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+    public ImmutableUrl withPortRaw(String portRaw) {
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class ImmutableUrl extends Url {
 
     @Override
     public ImmutableUrl withPathRaw(String pathRaw) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
@@ -102,15 +102,15 @@ public class ImmutableUrl extends Url {
 
     @Override
     public ImmutableUrl withQueryRaw(String queryRaw) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override
-    public String getFragment() { return fragment; }
+    public String getFragmentRaw() { return fragmentRaw; }
 
     @Override
-    public ImmutableUrl withFragment(String fragment) {
-        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, port, pathRaw, queryRaw, fragment);
+    public ImmutableUrl withFragmentRaw(String fragmentRaw) {
+        return new ImmutableUrl(scheme, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
     }
 
     @Override

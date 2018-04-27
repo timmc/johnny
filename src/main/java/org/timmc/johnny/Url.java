@@ -1,5 +1,6 @@
 package org.timmc.johnny;
 
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import org.timmc.johnny.parts.Params;
@@ -22,7 +23,7 @@ import org.timmc.johnny.parts.UserInfo;
  *   <li>constructor <code>(String scheme, String host)</code></li>
  *   <li>factory method <code>from(String url, UrlParser parser)</code></li>
  *   <li>constructor <code>(String scheme, String userInfoRaw, String host,
- *       Integer port, String pathRaw, String queryRaw, String fragment)</code>
+ *       String portRaw, String pathRaw, String queryRaw, String fragmentRaw)</code>
  *       </li>
  * </ul>
  *
@@ -56,6 +57,22 @@ public abstract class Url {
         return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoFormatter.format(userInfo));
     }
 
+    /** Port of host, in valid range. Nullable. */ // TODO: must be valid?
+    public Integer getPort() throws MalformedURLException {
+        try {
+            String portRaw = getPortRaw();
+            return portRaw == null ? null : Integer.parseInt(portRaw);
+        } catch (NumberFormatException nfe) {
+            throw (MalformedURLException) new MalformedURLException("Could not parse port as integer").initCause(nfe);
+        }
+    }
+
+    /** See {@link #getPort()}. */
+    public Url withPort(Integer port) {
+        String portRaw = port == null ? null : Integer.toString(port);
+        return withPortRaw(portRaw);
+    }
+
     /**
      * Parse and return the path component.
      * @return Non-null
@@ -65,7 +82,7 @@ public abstract class Url {
     }
 
     /**
-     * Set raw path by encoding provided path with standard path encoder.
+     * Set raw path by encoding provided path with standard path encoder. (TODO: Different language for with*)
      * @param path Non-null
      */
     public Url withPath(TextPath path) {
@@ -90,6 +107,26 @@ public abstract class Url {
     public Url withQuery(Params q) {
         return withQueryRaw(Urls.DEFAULT_CODECS.queryFormatter.format(q));
     }
+
+    /**
+     * Get fragment contents, decoded using standard parser.
+     * @return Decoded fragment, or null if no fragment
+     */
+    public String getFragment() throws MalformedURLException {
+        String fragmentRaw = getFragmentRaw();
+        return fragmentRaw == null ? null : Codecs.percentDecode(fragmentRaw);
+    }
+
+    /**
+     * Set raw fragment by encoding provided fragment with standard encoder.
+     * @param fragment Possibly null fragment string
+     */
+    public Url withFragment(String fragment) {
+        String fragmentRaw = fragment == null ? null : Codecs.percentEncodeFragment(fragment);
+        return withFragmentRaw(fragmentRaw);
+    }
+
+    /*== Convenience: Query-specific ==*/
 
     /**
      * Convenience method for {@link Params#replace(String, String)}; for heavy
@@ -136,6 +173,8 @@ public abstract class Url {
         return getQuery().getLast(key);
     }
 
+    /*== Object overrides ==*/
+
     @Override
     public String toString() {
         return format();
@@ -150,10 +189,10 @@ public abstract class Url {
         return Util.equiv(getScheme(), other.getScheme()) &&
                 Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
                 Util.equiv(getHostRaw(), other.getHostRaw()) &&
-                Util.equiv(getPort(), other.getPort()) &&
+                Util.equiv(getPortRaw(), other.getPortRaw()) &&
                 Util.equiv(getPathRaw(), other.getPathRaw()) &&
                 Util.equiv(getQueryRaw(), other.getQueryRaw()) &&
-                Util.equiv(getFragment(), other.getFragment());
+                Util.equiv(getFragmentRaw(), other.getFragmentRaw());
     }
 
     private Integer cachedHashCode = null;
@@ -167,8 +206,8 @@ public abstract class Url {
             return cachedHashCode;
         }
         cachedHashCode = Util.hash(getScheme()) + Util.hash(getUserInfoRaw()) +
-                Util.hash(getHostRaw()) + Util.hash(getPort()) +
-                Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragment());
+                Util.hash(getHostRaw()) + Util.hash(getPortRaw()) +
+                Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragmentRaw());
         return cachedHashCode;
     }
 
@@ -197,11 +236,11 @@ public abstract class Url {
     /** See {@link #getHostRaw()}. */
     public abstract Url withHostRaw(String hostRaw);
 
-    /** Port of host, in valid range. Nullable. */
-    public abstract Integer getPort();
+    /** Undecoded port of host. Nullable. */
+    public abstract String getPortRaw();
 
-    /** See {@link #getPort()}. */
-    public abstract Url withPort(Integer port);
+    /** See {@link #getPortRaw()}. */
+    public abstract Url withPortRaw(String portRaw);
 
     /**
      * Undecoded path portion of URL, possibly empty. If not empty, must
@@ -224,11 +263,11 @@ public abstract class Url {
     /** See {@link #getQueryRaw()}. */
     public abstract Url withQueryRaw(String queryRaw);
 
-    /** Fragment portion of URL, excluding "#" separator. Nullable. */
-    public abstract String getFragment();
+    /** Undecoded fragment portion of URL, excluding "#" separator. Nullable. */
+    public abstract String getFragmentRaw();
 
-    /** See {@link #getFragment()}. */
-    public abstract Url withFragment(String fragment);
+    /** See {@link #getFragmentRaw()}. */
+    public abstract Url withFragmentRaw(String fragmentRaw);
 
     /*== Implementation inspectors ==*/
 

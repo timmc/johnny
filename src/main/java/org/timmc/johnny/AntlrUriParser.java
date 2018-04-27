@@ -65,10 +65,10 @@ public class AntlrUriParser implements UrlParser {
                         scheme.getText(),
                         userinfo == null ? null : userinfo.getText(),
                         host.getText(),
-                        port == null ? null : Integer.parseInt(port.getText()),
+                        port == null ? null : port.getText(),
                         path.getText(),
                         query == null ? null : query.getText(),
-                        fragment == null ? null : Codecs.percentDecode(fragment.getText())};
+                        fragment == null ? null : fragment.getText()};
         } catch(NumberFormatException nfe) {
             throw new MalformedURLException("Could not parse URL: Invalid port number");
         }

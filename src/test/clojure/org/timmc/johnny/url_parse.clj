@@ -50,5 +50,5 @@
    (testing "port-numerics"
      (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
      ;; ८० is Devanagari numerals
-     (is (thrown-with-msg? Exception #" port "
+     (is (thrown? Exception ;; TODO tighten up to single exception class once we've settled on one
           (i/parse-u "http://google.com:\u096E\u0966/"))))))

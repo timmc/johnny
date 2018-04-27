@@ -49,10 +49,10 @@
     (let [make-orig (constantly (i/parse-u "http://brightcove.com"))]
       (is (= (str (doto (make-orig)
                     (.setHostRaw "localhost")
-                    (.setFragment "frag")))
+                    (.setFragmentRaw "frag")))
              (str (-> (make-orig)
                       (.withHostRaw "localhost")
-                      (.withFragment "frag"))))))))
+                      (.withFragmentRaw "frag"))))))))
 
 (deftest object-overrides
   (cross
