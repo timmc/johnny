@@ -15,9 +15,12 @@ Urls.parse("https://google.com/search?q=url#fragment")
 ## Why to use Johnny
 
 - Attempts to conform to RFC 3986 ("Uniform Resource Identifier (URI):
-  Generic Syntax") and updates to that spec—see
-  "[Gallery of Bugs](doc/gallery-of-bugs.md)" for how various URL
-  libraries fail at this
+  Generic Syntax") and RFC 6874 ("Representing IPv6 Zone Identifiers
+  in Address Literals and Uniform Resource Identifiers"
+    - See "[Gallery of Bugs](doc/gallery-of-bugs.md)" for how various
+      URL libraries fail at this
+    - Uses a parser programmatically generated from the
+      specification—no custom parsers by default.
 - Provides escape hatches for non-compliant use-cases
 - Uses immutable data structures by default
 - The fluent API is super nice to use

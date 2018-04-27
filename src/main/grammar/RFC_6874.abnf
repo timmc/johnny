@@ -1,0 +1,11 @@
+; RFC 6874: Representing IPv6 Zone Identifiers in Address Literals and Uniform Resource Identifiers
+;
+; Chapter 6: Specification
+;
+; Retrieved 2018-04-26 from <https://tools.ietf.org/html/rfc6874#page-4>
+
+IP-literal = "[" ( IPv6address / IPv6addrz / IPvFuture  ) "]"
+
+ZoneID = 1*( unreserved / pct-encoded )
+
+IPv6addrz = IPv6address "%25" ZoneID

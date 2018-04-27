@@ -40,6 +40,8 @@ public class Urls {
      * using the default parser.
      */
     public static Url parse(String url) throws MalformedURLException {
+        if (url == null) { throw new NullPointerException("uri may not be null."); }
+
         return ImmutableUrl.from(url, DEFAULT_CODECS.urlParser);
     }
 

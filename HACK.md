@@ -15,7 +15,6 @@ tests.
 
 - Stick to the standards
 - ...but provide safety valves for non-compliant usage
-- Use parser-generator instead of custom parsers (LANGSEC!)
 - Allow parsing/construction without validation
 - Use immutable data structures, ideally persistent (that means
   structure-sharing, not persisted-to-disk)

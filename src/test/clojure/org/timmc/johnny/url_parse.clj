@@ -38,15 +38,17 @@
             "/http://localhost/"))
      (is (= (.getQueryRaw (i/parse-u "http://localhost/?foo?bar"))
             "foo?bar"))
-     (is (= (.getFragment (i/parse-u "http://localhost/#foo%23bar#baz"))
-            "foo#bar#baz")))))
+     ;; TODO: Strict RFC 3986 parser does not even accept this URL
+     ;; - Still want to test that the loose parser does the right thing
+     ;; - Also want to test that this is *not* accepted by the strict parser
+     (comment
+       (is (= (.getFragment (i/parse-u "http://localhost/#foo%23bar#baz"))
+              "foo#bar#baz"))))))
 
 (deftest j-n-url-regression
   (cross
    (testing "port-numerics"
      (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
      ;; ८० is Devanagari numerals
-     (is (thrown-with-msg?
-          IllegalArgumentException
-          #"^URI authority section ends in invalid port \(or is unbracketed IPv6 address\)$"
+     (is (thrown-with-msg? Exception #" port "
           (i/parse-u "http://google.com:\u096E\u0966/"))))))
