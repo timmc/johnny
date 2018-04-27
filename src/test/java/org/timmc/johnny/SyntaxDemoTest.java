@@ -2,7 +2,6 @@ package org.timmc.johnny;
 
 import static org.junit.Assert.*;
 
-import java.net.MalformedURLException;
 import java.util.Arrays;
 
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class SyntaxDemoTest {
      * Demonstrate setter workflow.
      */
     @Test
-    public void testWorkflow() throws MalformedURLException {
+    public void testWorkflow() throws UrlDecodeException {
         Url result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
                          .withPort(8443)
                          .withScheme("https")
@@ -39,7 +38,7 @@ public class SyntaxDemoTest {
      * Demonstrate query manipulation.
      */
     @Test
-    public void testQS() throws MalformedURLException {
+    public void testQS() throws UrlDecodeException {
         Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
         Url result = orig.withQuery(orig.getQuery()
                                         .append("foo", "bar")
@@ -54,7 +53,7 @@ public class SyntaxDemoTest {
      * Demonstrate alternative query representation.
      */
     @Test
-    public void testQSAlt() throws MalformedURLException {
+    public void testQSAlt() throws UrlDecodeException {
         Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
         Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_CODECS.queryParser.parse(orig.getQueryRaw()));
         mutable = mutable.append("foo", "bar").replace("a", null);

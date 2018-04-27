@@ -3,8 +3,6 @@ package org.timmc.johnny;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.timmc.johnny.Rfc3986Uri.BadUriException.UriError;
-
 /**
  * RFC 3986 URI representation and parsing.
  */
@@ -23,14 +21,20 @@ public class Rfc3986Uri {
     /**
      * Create a URI from raw components.
      */
-    public Rfc3986Uri(String scheme, String authority, String path, String query, String fragment) {
+    public Rfc3986Uri(String scheme, String authority, String path, String query, String fragment)
+    throws UrlDecodeException {
         if (scheme == null) { throw new NullPointerException("Scheme may not be null."); }
         if (path == null) { throw new NullPointerException("Path may not be null."); }
 
-        validate(scheme.length() > 0, UriError.SCHEME_EMPTY);
-        validate(Constants.ASCII_ALPHA.get(scheme.charAt(0)), UriError.SCHEME_NO_ALPHA_START);
-        validate(BitSetUtils.fromChars(scheme).andNot(Constants.RFC3986_SCHEME_ALLOWED).isEmpty(),
-                 UriError.SCHEME_ILLEGAL_CHAR);
+        if (scheme.length() == 0) {
+            throw new UrlDecodeException("Scheme component was empty");
+        }
+        if (!Constants.ASCII_ALPHA.get(scheme.charAt(0))) {
+            throw new UrlDecodeException("Scheme component must start with an alphabetic character");
+        }
+        if (!BitSetUtils.fromChars(scheme).andNot(Constants.RFC3986_SCHEME_ALLOWED).isEmpty()) {
+            throw new UrlDecodeException("Scheme component contained an illegal char");
+        }
 
         //TODO validate and characterize path
 
@@ -46,11 +50,13 @@ public class Rfc3986Uri {
     /**
      * Parse a URI based on generic syntax (not scheme-specific.)
      */
-    public static Rfc3986Uri parseGeneric(String uri) {
+    public static Rfc3986Uri parseGeneric(String uri) throws UrlDecodeException {
         if (uri == null) { throw new NullPointerException("uri may not be null."); }
 
         Matcher m = absSyntax.matcher(uri);
-        validate(m.find(), UriError.PARSE_FAILED);
+        if (!m.find()) {
+            throw new UrlDecodeException("Could not determine basic structure of URI");
+        }
         String scheme = m.group(1);
         String hierarchy = m.group(2);
         String query = m.group(4);
@@ -76,42 +82,10 @@ public class Rfc3986Uri {
         return new Rfc3986Uri(scheme, authority, path, query, fragment);
     }
 
-    private static void validate(boolean valid, UriError checking) {
-        if (!valid) {
-            throw new BadUriException(checking);
-        }
-    }
-
     /**
      * Parse the authority component. Throws if authority is null.
      */
-    public UriAuthority parseAuthority() {
+    public UriAuthority parseAuthority()throws UrlDecodeException {
         return UriAuthority.parseGeneric(authority);
-    }
-
-    @SuppressWarnings("javadoc")
-    public static class BadUriException extends RuntimeException {
-        private static final long serialVersionUID = -7325768119011066780L;
-
-        public enum UriError {
-            PARSE_FAILED("Could not determine basic structure of URI"),
-            SCHEME_EMPTY("Scheme component was empty"),
-            SCHEME_NO_ALPHA_START("Scheme component must start with an alphabetic character"),
-            SCHEME_ILLEGAL_CHAR("Scheme component contained an illegal char"),
-            ;
-
-            public final String message;
-
-            UriError(String message) {
-                this.message = message;
-            }
-        };
-
-        public final UriError why;
-
-        public BadUriException(UriError why) {
-            super(why.message);
-            this.why = why;
-        }
     }
 }

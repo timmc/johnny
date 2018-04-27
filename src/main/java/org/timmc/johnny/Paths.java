@@ -87,7 +87,7 @@ public class Paths {
     }
 
     /** Percent-decode each segment. */
-    private static Iterable<String> decodeEach(Iterable<String> rawSegs) {
+    private static Iterable<String> decodeEach(Iterable<String> rawSegs) throws UrlDecodeException {
         List<String> build = new ArrayList<String>();
         for (String raw : rawSegs) {
             build.add(Codecs.percentDecode(raw));
@@ -102,7 +102,7 @@ public class Paths {
      * @return Effect on an existing path component, with decoded segments.
      * @see #decode(String) for working with path components
      */
-    public static PathEffect effectOf(String pathRef) {
+    public static PathEffect effectOf(String pathRef) throws UrlDecodeException {
         if (pathRef == null) { throw new NullPointerException("path reference may not be null."); }
         boolean absolute = isAbsolute(pathRef);
         PathEffect effect = effectOf(decodeEach(explode(pathRef)));
@@ -115,7 +115,7 @@ public class Paths {
      * @return Decoded segments of a path, with empty and traversal segments normalized away.
      * @see #effectOf(String) for working with path references
      */
-    public static List<String> decode(String pathComp) {
+    public static List<String> decode(String pathComp) throws UrlDecodeException {
         if (!pathComp.isEmpty() && !pathComp.startsWith("/")) {
             throw new IllegalArgumentException("Non-empty path component did not start with a slash"); // TODO use a BadUriException?
         }

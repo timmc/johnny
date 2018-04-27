@@ -32,7 +32,7 @@ public class UriAuthority {
     /**
      * Parse a URI based on generic syntax (not scheme-specific.)
      */
-    public static UriAuthority parseGeneric(String authority) {
+    public static UriAuthority parseGeneric(String authority) throws UrlDecodeException {
         if (authority == null) { throw new NullPointerException("authority may not be null."); }
         String userinfo, host, port;
 
@@ -65,7 +65,7 @@ public class UriAuthority {
                 host = remaining.substring(0, lastColon);
                 port = possiblePort;
             } else {
-                throw new IllegalArgumentException("URI authority section ends in invalid port (or is unbracketed IPv6 address)");
+                throw new UrlDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)");
             }
         }
 

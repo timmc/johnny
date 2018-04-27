@@ -21,8 +21,9 @@ public class Codecs {
      * from {@link CodecSuite}.
      * @param part Nullable
      * @return Percent-decoded string, or null if input was null
+     * @throws UrlDecodeException if there are invalid percent-escapes
      */
-    public static String percentDecode(String part) {
+    public static String percentDecode(String part) throws UrlDecodeException {
         if (part == null) {
             return null;
         } else {
@@ -30,6 +31,8 @@ public class Codecs {
                 return URLDecoder.decode(part.replace("+", "%2B"), "UTF-8");
             } catch (UnsupportedEncodingException uee) {
                 throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
+            } catch (IllegalArgumentException iae) {
+                throw new UrlDecodeException("Could not percent-decode URL component", iae);
             }
         }
     }

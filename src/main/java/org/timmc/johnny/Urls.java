@@ -1,7 +1,5 @@
 package org.timmc.johnny;
 
-import java.net.MalformedURLException;
-
 import org.timmc.johnny.parts.PairQueryFormatter;
 import org.timmc.johnny.parts.ImmutableOrderedParams;
 import org.timmc.johnny.parts.TextPathFormatter;
@@ -39,7 +37,7 @@ public class Urls {
      * Parse a URL string to the default piecewise HTTP URL representation
      * using the default parser.
      */
-    public static Url parse(String url) throws MalformedURLException {
+    public static Url parse(String url) throws UrlDecodeException {
         if (url == null) { throw new NullPointerException("uri may not be null."); }
 
         return ImmutableUrl.from(url, DEFAULT_CODECS.urlParser);
@@ -50,7 +48,7 @@ public class Urls {
      * using the default parser.
      * @param pathRaw Non-null path component
      */
-    public static TextPath parsePath(String pathRaw) {
+    public static TextPath parsePath(String pathRaw) throws UrlDecodeException {
         return DEFAULT_CODECS.emptyPath.addSegments(DEFAULT_CODECS.pathParser.parse(pathRaw));
     }
 
@@ -60,7 +58,7 @@ public class Urls {
      * @param queryRaw Query component, or null
      * @return Params, or null if input was null
      */
-    public static Params parseQuery(String queryRaw) {
+    public static Params parseQuery(String queryRaw) throws UrlDecodeException {
         if (queryRaw == null) {
             return null;
         }

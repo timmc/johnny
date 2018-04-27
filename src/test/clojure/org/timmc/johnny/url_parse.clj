@@ -3,7 +3,7 @@
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny ImmutableUrl)))
+  (:import (org.timmc.johnny ImmutableUrl UrlDecodeException)))
 
 (defmacro default-others
   [& body]
@@ -50,5 +50,5 @@
    (testing "port-numerics"
      (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
      ;; ८० is Devanagari numerals
-     (is (thrown? Exception ;; TODO tighten up to single exception class once we've settled on one
+     (is (thrown? UrlDecodeException
           (i/parse-u "http://google.com:\u096E\u0966/"))))))

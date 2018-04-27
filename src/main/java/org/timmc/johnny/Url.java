@@ -1,6 +1,5 @@
 package org.timmc.johnny;
 
-import java.net.MalformedURLException;
 import java.util.Collection;
 
 import org.timmc.johnny.parts.Params;
@@ -44,7 +43,7 @@ public abstract class Url {
      * Parse user information component as a {@link UserInfo} object, if present.
      * @return User info, or null if missing.
      */
-    public UserInfo getUserInfo() {
+    public UserInfo getUserInfo() throws UrlDecodeException {
         String raw = getUserInfoRaw();
         return raw == null ? null : Urls.DEFAULT_CODECS.userInfoParser.parse(raw);
     }
@@ -58,12 +57,12 @@ public abstract class Url {
     }
 
     /** Port of host, in valid range. Nullable. */ // TODO: must be valid?
-    public Integer getPort() throws MalformedURLException {
+    public Integer getPort() throws UrlDecodeException {
         try {
             String portRaw = getPortRaw();
             return portRaw == null ? null : Integer.parseInt(portRaw);
         } catch (NumberFormatException nfe) {
-            throw (MalformedURLException) new MalformedURLException("Could not parse port as integer").initCause(nfe);
+            throw new UrlDecodeException("Could not parse port as integer", nfe);
         }
     }
 
@@ -77,7 +76,7 @@ public abstract class Url {
      * Parse and return the path component.
      * @return Non-null
      */
-    public TextPath getPath() {
+    public TextPath getPath() throws UrlDecodeException {
         return Urls.parsePath(getPathRaw());
     }
 
@@ -95,7 +94,7 @@ public abstract class Url {
      * preserve order of keys, but will preserve order of values.
      * @return Decoded query, or null
      */
-    public Params getQuery() {
+    public Params getQuery() throws UrlDecodeException {
         String raw = getQueryRaw();
         return raw == null ? null : Urls.parseQuery(raw);
     }
@@ -112,7 +111,7 @@ public abstract class Url {
      * Get fragment contents, decoded using standard parser.
      * @return Decoded fragment, or null if no fragment
      */
-    public String getFragment() throws MalformedURLException {
+    public String getFragment() throws UrlDecodeException {
         String fragmentRaw = getFragmentRaw();
         return fragmentRaw == null ? null : Codecs.percentDecode(fragmentRaw);
     }
@@ -136,7 +135,7 @@ public abstract class Url {
      * @param key Non-null query param key (may be empty)
      * @param value Nullable query param value
      */
-    public Url querySetKey(String key, String value) {
+    public Url querySetKey(String key, String value) throws UrlDecodeException {
         if (key == null) {
             throw new NullPointerException("Cannot append null query key");
         }
@@ -151,7 +150,7 @@ public abstract class Url {
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
      */
-    public Collection<String> queryGet(String key) {
+    public Collection<String> queryGet(String key) throws UrlDecodeException {
         if (key == null) {
             throw new NullPointerException("Cannot search for null query key");
         }
@@ -166,7 +165,7 @@ public abstract class Url {
      * @param key Non-null query param key (may be empty)
      * @return Last value for key, null iff key not present.
      */
-    public String queryGetLast(String key) {
+    public String queryGetLast(String key) throws UrlDecodeException {
         if (key == null) {
             throw new NullPointerException("Cannot search for null query key");
         }

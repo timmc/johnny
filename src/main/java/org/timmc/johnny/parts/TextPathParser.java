@@ -3,6 +3,7 @@ package org.timmc.johnny.parts;
 import java.util.List;
 
 import org.timmc.johnny.Paths;
+import org.timmc.johnny.UrlDecodeException;
 
 /**
  * A parser for URL path components. Empty segments will be removed and
@@ -19,7 +20,7 @@ public class TextPathParser {
      * @param pathRaw Raw path component of a URL (not null, may be empty, must start with "/")
      * @return Sequence of decoded path components suitable for adding to a {@link TextPath}.
      */
-    public List<String> parse(String pathRaw) {
+    public List<String> parse(String pathRaw) throws UrlDecodeException {
         if (pathRaw == null) {
             throw new NullPointerException("Raw path must not be null.");
         }

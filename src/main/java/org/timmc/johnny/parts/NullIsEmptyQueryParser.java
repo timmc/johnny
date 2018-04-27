@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.timmc.johnny.UrlDecodeException;
 import org.timmc.johnny.coll.MapEntry;
 
 /**
@@ -30,7 +31,7 @@ public class NullIsEmptyQueryParser implements QueryParser {
         this.delegate = new NullableValueQueryParser(pairSep);
     }
 
-    public Iterable<Map.Entry<String, String>> parse(String queryRaw) {
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw) throws UrlDecodeException {
         LinkedList<Map.Entry<String, String>> ret = new LinkedList<Map.Entry<String, String>>();
         for (Map.Entry<String, String> e : delegate.parse(queryRaw)) {
             ret.add(e.getValue() == null ? new MapEntry<String, String>(e.getKey(), "") : e);

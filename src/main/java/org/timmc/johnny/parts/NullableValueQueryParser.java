@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.timmc.johnny.Codecs;
+import org.timmc.johnny.UrlDecodeException;
 import org.timmc.johnny.coll.MapEntry;
 
 /**
@@ -44,7 +45,7 @@ public class NullableValueQueryParser implements QueryParser {
         this.pairSep = pairSep;
     }
 
-    public Iterable<Map.Entry<String, String>> parse(String queryRaw) {
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw) throws UrlDecodeException {
         LinkedList<Map.Entry<String, String>> ret = new LinkedList<Map.Entry<String, String>>();
         String[] pairs = pairSep.split(queryRaw);
         for (String pair : pairs) {

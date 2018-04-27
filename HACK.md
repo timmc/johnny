@@ -20,6 +20,8 @@ tests.
   structure-sharing, not persisted-to-disk)
 - UTF-8 always (but provide facilities to allow users to introduce
   other encodings)
+- Advertise possible throwing of runtime exceptions, escept for
+  trivial ones like NPE
 
 ## Contributing
 

@@ -1,7 +1,5 @@
 package org.timmc.johnny;
 
-import java.net.MalformedURLException;
-
 /**
  * A non-concurrency-safe UrlBits implementation. Use with <strong>great
  * caution</strong>. Not only are methods generally not thread-safe, but
@@ -61,7 +59,7 @@ public class MutableUrl extends Url {
     }
 
     /** Parse a string as a URL and extract the fields. */
-    public static MutableUrl from(String url, UrlParser parser) throws MalformedURLException {
+    public static MutableUrl from(String url, UrlParser parser) throws UrlDecodeException {
         Object[] args = parser.parse(url);
         return new MutableUrl((String) args[0], (String) args[1],
                 (String) args[2], (String) args[3], (String) args[4],

@@ -3,6 +3,7 @@ package org.timmc.johnny.parts;
 import java.util.Map;
 
 import org.timmc.johnny.Url;
+import org.timmc.johnny.UrlDecodeException;
 
 /**
  * A parser for query components that are composed of keys and optional
@@ -20,5 +21,5 @@ public interface QueryParser {
      *   {@link Url#getQueryRaw()}, not null.
      * @return Sequence of keys and values, where values may be null.
      */
-    public Iterable<Map.Entry<String, String>> parse(String queryRaw);
+    public Iterable<Map.Entry<String, String>> parse(String queryRaw) throws UrlDecodeException;
 }

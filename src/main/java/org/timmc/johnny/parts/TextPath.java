@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.timmc.johnny.Paths;
+import org.timmc.johnny.UrlDecodeException;
 import org.timmc.johnny.Urls;
 import org.timmc.johnny.Paths.PathEffect;
 
@@ -96,7 +97,7 @@ public class TextPath {
      * Append or replace with the provided path.
      * @param rawRelative Absolute or relative path.
      */
-    public TextPath addRawPath(String rawRelative) {
+    public TextPath addRawPath(String rawRelative) throws UrlDecodeException {
         return applyEffect(Paths.effectOf(rawRelative));
     }
 

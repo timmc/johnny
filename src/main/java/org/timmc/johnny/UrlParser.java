@@ -1,7 +1,5 @@
 package org.timmc.johnny;
 
-import java.net.MalformedURLException;
-
 /**
  * A full-URL parser. Implementations have the freedom to choose which
  * character set they use for percent-decoding, how carefully to validate
@@ -15,7 +13,7 @@ public interface UrlParser {
      * @return Array of values suitable for return from {@link Url#getScheme()},
      *  {@link Url#getUserInfoRaw()}, {@link Url#getHostRaw()}, {@link Url#getPort()},
      *  {@link Url#getPathRaw()}, {@link Url#getQueryRaw()}, {@link Url#getFragment()}.
-     * @throws MalformedURLException if the URL is not well-formed
+     * @throws UrlDecodeException if the URL is not well-formed
      */
-    public Object[] parse(String url) throws MalformedURLException;
+    public Object[] parse(String url) throws UrlDecodeException;
 }

@@ -1,7 +1,5 @@
 package org.timmc.johnny;
 
-import java.net.MalformedURLException;
-
 /**
  * A concurrency-safe UrlBits implementation. Methods are generally
  * thread-safe, and instances may be freely shared outside of the scope they
@@ -50,7 +48,7 @@ public class ImmutableUrl extends Url {
     }
 
     /** Parse a string as a URL and extract the fields. */
-    public static ImmutableUrl from(String url, UrlParser parser) throws MalformedURLException {
+    public static ImmutableUrl from(String url, UrlParser parser) throws UrlDecodeException {
         Object[] args = parser.parse(url);
         return new ImmutableUrl((String) args[0], (String) args[1],
                 (String) args[2], (String) args[3], (String) args[4],

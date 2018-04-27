@@ -14,7 +14,6 @@ import org.timmc.johnny.gen.parse.RFC_3986_6874Lexer;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser.*;
 
-import java.net.MalformedURLException;
 import java.util.BitSet;
 
 /**
@@ -22,17 +21,17 @@ import java.util.BitSet;
  */
 public class AntlrUriParser implements UrlParser {
 
-    public Object[] parse(String in) throws MalformedURLException {
+    public Object[] parse(String in) throws UrlDecodeException {
         try {
             return parseInner(in);
         } catch(RecognitionException re) {
-            throw (MalformedURLException) (new MalformedURLException("Could not recognize URL from input").initCause(re));
+            throw new UrlDecodeException("Could not recognize URL from input", re);
         } catch(ParseCancellationException pce) {
-            throw (MalformedURLException) (new MalformedURLException("Could not recognize URL from input").initCause(pce));
+            throw new UrlDecodeException("Could not recognize URL from input", pce);
         }
     }
 
-    private Object[] parseInner(String in) throws MalformedURLException, RecognitionException {
+    private Object[] parseInner(String in) throws UrlDecodeException, RecognitionException, ParseCancellationException {
         if (in == null) { throw new NullPointerException("uri may not be null."); }
 
         RFC_3986_6874Lexer lexer = new RFC_3986_6874Lexer(CharStreams.fromString(in));
@@ -70,18 +69,18 @@ public class AntlrUriParser implements UrlParser {
                         query == null ? null : query.getText(),
                         fragment == null ? null : fragment.getText()};
         } catch(NumberFormatException nfe) {
-            throw new MalformedURLException("Could not parse URL: Invalid port number");
+            throw new UrlDecodeException("Could not parse URL: Invalid port number");
         }
 
         String errMsg = errorListener.getError();
         if (errMsg != null) {
-            throw new MalformedURLException("Could not parse URL: " + errMsg);
+            throw new UrlDecodeException("Could not parse URL: " + errMsg);
         }
 
         // Check if entire string was consumed and matched
         String matched = uri.getText();
         if (!in.equals(matched)) {
-            throw new MalformedURLException("Could not parse URL: " +
+            throw new UrlDecodeException("Could not parse URL: " +
                     "error at position " + matched.length());
         }
 
