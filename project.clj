@@ -1,8 +1,10 @@
+(def antlr-ver "4.7.1")
+
 (defproject org.timmc/johnny "0.1.2-SNAPSHOT"
   :min-lein-version  "2.1.0" ;; 2.1.0 introduced jar classifiers
   :description "A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use."
   :url "https://github.com/timmc/johnny"
-  :dependencies []
+  :dependencies [[org.antlr/antlr4-runtime ~antlr-ver]]
   :plugins [[lein-junit "1.1.8"]
             [lein-javadoc "0.3.0"]]
   ;; Implementation is actually in Java, but most tests are written in
@@ -13,6 +15,7 @@
   :test-paths ["src/test/clojure"]
   :javac-options ["-target" "1.7" "-source" "1.7"]
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.5.1"]
+                                  [org.antlr/antlr4 ~antlr-ver]
                                   [junit/junit "4.12"]]
                    :java-source-paths ["src/test/java"]}}
   :junit ["src/test/java"]
