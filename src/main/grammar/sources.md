@@ -11,15 +11,11 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
     - Modify RFC 3986 ABNF as indicated in RFC 6874
     - Append RFC 5234
     - Save to `src/main/grammer/RFC_3986_6874.abnf`
-- Make a modified version where `HEXDIG` explicitly includes lowercase
-  chars `a`–`f` as a workaround for
-  https://github.com/rpinchbeck/Abnf-To-Antlr/issues/1 (Abnf-To-Antlr
-  does not know that ABNF strings are case-insensitve)
-    - Before: `HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F"`
-    - After:  `HEXDIG         =  DIGIT / "A" / "B" / "C" / "D" / "E" / "F" / "a" / "b" / "c" / "d" / "e" / "f"`
-- Run this modified version through Abnf-To-Antlr
+- Run this through Abnf-To-Antlr
     - http://www.bobpinchbeck.com/abnf_to_antlr/Default.aspx
         - Source https://github.com/rpinchbeck/Abnf-To-Antlr
+        - Use at least version 1.5 to avoid fixed bug around
+          case-insensitivity of ABNF
     - Save to `src/main/grammar/RFC_3986_6874.g4`
     - Add `grammar RFC_3986_6874;` to the top of the file
 - Strip out all rules that do not get used by other rules, except for
@@ -31,4 +27,4 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
       also happens to work around a bug in ANTLR's Java targeting,
       wherein the Unicode character escapes `\u000A` and `\u000D` are
       emitted directly into Java sources, which will cause compilation
-      errors.
+      errors. (See https://github.com/antlr/antlr4/issues/2281)

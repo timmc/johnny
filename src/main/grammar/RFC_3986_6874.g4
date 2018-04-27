@@ -20,7 +20,7 @@ userinfo      : ( unreserved | pct_encoded | sub_delims | COLON )*;
 host          : ip_literal | ipv4address | reg_name;
 port          : digit*;
 
-ipvfuture     : V hexdig+ PERIOD ( unreserved | sub_delims | COLON )+;
+ipvfuture     : (CAP_V | V) hexdig+ PERIOD ( unreserved | sub_delims | COLON )+;
 
 ipv6address   :                            (( h16 COLON ) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) ls32)
               |                       ((COLON COLON) ( h16 COLON ) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) ls32)
@@ -87,7 +87,7 @@ alpha          :  (CAP_A | CAP_B | CAP_C | CAP_D | CAP_E | CAP_F | CAP_G | CAP_H
 digit          :  (ZERO | ONE | TWO | THREE | FOUR | FIVE | SIX | SEVEN | EIGHT | NINE);
                        // 0-9
 
-hexdig         :  digit | CAP_A | CAP_B | CAP_C | CAP_D | CAP_E | CAP_F | A | B | C | D | E | F;
+hexdig         :  digit | (CAP_A | A) | (CAP_B | B) | (CAP_C | C) | (CAP_D | D) | (CAP_E | E) | (CAP_F | F);
 
 //////////////////////////////////////////////////////////////////////////
 // Lexer rules generated for each distinct character in original grammar
