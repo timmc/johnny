@@ -14,7 +14,7 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
 - Run this through Abnf-To-Antlr
     - http://www.bobpinchbeck.com/abnf_to_antlr/Default.aspx
         - Source https://github.com/rpinchbeck/Abnf-To-Antlr
-        - Use at least version 1.5 to avoid fixed bug around
+        - Use at least version 1.5.1 to avoid fixed bug around
           case-insensitivity of ABNF
     - Save to `src/main/grammar/RFC_3986_6874.g4`
     - Add `grammar RFC_3986_6874;` to the top of the file
