@@ -14,7 +14,7 @@ package org.timmc.johnny;
  * <p>
  * <code>mutableUrl.withScheme("http").withHostRaw("example.net").format()</code>
  * <p>
- * Methods beginning with "set" are provided only for bean compability and
+ * Methods beginning with "set" are provided only for bean compatibility and
  * should have the same performance characteristics as the "with" methods.
  */
 public class MutableUrl extends Url {
