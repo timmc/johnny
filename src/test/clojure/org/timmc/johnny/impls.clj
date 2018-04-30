@@ -4,7 +4,7 @@
             UrlParser AntlrUriParser SchemeSpecificUriParser
             Url ImmutableUrl))
   (:import (org.timmc.johnny.parts
-            TextPathParser TextPath TextPathFormatter
+            TextPathParser TextPath
             NullableValueQueryParser ImmutableOrderedParams
             PairQueryFormatter)))
 
@@ -17,7 +17,6 @@
 
 (def path-parse-impls #{(TextPathParser.)})
 (def path-manip-impls #{TextPath})
-(def path-format-impls #{(TextPathFormatter.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.)})
 (def q-manip-impls #{ImmutableOrderedParams})
@@ -30,7 +29,6 @@
 
 (def default-path-parser Urls/pathParser)
 (def default-path-inst Urls/emptyPath)
-(def default-path-format Urls/pathFormatter)
 
 (def default-q-parser Urls/queryParser)
 (def default-q-inst Urls/emptyParams)
@@ -43,7 +41,6 @@
 
 (def ^:dynamic *path-parser* nil)
 (def ^:dynamic *path-manip* nil)
-(def ^:dynamic *path-formatter* nil)
 
 (def ^:dynamic *query-parser* nil)
 (def ^:dynamic *query-manip* nil)
@@ -57,8 +54,7 @@
 
 (def path-impl-bindings
   {#'*path-parser* path-parse-impls
-   #'*path-manip* path-manip-impls
-   #'*path-formatter* path-format-impls})
+   #'*path-manip* path-manip-impls})
 
 (def query-impl-bindings
   {#'*query-parser* q-parse-impls

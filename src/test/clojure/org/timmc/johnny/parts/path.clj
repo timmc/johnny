@@ -47,7 +47,7 @@
 
 (deftest regression-urlencode-spaces
   (let [path (.addSegments TextPath/EMPTY ["foo" "bar baz"])]
-    (is (= (.format Urls/pathFormatter (.getSegments path))
+    (is (= (.format path)
            "/foo/bar%20baz"))))
 
 (deftest integration

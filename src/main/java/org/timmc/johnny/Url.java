@@ -103,7 +103,7 @@ public abstract class Url {
      * @param path Non-null
      */
     public Url withPath(TextPath path) {
-        return withPathRaw(Urls.pathFormatter.format(path.getSegments()));
+        return withPathRaw(path.format());
     }
 
     /**

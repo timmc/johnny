@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.timmc.johnny.Paths;
-import org.timmc.johnny.UrlDecodeException;
-import org.timmc.johnny.Urls;
+import org.timmc.johnny.*;
 import org.timmc.johnny.Paths.PathEffect;
 
 /**
@@ -20,6 +18,10 @@ import org.timmc.johnny.Paths.PathEffect;
  * This implementation of path parsing does *not* respect path parameters.
  */
 public class TextPath {
+
+    /** Encoder for path segments. */
+    public static final StringEncoder SEGMENT_ENCODER =
+            new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_PATH_SEGMENT));
 
     /** A non-null sequence of non-null, non-empty Strings. */
     private final List<String> segments;
@@ -117,9 +119,35 @@ public class TextPath {
         return addSegments(Arrays.asList(text));
     }
 
+    /**
+     * Format a sequence of segments into a normalized raw path string.
+     * @param segments Non-null sequence of non-null parsed path segments,
+     *  probably from a {@link TextPath}.
+     * @return Raw path string, either empty or starting with "/".
+     */
+    public static String format(Iterable<String> segments) {
+        segments = Paths.isNormalized(segments) ? segments : Paths.normalize(segments);
+        StringBuilder ret = new StringBuilder();
+        for (String seg : segments) {
+            ret.append('/').append(SEGMENT_ENCODER.encode(seg));
+        }
+        return ret.toString();
+    }
+
+    /**
+     * Format path into a normalized raw path string. This uses {@link #format(Iterable)}
+     * on the current object's segments.
+     * @return Raw path string, either empty or starting with "/".
+     */
+    public String format() {
+        return TextPath.format(getSegments());
+    }
+
+    /*== Object overrides ==*/
+
     @Override
     public String toString() {
-        return String.format("#<TextPath %s>", Urls.pathFormatter.format(getSegments()));
+        return String.format("#<TextPath %s>", format());
     }
 
     @Override
