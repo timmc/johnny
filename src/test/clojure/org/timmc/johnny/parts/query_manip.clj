@@ -48,18 +48,12 @@
      (is (= (.countKeys val) 2))
      (is (.hasKey val "a"))
      (is (.hasKey val "b"))
-     (if (.implPreservesRepeatedKeys val)
-       (do (is (= (.countPairs val) 3))
-           (when (.implPreservesValueOrderPerKey val)
-             (is (= (.getLast val "a") "6"))
-             (is (= (.getLast val "b") ""))
-             (is (= (.getAll val "a") ["5" "6"])))
-           (let [ordered [(ME. "a" "5") (ME. "b" "") (ME. "a" "6")]]
-             (if (.implPreservesPairOrder val)
-               (is (= (.getPairs val) ordered))
-               (is (= (set (.getPairs val)) (set ordered))))))
-       (do (is (= (.countPairs val) 2))
-           (is (= (set (map first (.getPairs val))) #{"a" "b"})))))))
+     (do (is (= (.countPairs val) 3))
+         (is (= (.getLast val "a") "6"))
+         (is (= (.getLast val "b") ""))
+         (is (= (.getAll val "a") ["5" "6"]))
+         (let [ordered [(ME. "a" "5") (ME. "b" "") (ME. "a" "6")]]
+           (is (= (.getPairs val) ordered)))))))
 
 ;; TODO add tests for + vs. %20
 
@@ -91,15 +85,11 @@
                         (append "a" "before")
                         (append "m" "7")
                         (append "z" "after"))]
-       (if (.implPreservesRepeatedKeys base)
-         (is (= (sort (.getAll appended "m")) ["5" "6" "6" "7"]))
-         (is (.contains (.getAll appended "m") "7")))
-       (when (.implPreservesValueOrderPerKey base)
-         (is (= (.getLast appended "m") "7")))
-       (when (.implPreservesPairOrder base)
-         (let [final (last (.getPairs appended))]
-           (is (= (key final) "z"))
-           (is (= (val final) "after"))))))
+       (is (= (sort (.getAll appended "m")) ["5" "6" "6" "7"]))
+       (is (= (.getLast appended "m") "7"))
+       (let [final (last (.getPairs appended))]
+         (is (= (key final) "z"))
+         (is (= (val final) "after")))))
    ;; Now test things based on .appendAll
    (doseq [raw [""
                 "&&&&&"
@@ -156,9 +146,7 @@
                  :let [last-vals (into {} data)]]
            (testing (str which)
              (let [val (.appendAll (qc) data)]
-               (doseq [[k v] (if (.implPreservesRepeatedKeys val)
-                               data
-                               last-vals)]
+               (doseq [[k v] data]
                  (is (.hasPair val k v)))))))
        (testing ".replace"
          (let [change #(.replace % "a" "new")
@@ -182,6 +170,5 @@
              (testing (str "which=" (name which))
                (is (.hasKey val "a"))
                (is (.hasPair val "a" "new"))
-               (when (.implPreservesValueOrderPerKey val)
-                 (is (= (.getLast val "a") "new")))
+               (is (= (.getLast val "a") "new"))
                (is (= (.contains (.getAll val "a") "new")))))))))))

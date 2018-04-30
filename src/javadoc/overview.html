@@ -30,8 +30,8 @@ alternative behavior, it can eschew the mainline API and use intermediate repres
 to customize URL handling. For instance, to use a mutable query representation:
 <p>
 <pre><code>Url orig = Urls.parse("http://brightcove.com/login?a=b=c&amp;a=?d");
-Params mutable = new MutableMultimapParams().appendAll(Urls.parseQuery(orig.getQueryRaw()));
-mutable = mutable.append("foo", "bar").replace("a", null);
-orig.withQuery(mutable).format(); // "http://brightcove.com/login?a&amp;foo=bar"
+Params params = new MutableMultimapParams().appendAll(Urls.parseQuery(orig.getQueryRaw()));
+params = params.append("foo", "bar").replace("a", null);
+orig.withQuery(params).format(); // "http://brightcove.com/login?a&amp;foo=bar"
 </code></pre>
 </body>

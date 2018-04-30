@@ -1,7 +1,7 @@
 package org.timmc.johnny;
 
 /**
- * A concurrency-safe UrlBits implementation. Methods are generally
+ * A concurrency-safe Url implementation. Methods are generally
  * thread-safe, and instances may be freely shared outside of the scope they
  * are created in.
  */
@@ -109,10 +109,5 @@ public class ImmutableUrl extends Url {
     @Override
     public ImmutableUrl withFragmentRaw(String fragmentRaw) {
         return new ImmutableUrl(schemeRaw, userInfoRaw, hostRaw, portRaw, pathRaw, queryRaw, fragmentRaw);
-    }
-
-    @Override
-    public boolean implImmutable() {
-        return true;
     }
 }

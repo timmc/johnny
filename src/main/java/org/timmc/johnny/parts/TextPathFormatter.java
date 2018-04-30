@@ -14,9 +14,6 @@ public class TextPathFormatter {
     public static final StringEncoder DEFAULT_SEGMENT_ENCODER =
             new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_PATH_SEGMENT));
 
-    /** Shared instance of path formatter. */
-    public static final TextPathFormatter INSTANCE = new TextPathFormatter();
-
     /**
      * Format a sequence of segments into a normalized raw path string.
      * @param segments Non-null sequence of non-null parsed path segments,

@@ -36,7 +36,7 @@ public abstract class Url {
      * Format this URL back into a string using default settings.
      */
     public String format() {
-        return Urls.DEFAULT_CODECS.urlFormatter.format(this);
+        return Urls.urlFormatter.format(this);
     }
 
     /**
@@ -63,7 +63,7 @@ public abstract class Url {
      */
     public UserInfo getUserInfo() throws UrlDecodeException {
         String raw = getUserInfoRaw();
-        return raw == null ? null : Urls.DEFAULT_CODECS.userInfoParser.parse(raw);
+        return raw == null ? null : Urls.userInfoParser.parse(raw);
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class Url {
      * @param userInfo Nullable
      */
     public Url withUserInfo(UserInfo userInfo) {
-        return withUserInfoRaw(userInfo == null ? null : Urls.DEFAULT_CODECS.userInfoFormatter.format(userInfo));
+        return withUserInfoRaw(userInfo == null ? null : Urls.userInfoFormatter.format(userInfo));
     }
 
     /** Port of host, in valid range. Nullable. */ // TODO: must be valid?
@@ -103,7 +103,7 @@ public abstract class Url {
      * @param path Non-null
      */
     public Url withPath(TextPath path) {
-        return withPathRaw(Urls.DEFAULT_CODECS.pathFormatter.format(path.getSegments()));
+        return withPathRaw(Urls.pathFormatter.format(path.getSegments()));
     }
 
     /**
@@ -122,7 +122,7 @@ public abstract class Url {
      * @param q Possibly null Query
      */
     public Url withQuery(Params q) {
-        return withQueryRaw(Urls.DEFAULT_CODECS.queryFormatter.format(q));
+        return withQueryRaw(Urls.queryFormatter.format(q));
     }
 
     /**
@@ -219,7 +219,7 @@ public abstract class Url {
         // No need for synchronization, this is just an optimization. (Even if
         // this is changed to write a primitive int, that's a 32-bit operation
         // and therefore still atomic. (Writes to longs are not atomic.)
-        if (implImmutable() && cachedHashCode != null) {
+        if (cachedHashCode != null) {
             return cachedHashCode;
         }
         cachedHashCode = Util.hash(getSchemeRaw()) + Util.hash(getUserInfoRaw()) +
@@ -285,15 +285,4 @@ public abstract class Url {
 
     /** See {@link #getFragmentRaw()}. */
     public abstract Url withFragmentRaw(String fragmentRaw);
-
-    /*== Implementation inspectors ==*/
-
-    /**
-     * Answer if implementation is immutable. Consumers of Url objects from third-party code MAY use
-     * this before deciding whether to use with* methods on the original object instead of copying
-     * into an immutable version first, but are not required to.
-     * 
-     * @return true only if this implementation is immutable
-     */
-    public abstract boolean implImmutable();
 }

@@ -37,7 +37,7 @@ public class UserInfo {
      */
     @Override
     public String toString() {
-        return Urls.DEFAULT_CODECS.userInfoFormatter.format(this);
+        return Urls.userInfoFormatter.format(this);
     }
 
     @Override

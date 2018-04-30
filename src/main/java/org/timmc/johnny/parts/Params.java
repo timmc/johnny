@@ -123,33 +123,9 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @param key Key string, not null.
      * @param val New value string, nullable.
      * @return Params on which {@link #getLast(String)} with <code>key</code>
-     *  will return <code>val</code> (for implementations supporting
-     *  {@link #implPreservesValueOrderPerKey()}) and on which
+     *  will return <code>val</code> and on which
      *  {@link #getAll(String)} will return a collection containing
      *  <code>val</code> (for all implementations.)
      */
     public Params replaceLast(String key, String val);
-
-    /*== Implementation inspectors ==*/
-    //TODO: Replace these with annotations?
-
-    /**
-     * @return true only if this implementation preserves repeated keys
-     */
-    public boolean implPreservesRepeatedKeys();
-
-    /**
-     * @return true only if this implementation preserves the order of values of each key
-     */
-    public boolean implPreservesValueOrderPerKey();
-
-    /**
-     * @return true only if this implementation preserves absolute order of key-value pairs
-     */
-    public boolean implPreservesPairOrder();
-
-    /**
-     * @return true only if this implementation is immutable
-     */
-    public boolean implImmutable();
 }

@@ -1,14 +1,6 @@
 package org.timmc.johnny;
 
-import org.timmc.johnny.parts.PairQueryFormatter;
-import org.timmc.johnny.parts.ImmutableOrderedParams;
-import org.timmc.johnny.parts.TextPathFormatter;
-import org.timmc.johnny.parts.PluggableUserInfoFormatter;
-import org.timmc.johnny.parts.NullIsEmptyQueryParser;
-import org.timmc.johnny.parts.Params;
-import org.timmc.johnny.parts.StdUserInfoParser;
-import org.timmc.johnny.parts.TextPath;
-import org.timmc.johnny.parts.TextPathParser;
+import org.timmc.johnny.parts.*;
 
 
 /**
@@ -17,19 +9,16 @@ import org.timmc.johnny.parts.TextPathParser;
  */
 public class Urls {
 
-    /** Default suite of parsers, representations, and encoders. */
-    public static final CodecSuite DEFAULT_CODECS = new CodecSuite(
-            new SchemeSpecificUriParser(),
-            ImmutableUrl.class,
-            new UrlFormatter(),
-            new StdUserInfoParser(),
-            PluggableUserInfoFormatter.INSTANCE,
-            TextPathParser.INSTANCE,
-            TextPath.EMPTY,
-            TextPathFormatter.INSTANCE,
-            new NullIsEmptyQueryParser(),
-            ImmutableOrderedParams.EMPTY,
-            new PairQueryFormatter());
+    public static final UrlParser urlParser = new AntlrUriParser();
+    public static final UrlFormatter urlFormatter = new UrlFormatter();
+    public static final UserInfoParser userInfoParser = new StdUserInfoParser();
+    public static final UserInfoFormatter userInfoFormatter = new PluggableUserInfoFormatter();
+    public static final TextPathParser pathParser = new TextPathParser();
+    public static final TextPath emptyPath = TextPath.EMPTY;
+    public static final TextPathFormatter pathFormatter = new TextPathFormatter();
+    public static final QueryParser queryParser = new NullableValueQueryParser();
+    public static final Params emptyParams = ImmutableOrderedParams.EMPTY;
+    public static final QueryFormatter queryFormatter = new PairQueryFormatter();
 
     private Urls() { }
 
@@ -40,7 +29,7 @@ public class Urls {
     public static Url parse(String url) throws UrlDecodeException {
         if (url == null) { throw new NullPointerException("uri may not be null."); }
 
-        return ImmutableUrl.from(url, DEFAULT_CODECS.urlParser);
+        return ImmutableUrl.from(url, Urls.urlParser);
     }
 
     /**
@@ -49,7 +38,7 @@ public class Urls {
      * @param pathRaw Non-null path component
      */
     public static TextPath parsePath(String pathRaw) throws UrlDecodeException {
-        return DEFAULT_CODECS.emptyPath.addSegments(DEFAULT_CODECS.pathParser.parse(pathRaw));
+        return TextPath.EMPTY.addSegments(Urls.pathParser.parse(pathRaw));
     }
 
     /**
@@ -62,6 +51,6 @@ public class Urls {
         if (queryRaw == null) {
             return null;
         }
-        return DEFAULT_CODECS.emptyParams.appendAll(DEFAULT_CODECS.queryParser.parse(queryRaw));
+        return ImmutableOrderedParams.EMPTY.appendAll(Urls.queryParser.parse(queryRaw));
     }
 }

@@ -2,8 +2,7 @@
   "Tests for URL manipulation."
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.impls :as i])
-  (:import (org.timmc.johnny Urls MutableUrl)))
+            [org.timmc.johnny.impls :as i]))
 
 (defmacro cross
   [binding-overlay & body]
@@ -42,17 +41,6 @@
              ;; confirm that the URL string representation changes correctly
              (is (= (str altered)
                     (apply str (assoc baseline i out)))))))))))
-
-(deftest chaining-optional
-  (binding [i/*url-parser* i/default-url-parser
-            i/*url-manip* MutableUrl]
-    (let [make-orig (constantly (i/parse-u "http://brightcove.com"))]
-      (is (= (str (doto (make-orig)
-                    (.setHostRaw "localhost")
-                    (.setFragmentRaw "frag")))
-             (str (-> (make-orig)
-                      (.withHostRaw "localhost")
-                      (.withFragmentRaw "frag"))))))))
 
 (deftest object-overrides
   (cross

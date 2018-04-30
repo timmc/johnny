@@ -17,8 +17,7 @@ public class Codecs {
      * to perform on an entire path, query, or user info component, since it may
      * expose spurious delimiters. For example, using this to decode the path
      * <code>/one%2Fpart</code> will produce <code>/one/part</code>, which is
-     * certainly not correct. Instead, use the appropriate component-specific parser
-     * from {@link CodecSuite}.
+     * certainly not correct. Instead, use the appropriate component-specific parser.
      * @param part Nullable
      * @return Percent-decoded string, or null if input was null
      * @throws UrlDecodeException if there are invalid percent-escapes

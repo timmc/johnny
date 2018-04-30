@@ -6,11 +6,11 @@
 
 (defn default-parse
   [s]
-  (.parse (.userInfoParser Urls/DEFAULT_CODECS) s))
+  (.parse Urls/userInfoParser s))
 
 (defn default-format
   [ui]
-  (.format (.userInfoFormatter Urls/DEFAULT_CODECS) ui))
+  (.format Urls/userInfoFormatter ui))
 
 (deftest parsing
   (let [parse (fn [raw] (let [ui (default-parse raw)]
