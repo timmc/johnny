@@ -40,6 +40,24 @@ public abstract class Url {
     }
 
     /**
+     * Retrieve case-folded scheme component, if present.
+     * @return Lowercased scheme, or null if missing.
+     */
+    public String getScheme() {
+        String raw = getSchemeRaw();
+        return raw == null ? null : raw.toLowerCase(); // TODO choose locate?
+    }
+
+    /**
+     * Set scheme component. This is no different from {@link #withSchemeRaw(String)}
+     * and is included only for completeness.
+     * @param scheme Nullable
+     */
+    public Url withScheme(String scheme) {
+        return withSchemeRaw(scheme);
+    }
+
+    /**
      * Parse user information component as a {@link UserInfo} object, if present.
      * @return User info, or null if missing.
      */
@@ -185,7 +203,7 @@ public abstract class Url {
             return false;
         }
         Url other = (Url) o;
-        return Util.equiv(getScheme(), other.getScheme()) &&
+        return Util.equiv(getSchemeRaw(), other.getSchemeRaw()) &&
                 Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
                 Util.equiv(getHostRaw(), other.getHostRaw()) &&
                 Util.equiv(getPortRaw(), other.getPortRaw()) &&
@@ -204,7 +222,7 @@ public abstract class Url {
         if (implImmutable() && cachedHashCode != null) {
             return cachedHashCode;
         }
-        cachedHashCode = Util.hash(getScheme()) + Util.hash(getUserInfoRaw()) +
+        cachedHashCode = Util.hash(getSchemeRaw()) + Util.hash(getUserInfoRaw()) +
                 Util.hash(getHostRaw()) + Util.hash(getPortRaw()) +
                 Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragmentRaw());
         return cachedHashCode;
@@ -212,11 +230,11 @@ public abstract class Url {
 
     /*== Accessors ==*/
 
-    /** Scheme of URL: http or https. Not null. */
-    public abstract String getScheme();
+    /** Raw scheme of URL. (Might not be all lowercase.) Not null. */
+    public abstract String getSchemeRaw();
 
-    /** See {@link #getScheme()}. */
-    public abstract Url withScheme(String scheme);
+    /** See {@link #getSchemeRaw()}. */
+    public abstract Url withSchemeRaw(String schemeRaw);
 
     /**
      * Undecoded user info of URL, excluding "@" separator. Nullable.

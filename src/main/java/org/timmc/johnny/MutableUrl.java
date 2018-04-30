@@ -18,7 +18,7 @@ package org.timmc.johnny;
  * should have the same performance characteristics as the "with" methods.
  */
 public class MutableUrl extends Url {
-    private String scheme;
+    private String schemeRaw;
     private String userInfoRaw;
     private String hostRaw;
     private String portRaw;
@@ -38,7 +38,7 @@ public class MutableUrl extends Url {
      * Create a URL piecewise, with no validation. See accessors for
      * allowable values; parameters are here only described as nullable
      * or not.
-     * @param scheme Non-null
+     * @param schemeRaw Non-null
      * @param userInfoRaw Nullable
      * @param hostRaw Non-null
      * @param portRaw Nullable
@@ -46,10 +46,10 @@ public class MutableUrl extends Url {
      * @param queryRaw Nullable
      * @param fragmentRaw Nullable
      */
-    public MutableUrl(String scheme, String userInfoRaw, String hostRaw,
+    public MutableUrl(String schemeRaw, String userInfoRaw, String hostRaw,
                       String portRaw, String pathRaw, String queryRaw,
                       String fragmentRaw) {
-        this.scheme = scheme;
+        this.schemeRaw = schemeRaw;
         this.userInfoRaw = userInfoRaw;
         this.hostRaw = hostRaw;
         this.portRaw = portRaw;
@@ -67,13 +67,13 @@ public class MutableUrl extends Url {
     }
 
     @Override
-    public String getScheme() { return scheme; }
+    public String getSchemeRaw() { return schemeRaw; }
     /** Setter provided for bean compatibility. */
-    public void setScheme(String scheme) { this.scheme = scheme; }
+    public void setSchemeRaw(String schemeRaw) { this.schemeRaw = schemeRaw; }
 
     @Override
-    public MutableUrl withScheme(String scheme) {
-        setScheme(scheme);
+    public MutableUrl withSchemeRaw(String schemeRaw) {
+        setSchemeRaw(schemeRaw);
         return this;
     }
 

@@ -19,7 +19,7 @@
 (deftest parse
   (cross
    (testing "Parse all parts"
-     (let [parts (i/parse-u "https://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
+     (let [parts (i/parse-u "HTTPS://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
        (is (= ((apply juxt u/url-getters) parts)
               ["https" "bob:bobby%2B" "www.lunatech.com." 8080
                "/file%2f;p%41=1%42" "q%43=2%44" "thirdE"]))))
