@@ -6,8 +6,7 @@
             UrlFormatter))
   (:import (org.timmc.johnny.parts
             TextPathParser TextPath TextPathFormatter
-            NullableValueQueryParser NullIsEmptyQueryParser
-            MutableMultimapParams ImmutableOrderedParams
+            NullableValueQueryParser ImmutableOrderedParams
             PairQueryFormatter)))
 
 ;;;; Known implementations
@@ -22,24 +21,23 @@
 (def path-manip-impls #{TextPath})
 (def path-format-impls #{(TextPathFormatter.)})
 
-(def q-parse-impls #{(NullableValueQueryParser.) (NullIsEmptyQueryParser.)})
-(def q-manip-impls #{MutableMultimapParams ImmutableOrderedParams})
+(def q-parse-impls #{(NullableValueQueryParser.)})
+(def q-manip-impls #{ImmutableOrderedParams})
 (def q-format-impls #{(PairQueryFormatter.)})
 
 ;; The defaults manips are the empty instances, except for URL (which
 ;; does not yet support empty instances.)
 
-(def default-url-parser (.urlParser Urls/DEFAULT_CODECS))
-(def default-url-manip (.urlRepresentation Urls/DEFAULT_CODECS))
-(def default-url-format (.urlFormatter Urls/DEFAULT_CODECS))
+(def default-url-parser Urls/urlParser)
+(def default-url-format Urls/urlFormatter)
 
-(def default-path-parser (.pathParser Urls/DEFAULT_CODECS))
-(def default-path-inst (.emptyPath Urls/DEFAULT_CODECS))
-(def default-path-format (.pathFormatter Urls/DEFAULT_CODECS))
+(def default-path-parser Urls/pathParser)
+(def default-path-inst Urls/emptyPath)
+(def default-path-format Urls/pathFormatter)
 
-(def default-q-parser (.queryParser Urls/DEFAULT_CODECS))
-(def default-q-inst (.emptyParams Urls/DEFAULT_CODECS))
-(def default-q-format (.queryFormatter Urls/DEFAULT_CODECS))
+(def default-q-parser Urls/queryParser)
+(def default-q-inst Urls/emptyParams)
+(def default-q-format Urls/queryFormatter)
 
 ;;;; Bindings for current preferred implementation
 

@@ -15,7 +15,7 @@ public class Queries {
      * Yield an empty param collection.
      */
     public static Params empty() {
-        return Urls.DEFAULT_CODECS.emptyParams;
+        return Urls.emptyParams;
     }
 
     /**
@@ -28,7 +28,7 @@ public class Queries {
         if (key == null) {
             throw new NullPointerException("Param key may not be null");
         }
-        return Urls.DEFAULT_CODECS.emptyParams.append(key, val);
+        return Urls.emptyParams.append(key, val);
     }
 
     /**
@@ -48,7 +48,7 @@ public class Queries {
         for (String val : vals) {
             pairs.add(new MapEntry<String, String>(key, val));
         }
-        return Urls.DEFAULT_CODECS.emptyParams.appendAll(pairs);
+        return Urls.emptyParams.appendAll(pairs);
     }
 
     /**
@@ -57,13 +57,13 @@ public class Queries {
      * @param mapping Non-null.
      */
     public static Params from(Map<String, String> mapping) {
-        return Urls.DEFAULT_CODECS.emptyParams.appendAll(mapping.entrySet());
+        return Urls.emptyParams.appendAll(mapping.entrySet());
     }
 
     /**
      * Format a param collection as a raw query.
      */
     public static String formatQuery(Params p) {
-        return Urls.DEFAULT_CODECS.queryFormatter.format(p);
+        return Urls.queryFormatter.format(p);
     }
 }

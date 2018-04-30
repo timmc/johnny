@@ -40,7 +40,7 @@ public class ImmutableOrderedParams implements Params {
     private final int deleted;
 
     /**
-     * Map of string keys to non-empty {@link PersistentTreeSet}
+     * Map of string keys to non-empty set
      * of {@link #entries} indices ({@link Integer}) where values lie.
      */
     private final Map<String, NavigableSet<Integer>> keylocs;
@@ -259,22 +259,6 @@ public class ImmutableOrderedParams implements Params {
             newEntries.set(lastMatchingIndex, new MapEntry<String, String>(key, val));
             return new ImmutableOrderedParams(newEntries, deleted, keylocs);
         }
-    }
-
-    public boolean implPreservesRepeatedKeys() {
-        return true;
-    }
-
-    public boolean implPreservesValueOrderPerKey() {
-        return true;
-    }
-
-    public boolean implPreservesPairOrder() {
-        return true;
-    }
-
-    public boolean implImmutable() {
-        return true;
     }
 
     public Iterator<Entry<String, String>> iterator() {

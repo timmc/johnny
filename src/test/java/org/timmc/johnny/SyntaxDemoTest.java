@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import org.timmc.johnny.parts.MutableMultimapParams;
 import org.timmc.johnny.parts.Params;
 
 /** Demonstrate basic usage. */
@@ -47,20 +46,6 @@ public class SyntaxDemoTest {
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"
                 ).contains(result.format()));
-    }
-
-    /**
-     * Demonstrate alternative query representation.
-     */
-    @Test
-    public void testQSAlt() throws UrlDecodeException {
-        Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
-        Params mutable = new MutableMultimapParams().appendAll(Urls.DEFAULT_CODECS.queryParser.parse(orig.getQueryRaw()));
-        mutable = mutable.append("foo", "bar").replace("a", null);
-        assertTrue(Arrays.<String>asList(
-                "http://brightcove.com/login?foo=bar&a",
-                "http://brightcove.com/login?a&foo=bar"
-                ).contains(orig.withQuery(mutable).format()));
     }
 
     /**

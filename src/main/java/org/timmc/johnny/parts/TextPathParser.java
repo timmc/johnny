@@ -12,9 +12,6 @@ import org.timmc.johnny.UrlDecodeException;
  */
 public class TextPathParser {
 
-    /** Shared instance of path parser. */
-    public static final TextPathParser INSTANCE = new TextPathParser();
-
     /**
      * Parse an undecoded path from a URL into a possibly-empty series of decoded path segments.
      * @param pathRaw Raw path component of a URL (not null, may be empty, must start with "/")

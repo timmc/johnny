@@ -26,9 +26,6 @@ public class PluggableUserInfoFormatter implements UserInfoFormatter {
     /** Encoder for password subcomponent. */
     public final StringEncoder passwordEnc;
 
-    /** Instance using all defaults. */
-    public static final PluggableUserInfoFormatter INSTANCE = new PluggableUserInfoFormatter();
-
     /**
      * Specify custom encoders for {@link #usernameEnc} and {@link #passwordEnc}.
      */
@@ -37,7 +34,6 @@ public class PluggableUserInfoFormatter implements UserInfoFormatter {
         this.passwordEnc = passwordEnc;
     }
 
-    /** Prefer {@link #INSTANCE}. */
     public PluggableUserInfoFormatter() {
         this(DEFAULT_ENC_USERNAME, DEFAULT_ENC_PASSWORD);
     }
