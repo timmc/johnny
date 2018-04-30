@@ -10,7 +10,6 @@ import org.timmc.johnny.parts.*;
 public class Urls {
 
     public static final UrlParser urlParser = new AntlrUriParser();
-    public static final UrlFormatter urlFormatter = new UrlFormatter();
     public static final UserInfoParser userInfoParser = new StdUserInfoParser();
     public static final UserInfoFormatter userInfoFormatter = new PluggableUserInfoFormatter();
     public static final TextPathParser pathParser = new TextPathParser();
@@ -30,6 +29,29 @@ public class Urls {
         if (url == null) { throw new NullPointerException("uri may not be null."); }
 
         return ImmutableUrl.from(url, Urls.urlParser);
+    }
+
+    /**
+     * Format a {@link Url} to a string.
+     */
+    public static String format(Url url) {
+        StringBuilder build = new StringBuilder();
+        build.append(url.getSchemeRaw()).append("://");
+        if (url.getUserInfoRaw() != null) {
+            build.append(url.getUserInfoRaw()).append("@");
+        }
+        build.append(url.getHostRaw());
+        if (url.getPortRaw() != null) {
+            build.append(":").append(url.getPortRaw());
+        }
+        build.append(url.getPathRaw());
+        if (url.getQueryRaw() != null) {
+            build.append("?").append(url.getQueryRaw());
+        }
+        if (url.getFragmentRaw() != null) {
+            build.append("#").append(url.getFragmentRaw());
+        }
+        return build.toString();
     }
 
     /**

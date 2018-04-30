@@ -2,8 +2,7 @@
   (:import (org.timmc.johnny
             Urls
             UrlParser AntlrUriParser SchemeSpecificUriParser
-            Url ImmutableUrl
-            UrlFormatter))
+            Url ImmutableUrl))
   (:import (org.timmc.johnny.parts
             TextPathParser TextPath TextPathFormatter
             NullableValueQueryParser ImmutableOrderedParams
@@ -15,7 +14,6 @@
 
 (def url-parse-impls #{(AntlrUriParser.) (SchemeSpecificUriParser.)})
 (def url-manip-impls #{ImmutableUrl})
-(def url-format-impls #{(UrlFormatter.)})
 
 (def path-parse-impls #{(TextPathParser.)})
 (def path-manip-impls #{TextPath})
@@ -29,7 +27,6 @@
 ;; does not yet support empty instances.)
 
 (def default-url-parser Urls/urlParser)
-(def default-url-format Urls/urlFormatter)
 
 (def default-path-parser Urls/pathParser)
 (def default-path-inst Urls/emptyPath)

@@ -36,7 +36,7 @@ public abstract class Url {
      * Format this URL back into a string using default settings.
      */
     public String format() {
-        return Urls.urlFormatter.format(this);
+        return Urls.format(this);
     }
 
     /**
