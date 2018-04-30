@@ -119,7 +119,7 @@ public class TextPath {
 
     @Override
     public String toString() {
-        return Urls.pathFormatter.format(getSegments());
+        return String.format("#<TextPath %s>", Urls.pathFormatter.format(getSegments()));
     }
 
     @Override

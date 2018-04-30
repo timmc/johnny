@@ -38,7 +38,7 @@
      (let [u (-> (i/parse-u "http://example.net/search?q=1&q=2#fragment")
                  (.withHostRaw "brightcove.com")
                  (.querySetKey "q", "check"))]
-       (is (= (str u)
+       (is (= (.format u)
               "http://brightcove.com/search?q=check#fragment"))))))
 
 (deftest utf-8
@@ -46,6 +46,7 @@
    (testing "Correctly encode/decode Unicode"
      (is (= (-> (i/parse-u "http://localhost")
                 (.withFragment "ಠ")
+                (.format)
                 str/lower-case)
             "http://localhost#%e0%b2%a0"))
      (is (= (-> (.getFragment (i/parse-u "http://localhost#%e0%b2%a0")))

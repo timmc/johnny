@@ -7,5 +7,5 @@
   (let [orig (Urls/parse "http://brightcove.com")
         alt (.withHostRaw orig "example.net")]
     (testing "Original unaltered"
-      (is (= (str orig) "http://brightcove.com")))
-    (is (= (str alt) "http://example.net"))))
+      (is (= (.format orig) "http://brightcove.com")))
+    (is (= (.format alt) "http://example.net"))))

@@ -264,4 +264,13 @@ public class ImmutableOrderedParams implements Params {
     public Iterator<Entry<String, String>> iterator() {
         return getPairs().iterator();
     }
+
+    /*== Object overrides ==*/
+
+    @Override
+    public int hashCode() {
+        return Util.hash(entries) + 37 * (Util.hash(deleted) + 37 * Util.hash(keylocs));
+    }
+
+    // TODO toString override, equals override
 }

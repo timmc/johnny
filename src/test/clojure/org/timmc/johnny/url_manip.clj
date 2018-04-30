@@ -39,7 +39,7 @@
              ;; confirm that the set succeeds
              (is (= (getter altered) in))
              ;; confirm that the URL string representation changes correctly
-             (is (= (str altered)
+             (is (= (.format altered)
                     (apply str (assoc baseline i out)))))))))))
 
 (deftest object-overrides

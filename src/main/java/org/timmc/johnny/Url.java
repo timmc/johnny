@@ -194,7 +194,7 @@ public abstract class Url {
 
     @Override
     public String toString() {
-        return format();
+        return String.format("#<Url %s>", format());
     }
 
     @Override

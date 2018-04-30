@@ -56,13 +56,9 @@ public class UserInfo {
         return ret.toString();
     }
 
-    /**
-     * Return a readable view of the username and password. May or may not be suitable for inclusion
-     * in a URL.
-     */
     @Override
     public String toString() {
-        return format();
+        return String.format("#<UserInfo %s>", format());
     }
 
     @Override
@@ -71,14 +67,14 @@ public class UserInfo {
             return false;
         }
         UserInfo other = (UserInfo) o;
-        return user.equals(other.user) && Util.equiv(password, other.password);
+        return Util.equiv(user, other.user) && Util.equiv(password, other.password);
     }
 
     @Override
     public int hashCode() {
-        int result = (23 + user.hashCode()) * 37;
+        int result = (23 + Util.hash(user)) * 37;
         if (password != null) {
-            result = (result + password.hashCode()) * 37;
+            result = (result + Util.hash(password)) * 37;
         }
         return result;
     }
