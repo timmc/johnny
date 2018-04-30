@@ -11,7 +11,7 @@ public class UrlFormatter { //TODO convert to interface?
      */
     public String format(Url url) {
         StringBuilder build = new StringBuilder();
-        build.append(url.getScheme()).append("://");
+        build.append(url.getSchemeRaw()).append("://");
         if (url.getUserInfoRaw() != null) {
             build.append(url.getUserInfoRaw()).append("@");
         }
