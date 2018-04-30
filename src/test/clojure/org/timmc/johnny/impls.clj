@@ -2,7 +2,7 @@
   (:import (org.timmc.johnny
             Urls
             UrlParser AntlrUriParser SchemeSpecificUriParser
-            Url ImmutableUrl MutableUrl
+            Url ImmutableUrl
             UrlFormatter))
   (:import (org.timmc.johnny.parts
             TextPathParser TextPath TextPathFormatter
@@ -15,7 +15,7 @@
 ;; Parsers are listed by instance, manipulation impls by class.
 
 (def url-parse-impls #{(AntlrUriParser.) (SchemeSpecificUriParser.)})
-(def url-manip-impls #{MutableUrl ImmutableUrl})
+(def url-manip-impls #{ImmutableUrl})
 (def url-format-impls #{(UrlFormatter.)})
 
 (def path-parse-impls #{(TextPathParser.)})
