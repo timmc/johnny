@@ -45,7 +45,7 @@ public abstract class Url {
      */
     public String getScheme() {
         String raw = getSchemeRaw();
-        return raw == null ? null : raw.toLowerCase(); // TODO choose locate?
+        return raw == null ? null : raw.toLowerCase(); // TODO choose locale?
     }
 
     /**
