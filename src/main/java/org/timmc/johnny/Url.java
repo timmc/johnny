@@ -71,7 +71,7 @@ public abstract class Url {
      * @param userInfo Nullable
      */
     public Url withUserInfo(UserInfo userInfo) {
-        return withUserInfoRaw(userInfo == null ? null : Urls.userInfoFormatter.format(userInfo));
+        return withUserInfoRaw(userInfo == null ? null : userInfo.format());
     }
 
     /** Port of host, in valid range. Nullable. */ // TODO: must be valid?

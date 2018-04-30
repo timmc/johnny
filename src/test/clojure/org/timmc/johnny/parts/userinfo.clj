@@ -2,7 +2,7 @@
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
   (:import (org.timmc.johnny Constants StringEncoder Urls)
-           (org.timmc.johnny.parts UserInfo PluggableUserInfoFormatter)))
+           (org.timmc.johnny.parts UserInfo)))
 
 (defn default-parse
   [s]
@@ -10,7 +10,7 @@
 
 (defn default-format
   [ui]
-  (.format Urls/userInfoFormatter ui))
+  (.format ui))
 
 (deftest parsing
   (let [parse (fn [raw] (let [ui (default-parse raw)]
@@ -47,12 +47,6 @@
           (is (= (set (remove #(.contains (fmt ["" (str %)]) "%")
                               interesting))
                  (set "-._~!$&'()*+,;=:")))))))
-  (testing "alt formatters"
-    (let [bad (reify StringEncoder
-                (encode [_this s] "_"))]
-      (is (= (.format (PluggableUserInfoFormatter. bad bad)
-                      (UserInfo. "123" "abc"))
-             "_:_"))))
   (testing "null rejection"
     (is (thrown? NullPointerException
                  (default-format nil)))))

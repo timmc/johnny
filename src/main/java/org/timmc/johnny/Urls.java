@@ -11,7 +11,6 @@ public class Urls {
 
     public static final UrlParser urlParser = new AntlrUriParser();
     public static final UserInfoParser userInfoParser = new StdUserInfoParser();
-    public static final UserInfoFormatter userInfoFormatter = new PluggableUserInfoFormatter();
     public static final TextPathParser pathParser = new TextPathParser();
     public static final TextPath emptyPath = TextPath.EMPTY;
     public static final TextPathFormatter pathFormatter = new TextPathFormatter();
