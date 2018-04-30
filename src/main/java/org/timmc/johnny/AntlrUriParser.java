@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.Recognizer;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
@@ -61,13 +62,13 @@ public class AntlrUriParser implements UrlParser {
         Object[] parts;
         try {
             parts = new Object[]{
-                        scheme.getText(),
-                        userinfo == null ? null : userinfo.getText(),
-                        host.getText(),
-                        port == null ? null : port.getText(),
-                        path.getText(),
-                        query == null ? null : query.getText(),
-                        fragment == null ? null : fragment.getText()};
+                        maybeText(scheme),
+                        maybeText(userinfo),
+                        maybeText(host),
+                        maybeText(port),
+                        maybeText(path),
+                        maybeText(query),
+                        maybeText(fragment)};
         } catch(NumberFormatException nfe) {
             throw new UrlDecodeException("Could not parse URL: Invalid port number");
         }
@@ -85,6 +86,10 @@ public class AntlrUriParser implements UrlParser {
         }
 
         return parts;
+    }
+
+    private String maybeText(ParserRuleContext x) {
+        return x == null ? null : x.getText();
     }
 }
 
