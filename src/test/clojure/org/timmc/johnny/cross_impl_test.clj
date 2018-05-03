@@ -3,7 +3,8 @@
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
-            [clojure.string :as str]))
+            [clojure.string :as str])
+  (:import (org.timmc.johnny.parts RegNameHost)))
 
 (defmacro cross
   [binding-overlay & body]
@@ -36,7 +37,7 @@
   (cross-all
    (testing "README example"
      (let [u (-> (i/parse-u "http://example.net/search?q=1&q=2#fragment")
-                 (.withHostRaw "brightcove.com")
+                 (.withHost (RegNameHost. "brightcove.com"))
                  (.querySetKey "q", "check"))]
        (is (= (.format u)
               "http://brightcove.com/search?q=check#fragment"))))))

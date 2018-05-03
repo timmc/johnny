@@ -5,11 +5,11 @@ with in a safe, efficient, and standards-compliant fashion. Here's
 Johnny replacing a host name and adding a query parameter:
 
 ```java
-Urls.parse("https://google.com/search?q=url#fragment")
-    .withHostRaw("www.google.ca")
+Urls.parse("https://"www.example.com/search?q=url#fragment")
+    .withHost(new RegNameHost("ietf.org"))
     .querySetKey("foo", "bar")
     .format();
-// "https://www.google.ca/search?q=url&foo=bar#fragment"
+// "https://ietf.org/search?q=url&foo=bar#fragment"
 ```
 
 ## Why to use Johnny

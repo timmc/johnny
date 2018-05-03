@@ -4,6 +4,7 @@
             UrlParser AntlrUriParser SchemeSpecificUriParser
             Url ImmutableUrl))
   (:import (org.timmc.johnny.parts
+            Host
             TextPathParser TextPath
             NullableValueQueryParser ImmutableOrderedParams
             PairQueryFormatter)))
@@ -63,16 +64,16 @@
 
 ;;;; Parsing
 
-(defn ^:internal get-url-builder
-  [^Class impl]
-  {:pre [impl], :post [%]}
-  (.getMethod impl "from" (into-array Class [String UrlParser])))
+(def ^:internal url-rep-constructor-signature
+  (into-array Class [String String Host String String String String]))
 
 (defn parse-u
   "Parse a string as a URL according to the current impl."
   [^String s]
-  (let [m (get-url-builder *url-manip*)]
-    (try (.invoke m nil (to-array [s *url-parser*]))
+  (let [rep-class *url-manip*
+        constr (.getConstructor rep-class url-rep-constructor-signature)
+        parts (.parse *url-parser* s)]
+    (try (.newInstance constr (to-array parts))
          (catch java.lang.reflect.InvocationTargetException ite
            (throw (or (.getCause ite) ite))))))
 

@@ -13,7 +13,7 @@ public class SchemeSpecificUriParser implements UrlParser {
         } else {
             authority = uri.parseAuthority();
         }
-        return new Object[]{uri.scheme, authority.userinfoRaw, authority.hostRaw, authority.portRaw,
+        return new Object[]{uri.scheme, authority.userinfoRaw, authority.host, authority.portRaw,
                             uri.path, uri.query, uri.fragment};
     }
 

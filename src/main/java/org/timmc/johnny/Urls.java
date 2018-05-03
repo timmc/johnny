@@ -30,6 +30,14 @@ public class Urls {
     }
 
     /**
+     * Create a URL piecewise with the bare minimum of components.
+     */
+    public static Url from(String scheme, Host host) {
+        // NB: We're passing in scheme for the schemeRaw
+        return new ImmutableUrl(scheme, null, host, null, "", null, null);
+    }
+
+    /**
      * Format a {@link Url} to a string.
      */
     public static String format(Url url) {

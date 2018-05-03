@@ -28,6 +28,7 @@ public class Constants {
     public static final ImmutableBitSet ASCII_NUMERIC = ImmutableBitSet.EMPTY.set('0', '9' + 1);
     /** Set of alphabetic and numeric characters in ASCII. */
     public static final ImmutableBitSet ASCII_ALPHANUMERIC = ASCII_ALPHA.or(ASCII_NUMERIC);
+    public static final ImmutableBitSet ASCII_HEXDIG = BitSetUtils.fromChars("abcdefABCDEF").or(ASCII_NUMERIC);
 
     /** Generic component delimiters in RFC 3986 URIs. */
     public static final ImmutableBitSet RFC3986_GEN_DELIMS = BitSetUtils.fromChars(":/?#[]@");
@@ -39,12 +40,18 @@ public class Constants {
     public static final ImmutableBitSet RFC3986_UNRESERVED = ASCII_ALPHANUMERIC.or(BitSetUtils.fromChars("-._~"));
     /** Characters allowed in an RFC 3986 scheme component. */
     public static final ImmutableBitSet RFC3986_SCHEME_ALLOWED = ASCII_ALPHANUMERIC.or(BitSetUtils.fromChars("+-."));
+    /** Characters involved in percent-encoding. */
+    public static final ImmutableBitSet RFC3986_PERCENT_ENCODED = ASCII_HEXDIG.or(BitSetUtils.fromChars("%"));
     /**
      * Characters allowed to be left unencoded in an RFC 3986 userinfo
      * subcomponent. Includes ':', although that must be encoded in the
      * username subcomponent to avoid ambiguity.
      */
     public static final ImmutableBitSet RFC3986_UNENCODED_USERINFO = RFC3986_UNRESERVED.or(RFC3986_SUB_DELIMS).or(BitSetUtils.fromChars(":"));
+    /**
+     * Characters allowed to be left unencoded in an RFC 6874 IPv6 zone identifier.
+     */
+    public static final ImmutableBitSet RFC6874_UNENCODED_ZONE = RFC3986_UNRESERVED.or(RFC3986_PERCENT_ENCODED);
     /**
      * Characters allowed to be left unencoded in an RFC 3986 path segment.
      */

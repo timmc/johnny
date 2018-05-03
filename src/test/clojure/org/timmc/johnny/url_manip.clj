@@ -9,6 +9,7 @@
   `((u/cross-thunk (merge i/url-impl-bindings ~binding-overlay)
                    #(do ~@body))))
 
+#_ ;; FIXME -- revisit the purpose and structure of this test
 (deftest swap-single
   (cross
    {#'i/*url-parser* [i/default-url-parser]}

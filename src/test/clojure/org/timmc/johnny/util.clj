@@ -2,15 +2,17 @@
   "Utilities for testing."
   (:require [clojure.test :as test]))
 
+;; TODO revisit raw/not-raw here
+
 (def url-getters
   "In order, the getters on http.Url."
-  [#(.getScheme %) #(.getUserInfoRaw %) #(.getHostRaw %) #(.getPort %)
+  [#(.getScheme %) #(.getUserInfoRaw %) #(.getHost %) #(.getPort %)
    #(.getPathRaw %) #(.getQueryRaw %) #(.getFragment %)])
 
 (def url-setters
   "In order, the chaining 'setters' on http.Url."
   [#(.withScheme % %2) #(.withUserInfoRaw % %2)
-   #(.withHostRaw % %2) #(.withPort % (and %2 (int %2)))
+   #(.withHost % %2) #(.withPort % (and %2 (int %2)))
    #(.withPathRaw % %2) #(.withQueryRaw % %2) #(.withFragment % %2)])
 
 (defn dorun-bindings

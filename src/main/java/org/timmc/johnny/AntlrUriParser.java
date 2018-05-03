@@ -14,7 +14,13 @@ import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Lexer;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser.*;
+import org.timmc.johnny.parts.Host;
+import org.timmc.johnny.parts.IPv4Host;
+import org.timmc.johnny.parts.IPv6Host;
+import org.timmc.johnny.parts.IPvFutureHost;
+import org.timmc.johnny.parts.RegNameHost;
 
+import java.util.ArrayList;
 import java.util.BitSet;
 
 /**
@@ -53,10 +59,38 @@ public class AntlrUriParser implements UrlParser {
         AuthorityContext authority = hier.authority();
         UserinfoContext userinfo = authority.userinfo();
         HostContext host = authority.host();
+        Reg_nameContext regname = host.reg_name();
+        Ipv4addressContext ipv4 = host.ipv4address();
+        Ip_literalContext ipNewer = host.ip_literal();
+        Ipv6addressContext ipv6 = ipNewer == null? null : ipNewer.ipv6address();
+        Ipv6addrzContext ipv6zoned = ipNewer == null? null : ipNewer.ipv6addrz();
+        IpvfutureContext ipFuture = ipNewer == null ? null : ipNewer.ipvfuture();
         PortContext port = authority.port();
         Path_abemptyContext path = hier.path_abempty(); // the only one that involves an authority
         QueryContext query = uri.query();
         Fragment_1Context fragment = uri.fragment_1();
+
+        Host parsedHost;
+        if (regname != null) {
+            parsedHost = new RegNameHost(host.getText());
+        } else if (ipv4 != null) {
+            int[] octets = new int[4];
+            int index = 0;
+            for (Dec_octetContext octet : ipv4.dec_octet()) {
+                octets[index++] = Integer.parseInt(octet.getText());
+            }
+            parsedHost = new IPv4Host(octets, host.getText());
+        } else if (ipv6 != null) {
+            parsedHost = new IPv6Host(ipv6.getText(), null, host.getText());
+        } else if (ipv6zoned != null) {
+            String ipv6addr = ipv6zoned.ipv6address().getText();
+            String zone = ipv6zoned.zoneid().getText();
+            parsedHost = new IPv6Host(ipv6addr, zone, host.getText());
+        } else if (ipFuture != null ){
+            parsedHost = new IPvFutureHost(host.getText());
+        } else {
+            throw new UrlDecodeException("Was not able to determine format of URI host");
+        }
 
         // This may be a partial URL depending on whether there were parsing errors
         Object[] parts;
@@ -64,7 +98,7 @@ public class AntlrUriParser implements UrlParser {
             parts = new Object[]{
                         maybeText(scheme),
                         maybeText(userinfo),
-                        maybeText(host),
+                        parsedHost,
                         maybeText(port),
                         maybeText(path),
                         maybeText(query),

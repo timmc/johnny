@@ -9,6 +9,7 @@ import java.net.URLDecoder;
 public class Codecs {
 
     private static final StringEncoder fragEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT));
+    private static final StringEncoder zoneEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC6874_UNENCODED_ZONE));
 
     /*== Decoders ==*/
 
@@ -41,4 +42,6 @@ public class Codecs {
     public static String percentEncodeFragment(String fragment) {
         return fragEnc.encode(fragment);
     }
+
+    public static String percentEncodeIPv6Zone(String zone) { return zoneEnc.encode(zone); }
 }

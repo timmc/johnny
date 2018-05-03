@@ -1,5 +1,12 @@
 package org.timmc.johnny;
 
+import org.timmc.johnny.parts.Host;
+import org.timmc.johnny.parts.IPv4Host;
+import org.timmc.johnny.parts.IPv6Host;
+import org.timmc.johnny.parts.IPvFutureHost;
+import org.timmc.johnny.parts.RegNameHost;
+
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -11,30 +18,32 @@ import java.util.regex.Pattern;
 public class UriAuthority {
     /** Userinfo component, nullable. */
     public final String userinfoRaw;
-    /** Raw host component, not null. */
-    public final String hostRaw;
+    /** Host component, not null. */
+    public final Host host;
     /** Raw port component, nullable and possibly empty. */
     public final String portRaw;
 
     /**
      * Create a URI authority component from raw subcomponents.
      */
-    public UriAuthority(String userinfoRaw, String hostRaw, String portRaw) {
-        if (hostRaw == null) { throw new NullPointerException("Host may not be null."); }
+    public UriAuthority(String userinfoRaw, Host host, String portRaw) {
+        if (host == null) { throw new NullPointerException("Host may not be null."); }
 
         this.userinfoRaw = userinfoRaw;
-        this.hostRaw = hostRaw;
+        this.host = host;
         this.portRaw = portRaw;
     }
 
     private static final Pattern digitsOrEmpty = Pattern.compile("[0-9]*");
+    private static final Pattern ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25.*)?\\]$");
+    private static final Pattern ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)\\$");
 
     /**
      * Parse a URI based on generic syntax (not scheme-specific.)
      */
     public static UriAuthority parseGeneric(String authority) throws UrlDecodeException {
         if (authority == null) { throw new NullPointerException("authority may not be null."); }
-        String userinfo, host, port;
+        String userinfo, hostRaw, port;
 
         // Split off userinfo
         String[] findUserinfo = authority.split("@", 2);
@@ -47,10 +56,11 @@ public class UriAuthority {
             remaining = authority;
         }
 
+        // TODO: Revisit this hand-built parser for correctness and optimal error reporting
         // Split off port
         int lastColon = remaining.lastIndexOf(':');
         if (lastColon == -1) {
-            host = remaining;
+            hostRaw = remaining;
             port = null;
         } else {
             // There's some difficulty here... we can't tell if there's a port unless we at
@@ -59,16 +69,44 @@ public class UriAuthority {
             String possiblePort = remaining.substring(lastColon + 1);
             if (possiblePort.endsWith("]")) {
                 // We probably have an IPv6 or IPvFuture address, no port
-                host = remaining;
+                hostRaw = remaining;
                 port = null;
             } else if (digitsOrEmpty.matcher(possiblePort).matches()) {
-                host = remaining.substring(0, lastColon);
+                hostRaw = remaining.substring(0, lastColon);
                 port = possiblePort;
             } else {
                 throw new UrlDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)");
             }
         }
 
-        return new UriAuthority(userinfo, host, port);
+        return new UriAuthority(userinfo, parseHost(hostRaw), port);
+    }
+
+    // TODO: Revisit this hand-built parser for correctness and optimal error reporting
+    private static Host parseHost(String hostRaw) {
+        Matcher ipv4Match = ipv4.matcher(hostRaw);
+        if (ipv4Match.find()) {
+            int[] quad = new int[]{
+                Integer.parseInt(ipv4Match.group(1)),
+                Integer.parseInt(ipv4Match.group(2)),
+                Integer.parseInt(ipv4Match.group(3)),
+                Integer.parseInt(ipv4Match.group(4))
+            };
+            return new IPv4Host(quad, hostRaw);
+        }
+
+        if (hostRaw.startsWith("[v") || hostRaw.startsWith("[V")) {
+            return new IPvFutureHost(hostRaw);
+        }
+
+        Matcher ipv6Match = ipv6.matcher(hostRaw);
+        if (ipv6Match.find()) {
+            String addr = ipv6Match.group(1);
+            String zoneRaw = ipv6Match.group(2);
+            String zone = zoneRaw == null ? null : Codecs.percentDecode(zoneRaw);
+            return new IPv6Host(addr, zone, hostRaw);
+        }
+
+        return new RegNameHost(hostRaw);
     }
 }

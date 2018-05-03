@@ -3,7 +3,8 @@
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny ImmutableUrl UrlDecodeException)))
+  (:import (org.timmc.johnny ImmutableUrl UrlDecodeException)
+           (org.timmc.johnny.parts RegNameHost)))
 
 (defmacro default-others
   [& body]
@@ -21,7 +22,7 @@
    (testing "Parse all parts"
      (let [parts (i/parse-u "HTTPS://bob:bobby%2B@www.lunatech.com.:8080/file%2f;p%41=1%42?q%43=2%44#third%45")]
        (is (= ((apply juxt u/url-getters) parts)
-              ["https" "bob:bobby%2B" "www.lunatech.com." 8080
+              ["https" "bob:bobby%2B" (RegNameHost. "www.lunatech.com.") 8080
                "/file%2f;p%41=1%42" "q%43=2%44" "thirdE"]))))
    (testing "Raw parts stay raw: Don't decode delimiters"
      (let [parts (i/parse-u "http://one%3Atwo:three@localhost/one%2Fpart?query%3f%26%3d")]
@@ -31,7 +32,7 @@
    (testing "Parse URL with max number of parts missing"
      (let [parts (i/parse-u "http://localhost")]
        (is (= ((apply juxt u/url-getters) parts)
-              ["http" nil "localhost" nil
+              ["http" nil (RegNameHost. "localhost") nil
                "" nil nil]))))
    (testing "Greedy parser regressions"
      (is (= (.getPathRaw (i/parse-u "http://localhost/http://localhost/"))

@@ -2,6 +2,7 @@ package org.timmc.johnny;
 
 import java.util.Collection;
 
+import org.timmc.johnny.parts.Host;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;
 import org.timmc.johnny.parts.TextPath;
@@ -205,7 +206,7 @@ public abstract class Url {
         Url other = (Url) o;
         return Util.equiv(getSchemeRaw(), other.getSchemeRaw()) &&
                 Util.equiv(getUserInfoRaw(), other.getUserInfoRaw()) &&
-                Util.equiv(getHostRaw(), other.getHostRaw()) &&
+                Util.equiv(getHost(), other.getHost()) &&
                 Util.equiv(getPortRaw(), other.getPortRaw()) &&
                 Util.equiv(getPathRaw(), other.getPathRaw()) &&
                 Util.equiv(getQueryRaw(), other.getQueryRaw()) &&
@@ -223,14 +224,14 @@ public abstract class Url {
             return cachedHashCode;
         }
         cachedHashCode = Util.hash(getSchemeRaw()) + Util.hash(getUserInfoRaw()) +
-                Util.hash(getHostRaw()) + Util.hash(getPortRaw()) +
+                Util.hash(getHost().getRaw()) + Util.hash(getPortRaw()) +
                 Util.hash(getPathRaw()) + Util.hash(getQueryRaw()) + Util.hash(getFragmentRaw());
         return cachedHashCode;
     }
 
     /*== Accessors ==*/
 
-    /** Raw scheme of URL. (Might not be all lowercase.) Not null. */
+    /** Raw, unnormalized scheme of URL. (Might not be all lowercase.) Not null. */
     public abstract String getSchemeRaw();
 
     /** See {@link #getSchemeRaw()}. */
@@ -247,11 +248,14 @@ public abstract class Url {
     /** See {@link #getUserInfoRaw()}. */
     public abstract Url withUserInfoRaw(String userInfoRaw);
 
-    /** Unencoded host address (domain or IP address). Not null. */
-    public abstract String getHostRaw();
+    /** Host address (domain or IP address). Not null. */
+    public abstract Host getHost();
 
-    /** See {@link #getHostRaw()}. */
-    public abstract Url withHostRaw(String hostRaw);
+    /** See {@link #getHost()}. */
+    public abstract Url withHost(Host host);
+
+    /** Unparsed host component. */
+    public abstract String getHostRaw();
 
     /** Undecoded port of host. Nullable. */
     public abstract String getPortRaw();

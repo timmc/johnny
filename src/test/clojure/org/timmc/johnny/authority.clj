@@ -1,7 +1,8 @@
 (ns org.timmc.johnny.authority
   "Tests for URiAuthority parsing."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Urls UriAuthority)))
+  (:import (org.timmc.johnny Urls UriAuthority)
+           (org.timmc.johnny.parts RegNameHost)))
 
 (defn parse
   [s]
@@ -10,6 +11,6 @@
 (deftest parsing
   (are [in out] (= (let [ua (try (UriAuthority/parseGeneric in)
                                  (catch Exception e :exc))]
-                     [(.userinfoRaw ua) (.hostRaw ua) (.portRaw ua)])
+                     [(.userinfoRaw ua) (.host ua) (.portRaw ua)])
                    out)
-       "localhost" [nil "localhost" nil]))
+       "localhost" [nil (RegNameHost. "localhost") nil]))
