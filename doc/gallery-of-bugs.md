@@ -3,6 +3,44 @@
 A listing of how various URL libraries fail at correctly handling
 URLs, provided as motivation for using the Johnny URL library.
 
+## Structure-ignoring "fixups" (LastPass gives away all your passwords)
+
+In 2016, Mathias Karlsson [discovered][lp-at-split] this bit of code
+in LastPass's browser extension for Firefox:
+
+```
+var fixedURL = URL.match(/^(.*:\/\/[^\/]+\/.*)@/);
+fixedURL && (url = url.substring(0, fixedURL[1].length) + url.substring(fixedURL[1].length).replace(/@/g, "%40"));
+```
+
+It's looking for URLs with an `@` in the path, then encoding that
+`@`. But it's only looking for the *last* `@` and encoding that one,
+so a page like `http://avlidienbrunn.se/@twitter.com/@hehe.php` is
+converted to `http://avlidienbrunn.se/@twitter.com/%40hehe.php`. The
+extension then splits on `@` and sees `avlidienbrunn.se/` as the
+userinfo portion of the URL, and `twitter.com` as the host!
+
+The extension then happily autofills the user's `twitter.com` username
+and password into the page at `avlidienbrunn.se`.
+
+Putting on our software archaeologist hat, we might suppose that
+LastPass had encountered issues parsing URLs such as
+`https://example.com/@user`. Instead of doing the right thing and
+splitting on the first `/` after the `://`, it probably was splitting
+on `@` if found. This inevitably caused problems, and they fixed it
+the wrong way: Encoding any `@` encountered after the `/`, and *still*
+splitting on `@` first!
+
+Johnny solves this by defaulting to an parser generated *directly*
+from the relevant RFCs rather than a hand-built parser with layers of
+duct tape. It also provides a hand-built parser for dealing with the
+inevitable non-conformant URLs, but with cautions about possible
+correctness issues. This second parser is also written with security
+and parser ambiguity in mind, so it stands a good chance of being
+better than most existing ones.
+
+[lp-at-split]: https://labs.detectify.com/2016/07/27/how-i-made-lastpass-give-me-all-your-passwords/
+
 ## Premature decoding of query
 
 `java.net.URI` provides both `getQuery` and `getRawQuery`. The
