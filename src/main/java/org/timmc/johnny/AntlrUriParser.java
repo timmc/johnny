@@ -20,7 +20,6 @@ import org.timmc.johnny.parts.IPv6Host;
 import org.timmc.johnny.parts.IPvFutureHost;
 import org.timmc.johnny.parts.RegNameHost;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 
 /**
@@ -28,7 +27,7 @@ import java.util.BitSet;
  */
 public class AntlrUriParser implements UrlParser {
 
-    public Object[] parse(String in) throws UrlDecodeException {
+    public Url parse(String in) throws UrlDecodeException {
         try {
             return parseInner(in);
         } catch(RecognitionException re) {
@@ -38,7 +37,7 @@ public class AntlrUriParser implements UrlParser {
         }
     }
 
-    private Object[] parseInner(String in) throws UrlDecodeException, RecognitionException, ParseCancellationException {
+    private Url parseInner(String in) throws UrlDecodeException, RecognitionException, ParseCancellationException {
         if (in == null) { throw new NullPointerException("uri may not be null."); }
 
         RFC_3986_6874Lexer lexer = new RFC_3986_6874Lexer(CharStreams.fromString(in));
@@ -92,17 +91,16 @@ public class AntlrUriParser implements UrlParser {
             throw new UrlDecodeException("Was not able to determine format of URI host");
         }
 
-        // This may be a partial URL depending on whether there were parsing errors
-        Object[] parts;
+        Url ret;
         try {
-            parts = new Object[]{
+            ret = new ImmutableUrl(
                         maybeText(scheme),
                         maybeText(userinfo),
                         parsedHost,
                         maybeText(port),
                         maybeText(path),
                         maybeText(query),
-                        maybeText(fragment)};
+                        maybeText(fragment));
         } catch(NumberFormatException nfe) {
             throw new UrlDecodeException("Could not parse URL: Invalid port number");
         }
@@ -119,7 +117,7 @@ public class AntlrUriParser implements UrlParser {
                     "error at position " + matched.length());
         }
 
-        return parts;
+        return ret;
     }
 
     private String maybeText(ParserRuleContext x) {

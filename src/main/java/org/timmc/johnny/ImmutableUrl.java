@@ -40,14 +40,6 @@ public class ImmutableUrl extends Url {
         this.fragmentRaw = fragmentRaw;
     }
 
-    /** Parse a string as a URL and extract the fields. */
-    public static ImmutableUrl from(String url, UrlParser parser) throws UrlDecodeException {
-        Object[] args = parser.parse(url);
-        return new ImmutableUrl((String) args[0], (String) args[1],
-                (Host) args[2], (String) args[3], (String) args[4],
-                (String) args[5], (String) args[6]);
-    }
-
     @Override
     public String getSchemeRaw() { return schemeRaw; }
 

@@ -5,7 +5,7 @@ package org.timmc.johnny;
  */
 public class SchemeSpecificUriParser implements UrlParser {
 
-    public Object[] parse(String url) throws UrlDecodeException {
+    public Url parse(String url) throws UrlDecodeException {
         UriAuthority authority;
         Rfc3986Uri uri = Rfc3986Uri.parseGeneric(url);
         if (uri.authority == null) {
@@ -13,8 +13,8 @@ public class SchemeSpecificUriParser implements UrlParser {
         } else {
             authority = uri.parseAuthority();
         }
-        return new Object[]{uri.scheme, authority.userinfoRaw, authority.host, authority.portRaw,
-                            uri.path, uri.query, uri.fragment};
+        return new ImmutableUrl(uri.scheme, authority.userinfoRaw, authority.host, authority.portRaw,
+                                uri.path, uri.query, uri.fragment);
     }
 
 }

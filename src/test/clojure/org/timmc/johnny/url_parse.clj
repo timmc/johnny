@@ -6,16 +6,10 @@
   (:import (org.timmc.johnny ImmutableUrl UrlDecodeException)
            (org.timmc.johnny.parts RegNameHost)))
 
-(defmacro default-others
-  [& body]
-  `(binding [i/*url-manip* ImmutableUrl]
-     ~@body))
-
 (defmacro cross
   [& body]
-  `(default-others
-     (u/dorun-bindings (var i/*url-parser*) i/url-parse-impls
-                       (fn tests [] ~@body))))
+  `(u/dorun-bindings (var i/*url-parser*) i/url-parse-impls
+                     (fn tests [] ~@body)))
 
 (deftest parse
   (cross

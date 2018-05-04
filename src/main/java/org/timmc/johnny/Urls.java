@@ -24,9 +24,9 @@ public class Urls {
      * using the default parser.
      */
     public static Url parse(String url) throws UrlDecodeException {
-        if (url == null) { throw new NullPointerException("uri may not be null."); }
+        if (url == null) { throw new NullPointerException("url may not be null."); }
 
-        return ImmutableUrl.from(url, Urls.urlParser);
+        return Urls.urlParser.parse(url);
     }
 
     /**

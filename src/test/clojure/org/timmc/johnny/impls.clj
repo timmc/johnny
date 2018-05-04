@@ -14,7 +14,6 @@
 ;; Parsers are listed by instance, manipulation impls by class.
 
 (def url-parse-impls #{(AntlrUriParser.) (SchemeSpecificUriParser.)})
-(def url-manip-impls #{ImmutableUrl})
 
 (def path-parse-impls #{(TextPathParser.)})
 (def path-manip-impls #{TextPath})
@@ -38,7 +37,6 @@
 ;;;; Bindings for current preferred implementation
 
 (def ^:dynamic *url-parser* nil)
-(def ^:dynamic *url-manip* nil)
 
 (def ^:dynamic *path-parser* nil)
 (def ^:dynamic *path-manip* nil)
@@ -50,8 +48,7 @@
 ;;;; Binding sets
 
 (def url-impl-bindings
-  {#'*url-parser* url-parse-impls
-   #'*url-manip* url-manip-impls})
+  {#'*url-parser* url-parse-impls})
 
 (def path-impl-bindings
   {#'*path-parser* path-parse-impls
@@ -70,12 +67,7 @@
 (defn parse-u
   "Parse a string as a URL according to the current impl."
   [^String s]
-  (let [rep-class *url-manip*
-        constr (.getConstructor rep-class url-rep-constructor-signature)
-        parts (.parse *url-parser* s)]
-    (try (.newInstance constr (to-array parts))
-         (catch java.lang.reflect.InvocationTargetException ite
-           (throw (or (.getCause ite) ite))))))
+  (.parse *url-parser* s))
 
 (defn ^:internal get-nullary-constructor
   [^Class impl]
