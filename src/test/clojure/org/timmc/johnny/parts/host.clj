@@ -22,6 +22,22 @@
          "[v7.xyz]"
          (IPvFutureHost. "[v7.xyz]"))))
 
+(deftest ipv4-ambiguity
+  ;; RFC 3986 §3.2.2
+  ;; The syntax rule for host is ambiguous because it does not completely
+  ;; distinguish between an IPv4address and a reg-name.  In order to
+  ;; disambiguate the syntax, we apply the "first-match-wins" algorithm:
+  ;; If host matches the rule for IPv4address, then it should be
+  ;; considered an IPv4 address literal and not a reg-name.
+  (is (= (.getHost (Urls/parse "http://0.0.0.0"))
+         (IPv4Host. 0 0 0 0)))
+  (testing "leading zeroes"
+    (is (= (.getHost (Urls/parse "http://00.00.00.00"))
+           (RegNameHost. "00.00.00.00"))))
+  (testing "out of range"
+    (is (= (.getHost (Urls/parse "http://1.1.1.256"))
+           (RegNameHost. "1.1.1.256")))))
+
 (deftest constructors
   (testing "don't accept null in various places"
     (is (thrown? NullPointerException (RegNameHost. nil)))
