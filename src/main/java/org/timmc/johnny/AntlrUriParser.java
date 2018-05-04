@@ -86,7 +86,12 @@ public class AntlrUriParser implements UrlParser {
             String zone = ipv6zoned.zoneid().getText();
             parsedHost = new IPv6Host(ipv6addr, zone, host.getText());
         } else if (ipFuture != null ){
-            parsedHost = new IPvFutureHost(host.getText());
+            StringBuilder hexver = new StringBuilder();
+            for (HexdigContext digit: ipFuture.hexdig()) {
+                hexver.append(digit.getText());
+            }
+            int formatVersion = Integer.parseInt(hexver.toString(), 16);
+            parsedHost = new IPvFutureHost(formatVersion, host.getText());
         } else {
             throw new UrlDecodeException("Was not able to determine format of URI host");
         }

@@ -13,11 +13,17 @@ public class IPvFutureHost extends Host {
      * This has not been decoded or normalized in any way; it's up to you.
      */
     public final String raw;
+    /**
+     * The IP literal format version (not to be confused with Internet
+     * Protocol address version!)
+     */
+    public final int formatVersion;
 
-    public IPvFutureHost(String raw) {
+    public IPvFutureHost(int formatVersion, String raw) {
         if (raw == null) {
             throw new NullPointerException("IPvFuture host must not be null");
         }
+        this.formatVersion = formatVersion;
         this.raw = raw;
     }
 

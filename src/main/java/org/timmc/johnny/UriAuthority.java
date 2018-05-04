@@ -37,6 +37,7 @@ public class UriAuthority {
     private static final Pattern digitsOrEmpty = Pattern.compile("[0-9]*");
     private static final Pattern ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25.*)?\\]$");
     private static final Pattern ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)\\$");
+    private static final Pattern ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\..*\\]");
 
     /**
      * Parse a URI based on generic syntax (not scheme-specific.)
@@ -95,8 +96,10 @@ public class UriAuthority {
             return new IPv4Host(quad, hostRaw);
         }
 
-        if (hostRaw.startsWith("[v") || hostRaw.startsWith("[V")) {
-            return new IPvFutureHost(hostRaw);
+        Matcher ipvFutureMatch = ipvFuture.matcher(hostRaw);
+        if (ipvFutureMatch.find()) {
+            int formatVersion = Integer.parseInt(ipvFutureMatch.group(1));
+            return new IPvFutureHost(formatVersion, hostRaw);
         }
 
         Matcher ipv6Match = ipv6.matcher(hostRaw);
@@ -107,6 +110,7 @@ public class UriAuthority {
             return new IPv6Host(addr, zone, hostRaw);
         }
 
+        // TODO Currently acting as catchall, without filtering on things like "[blah"
         return new RegNameHost(hostRaw);
     }
 }

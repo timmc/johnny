@@ -20,7 +20,19 @@
          "[2620::10.2.3.40]" (IPv6Host. "2620::10.2.3.40" nil
                                         "[2620::10.2.3.40]")
          "[v7.xyz]"
-         (IPvFutureHost. "[v7.xyz]"))))
+         (IPvFutureHost. 7 "[v7.xyz]"))))
+
+(deftest constructors
+  (testing "don't accept null in various places"
+    (is (thrown? NullPointerException (RegNameHost. nil)))
+    (is (thrown? NullPointerException (IPv4Host. nil)))
+    (is (thrown? NullPointerException (IPv4Host. (int-array [1 2 3 4]) nil)))
+    (is (thrown? NullPointerException (IPv4Host. nil "1.2.3.4")))
+    (is (thrown? NullPointerException (IPv6Host. nil)))
+    (is (thrown? NullPointerException (IPv6Host. nil "eth0")))
+    (is (thrown? NullPointerException (IPv6Host. nil "eth0" "[::1%25eth0]")))
+    (is (thrown? NullPointerException (IPv6Host. "::1" "eth0" nil)))
+    (is (thrown? NullPointerException (IPvFutureHost. 5 nil)))))
 
 (deftest ipv4-ambiguity
   ;; RFC 3986 §3.2.2
@@ -38,18 +50,6 @@
     (is (= (.getHost (Urls/parse "http://1.1.1.256"))
            (RegNameHost. "1.1.1.256")))))
 
-(deftest constructors
-  (testing "don't accept null in various places"
-    (is (thrown? NullPointerException (RegNameHost. nil)))
-    (is (thrown? NullPointerException (IPv4Host. nil)))
-    (is (thrown? NullPointerException (IPv4Host. (int-array [1 2 3 4]) nil)))
-    (is (thrown? NullPointerException (IPv4Host. nil "1.2.3.4")))
-    (is (thrown? NullPointerException (IPv6Host. nil)))
-    (is (thrown? NullPointerException (IPv6Host. nil "eth0")))
-    (is (thrown? NullPointerException (IPv6Host. nil "eth0" "[::1%25eth0]")))
-    (is (thrown? NullPointerException (IPv6Host. "::1" "eth0" nil)))
-    (is (thrown? NullPointerException (IPvFutureHost. nil)))))
-
 (deftest ipv4-safety-copying
   (testing "IPv4Host copies array on input"
     (let [quad (int-array [1 2 3 4])
@@ -59,3 +59,13 @@
       (is (= (vec quad) [100 2 3 4]))
       (is (= (vec (.getQuad ip-a)) [1 2 3 4]))
       (is (= (vec (.getQuad ip-b)) [1 2 3 4])))))
+
+(deftest ipvFuture-version
+  (are [url fver] (= (.formatVersion (.getHost (Urls/parse url))) fver)
+       "http://[v1.foo]"    1
+       "http://[vff.~$]"  255))
+
+;; TODO test:
+;; - IPvFuture with non-hex before period
+;; - IPv6 bad structure
+;; - regname decoding
