@@ -6,6 +6,8 @@ import org.timmc.johnny.parts.IPv6Host;
 import org.timmc.johnny.parts.IPvFutureHost;
 import org.timmc.johnny.parts.RegNameHost;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,12 +89,11 @@ public class UriAuthority {
     private static Host parseHost(String hostRaw) {
         Matcher ipv4Match = ipv4.matcher(hostRaw);
         if (ipv4Match.find()) {
-            int[] quad = new int[]{
-                Integer.parseInt(ipv4Match.group(1)),
-                Integer.parseInt(ipv4Match.group(2)),
-                Integer.parseInt(ipv4Match.group(3)),
-                Integer.parseInt(ipv4Match.group(4))
-            };
+            List<Integer> quad = new ArrayList<>();
+            quad.add(Integer.parseInt(ipv4Match.group(1)));
+            quad.add(Integer.parseInt(ipv4Match.group(2)));
+            quad.add(Integer.parseInt(ipv4Match.group(3)));
+            quad.add(Integer.parseInt(ipv4Match.group(4)));
             return new IPv4Host(quad, hostRaw);
         }
 

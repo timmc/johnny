@@ -11,9 +11,9 @@
                         (and (= h parsed)
                              (= (.getRaw h) raw)))
          "example.com" (RegNameHost. "example.com")
-         "1.2.3.4" (IPv4Host. 1 2 3 4)
-         "1.2.3.4" (IPv4Host. (int-array [1 2 3 4]))
-         "1.2.3.4" (IPv4Host. (int-array [1 2 3 4]) "1.2.3.4")
+         "1.2.3.4" (IPv4Host. (int 1) (int 2) (int 3) (int 4))
+         "1.2.3.4" (IPv4Host. (map int [1 2 3 4]))
+         "1.2.3.4" (IPv4Host. (map int [1 2 3 4]) "1.2.3.4")
          "[2620:0:861:ed1a::1]" (IPv6Host. "2620:0:861:ed1a::1" nil
                                            "[2620:0:861:ed1a::1]")
          "[::1%25a%2Fb]" (IPv6Host. "::1" "a/b")
@@ -22,17 +22,23 @@
          "[v7.xyz]"
          (IPvFutureHost. 7 "[v7.xyz]"))))
 
-(deftest constructors
-  (testing "don't accept null in various places"
-    (is (thrown? NullPointerException (RegNameHost. nil)))
+(deftest constructor-validation
+  (testing "regname"
+    (is (thrown? NullPointerException (RegNameHost. nil))))
+  (testing "ipv4"
     (is (thrown? NullPointerException (IPv4Host. nil)))
-    (is (thrown? NullPointerException (IPv4Host. (int-array [1 2 3 4]) nil)))
+    (is (thrown? NullPointerException (IPv4Host. (map int [1 2 3 4]) nil)))
     (is (thrown? NullPointerException (IPv4Host. nil "1.2.3.4")))
-    (is (thrown? NullPointerException (IPv6Host. nil)))
-    (is (thrown? NullPointerException (IPv6Host. nil "eth0")))
-    (is (thrown? NullPointerException (IPv6Host. nil "eth0" "[::1%25eth0]")))
-    (is (thrown? NullPointerException (IPv6Host. "::1" "eth0" nil)))
-    (is (thrown? NullPointerException (IPvFutureHost. 5 nil)))))
+    (is (thrown? NullPointerException (IPv4Host. [(int 1) (int 2) nil (int 4)])))
+    (is (thrown? IllegalArgumentException (IPv4Host. (map int [1 2 3 256]))))
+    (is (thrown? IllegalArgumentException (IPv4Host. (map int [-1 2 3 4])))))
+  (testing "ipv6"
+   (is (thrown? NullPointerException (IPv6Host. nil)))
+   (is (thrown? NullPointerException (IPv6Host. nil "eth0")))
+   (is (thrown? NullPointerException (IPv6Host. nil "eth0" "[::1%25eth0]")))
+   (is (thrown? NullPointerException (IPv6Host. "::1" "eth0" nil))))
+  (testing "ipvfuture"
+   (is (thrown? NullPointerException (IPvFutureHost. 5 nil)))))
 
 (deftest ipv4-ambiguity
   ;; RFC 3986 §3.2.2
@@ -42,7 +48,7 @@
   ;; If host matches the rule for IPv4address, then it should be
   ;; considered an IPv4 address literal and not a reg-name.
   (is (= (.getHost (Urls/parse "http://0.0.0.0"))
-         (IPv4Host. 0 0 0 0)))
+         (IPv4Host. (int 0) (int 0) (int 0) (int 0))))
   (testing "leading zeroes"
     (is (= (.getHost (Urls/parse "http://00.00.00.00"))
            (RegNameHost. "00.00.00.00"))))
@@ -52,13 +58,13 @@
 
 (deftest ipv4-safety-copying
   (testing "IPv4Host copies array on input"
-    (let [quad (int-array [1 2 3 4])
+    (let [quad (java.util.ArrayList. (map int [1 2 3 4]))
           ip-a (IPv4Host. quad)
           ip-b (IPv4Host. quad "1.2.3.4")]
-      (aset quad 0 100)
-      (is (= (vec quad) [100 2 3 4]))
-      (is (= (vec (.getQuad ip-a)) [1 2 3 4]))
-      (is (= (vec (.getQuad ip-b)) [1 2 3 4])))))
+      (.set quad 0 100) ;; mutate after passing
+      (is (= quad [100 2 3 4]))
+      (is (= (.quad ip-a) [1 2 3 4]))
+      (is (= (.quad ip-b) [1 2 3 4])))))
 
 (deftest ipvFuture-version
   (are [url fver] (= (.formatVersion (.getHost (Urls/parse url))) fver)

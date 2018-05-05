@@ -20,7 +20,9 @@ import org.timmc.johnny.parts.IPv6Host;
 import org.timmc.johnny.parts.IPvFutureHost;
 import org.timmc.johnny.parts.RegNameHost;
 
+import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 /**
  * A strict URL parser directly derived from ABNF grammars in the relevant RFCs.
@@ -73,10 +75,10 @@ public class AntlrUriParser implements UrlParser {
         if (regname != null) {
             parsedHost = new RegNameHost(host.getText());
         } else if (ipv4 != null) {
-            int[] octets = new int[4];
+            List<Integer> octets = new ArrayList<Integer>(4);
             int index = 0;
             for (Dec_octetContext octet : ipv4.dec_octet()) {
-                octets[index++] = Integer.parseInt(octet.getText());
+                octets.add(Integer.parseInt(octet.getText()));
             }
             parsedHost = new IPv4Host(octets, host.getText());
         } else if (ipv6 != null) {
