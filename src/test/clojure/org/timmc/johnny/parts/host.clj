@@ -69,3 +69,5 @@
 ;; - IPvFuture with non-hex before period
 ;; - IPv6 bad structure
 ;; - regname decoding
+;; - Loose parsing: IPv4 with fewer than 4 segments, or leading zeroes
+;;   for octal, or even hexadecimal (RFC 3986 §7.4)

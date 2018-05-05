@@ -79,7 +79,7 @@ public abstract class Url {
     public Integer getPort() throws UrlDecodeException {
         try {
             String portRaw = getPortRaw();
-            return portRaw == null ? null : Integer.parseInt(portRaw);
+            return portRaw == null || portRaw.isEmpty() ? null : Integer.parseInt(portRaw);
         } catch (NumberFormatException nfe) {
             throw new UrlDecodeException("Could not parse port as integer", nfe);
         }

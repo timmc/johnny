@@ -47,8 +47,9 @@ public class Urls {
             build.append(url.getUserInfoRaw()).append("@");
         }
         build.append(url.getHostRaw());
-        if (url.getPortRaw() != null) {
-            build.append(":").append(url.getPortRaw());
+        String portRaw = url.getPortRaw();
+        if (portRaw != null && !portRaw.isEmpty()) {
+            build.append(":").append(portRaw);
         }
         build.append(url.getPathRaw());
         if (url.getQueryRaw() != null) {
