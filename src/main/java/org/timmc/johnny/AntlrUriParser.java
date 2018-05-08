@@ -1,16 +1,12 @@
 package org.timmc.johnny;
 
-import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
-import org.antlr.v4.runtime.Recognizer;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
+import org.timmc.johnny.antlr.FlaggingErrorListener;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Lexer;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser;
 import org.timmc.johnny.gen.parse.RFC_3986_6874Parser.*;
@@ -21,7 +17,6 @@ import org.timmc.johnny.parts.IPvFutureHost;
 import org.timmc.johnny.parts.RegNameHost;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -32,10 +27,8 @@ public class AntlrUriParser implements UrlParser {
     public Url parse(String in) throws UrlDecodeException {
         try {
             return parseInner(in);
-        } catch(RecognitionException re) {
-            throw new UrlDecodeException("Could not recognize URL from input", re);
-        } catch(ParseCancellationException pce) {
-            throw new UrlDecodeException("Could not recognize URL from input", pce);
+        } catch(RecognitionException | ParseCancellationException e) {
+            throw new UrlDecodeException("Could not recognize URL from input", e);
         }
     }
 
@@ -75,8 +68,7 @@ public class AntlrUriParser implements UrlParser {
         if (regname != null) {
             parsedHost = new RegNameHost(host.getText());
         } else if (ipv4 != null) {
-            List<Integer> octets = new ArrayList<Integer>(4);
-            int index = 0;
+            List<Integer> octets = new ArrayList<>(4);
             for (Dec_octetContext octet : ipv4.dec_octet()) {
                 octets.add(Integer.parseInt(octet.getText()));
             }
@@ -129,42 +121,5 @@ public class AntlrUriParser implements UrlParser {
 
     private String maybeText(ParserRuleContext x) {
         return x == null ? null : x.getText();
-    }
-}
-
-/** Error listener that just records whether errors have occurred. */
-class FlaggingErrorListener implements ANTLRErrorListener {
-    private String errorMsg = null;
-
-    FlaggingErrorListener() {}
-
-    /** Returns an error message if an error has been encountered, else null. */
-    String getError() {
-        return errorMsg;
-    }
-
-    public void syntaxError(Recognizer<?, ?> recognizer,
-                            Object offendingSymbol,
-                            int line,
-                            int charPositionInLine,
-                            String msg,
-                            RecognitionException e) {
-        errorMsg = String.format("Error on line %d at position %d: %s",
-                                 line, charPositionInLine, msg);
-    }
-
-    public void reportAmbiguity(Parser recognizer, DFA dfa, int startIndex, int stopIndex,
-                                boolean exact, BitSet ambigAlts, ATNConfigSet configs) {
-        // do nothing
-    }
-
-    public void reportAttemptingFullContext(Parser recognizer, DFA dfa, int startIndex, int stopIndex,
-                                            BitSet conflictingAlts, ATNConfigSet configs) {
-        // do nothing
-    }
-
-    public void reportContextSensitivity(Parser recognizer, DFA dfa, int startIndex, int stopIndex,
-                                         int prediction, ATNConfigSet configs) {
-        // do nothing
     }
 }
