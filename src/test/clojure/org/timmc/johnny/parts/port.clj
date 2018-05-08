@@ -48,3 +48,7 @@
     ;; http and https URIs, respectively. Maybe other common
     ;; protocols?
     ))
+
+;; TODO: Test what happens with giant port numbers (e.g. greater than
+;; Long/MAX_VALUE) in URI vs. HttpUrl parsing (latter should limit to
+;; [0,65535])
