@@ -19,8 +19,8 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
     - Save to `src/main/grammar/RFC_3986_6874.g4`
     - Add `grammar RFC_3986_6874;` to the top of the file
 - Strip out all rules that do not get used by other rules, except for
-  the top-level `uri` rule:
-    - Discover unused rules: `for sym in $(grep -o '^[^\s/]+' -P src/main/grammar/RFC_3986_6874.g4 | tail -n+2); do grep src/main/grammar/RFC_3986_6874.g4 -e ".\b$sym\b" >/dev/null || echo $sym; done | grep -v '^uri$'`
+  the top-level `uri_reference` rule:
+    - Discover unused rules: `for sym in $(grep -o '^[^\s/]+' -P src/main/grammar/RFC_3986_6874.g4 | tail -n+2); do grep src/main/grammar/RFC_3986_6874.g4 -e ".\b$sym\b" >/dev/null || echo $sym; done | grep -v '^uri_reference$'`
     - Delete all rules mentioned in that output
     - Repeat above until no output
     - Besides cutting the size of the lexer and parser in half, this

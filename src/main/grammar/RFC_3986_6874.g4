@@ -13,6 +13,15 @@ hier_part     : ((SLASH SLASH) authority path_abempty)
               | path_rootless
               | path_empty;
 
+uri_reference : uri | relative_ref;
+
+relative_ref  : relative_part ( QUESTION query )? ( POUND fragment_1 )?;
+
+relative_part : ((SLASH SLASH) authority path_abempty)
+              | path_absolute
+              | path_noscheme
+              | path_empty;
+
 scheme        : alpha ( alpha | digit | PLUS | DASH | PERIOD )*;
 
 authority     : ( userinfo AT )? host ( COLON port )?;
@@ -46,11 +55,14 @@ reg_name      : ( unreserved | pct_encoded | sub_delims )*;
 
 path_abempty  : ( SLASH segment )*;
 path_absolute : SLASH ( segment_nz ( SLASH segment )* )?;
+path_noscheme : segment_nz_nc ( SLASH segment )*;
 path_rootless : segment_nz ( SLASH segment )*;
 path_empty    : ;
 
 segment       : pchar*;
 segment_nz    : pchar+;
+segment_nz_nc : ( unreserved | pct_encoded | sub_delims | AT )+;
+              // non-zero-length segment without any colon ":"
 
 pchar         : unreserved | pct_encoded | sub_delims | COLON | AT;
 
