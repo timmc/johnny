@@ -2,18 +2,18 @@
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
   (:import (org.timmc.johnny Constants StringEncoder Urls)
-           (org.timmc.johnny.parts UserInfo)))
+           (org.timmc.johnny.parts UserInfo UserInfoParser)))
 
-(defn default-parse
+(defn parse-user-pass
   [s]
-  (.parse Urls/userInfoParser s))
+  (UserInfoParser/parseUserPass s))
 
 (defn default-format
   [ui]
   (.format ui))
 
 (deftest parsing
-  (let [parse (fn [raw] (let [ui (default-parse raw)]
+  (let [parse (fn [raw] (let [ui (parse-user-pass raw)]
                           [(.user ui) (.password ui)]))]
     (are [in out] (= (parse in) out)
          "" ["" nil]
@@ -52,12 +52,12 @@
                  (default-format nil)))))
 
 (deftest object-overrides
-  (let [up-a1 (default-parse "a:b")
-        up-a2 (default-parse "a:b")
-        up-b (default-parse "c:d")
-        u-a1 (default-parse "a")
-        u-a2 (default-parse "a")
-        u-b (default-parse "c")]
+  (let [up-a1 (parse-user-pass "a:b")
+        up-a2 (parse-user-pass "a:b")
+        up-b (parse-user-pass "c:d")
+        u-a1 (parse-user-pass "a")
+        u-a2 (parse-user-pass "a")
+        u-b (parse-user-pass "c")]
     (testing "equality"
       (testing "segregated by password nil/not nil"
         (is (= up-a1 up-a2))

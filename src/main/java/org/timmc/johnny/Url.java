@@ -7,6 +7,7 @@ import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;
 import org.timmc.johnny.parts.TextPath;
 import org.timmc.johnny.parts.UserInfo;
+import org.timmc.johnny.parts.UserInfoParser;
 
 /**
  * A base class for manipulating piecemeal URLs with a chaining API.
@@ -59,12 +60,13 @@ public abstract class Url {
     }
 
     /**
-     * Parse user information component as a {@link UserInfo} object, if present.
+     * Parse user information component as a {@link UserInfo} object with
+     * username and password, or null if userinfo missing.
      * @return User info, or null if missing.
      */
-    public UserInfo getUserInfo() throws UrlDecodeException {
+    public UserInfo getUserInfoAsUserPass() throws UrlDecodeException {
         String raw = getUserInfoRaw();
-        return raw == null ? null : Urls.userInfoParser.parse(raw);
+        return raw == null ? null : UserInfoParser.parseUserPass(raw);
     }
 
     /**
