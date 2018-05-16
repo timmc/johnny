@@ -6,8 +6,8 @@ import org.timmc.johnny.parts.Host;
 import org.timmc.johnny.parts.Params;
 import org.timmc.johnny.parts.QueryParser;
 import org.timmc.johnny.parts.TextPath;
-import org.timmc.johnny.parts.UserInfo;
-import org.timmc.johnny.parts.UserInfoParser;
+import org.timmc.johnny.parts.UserPass;
+import org.timmc.johnny.parts.UserPassParser;
 
 /**
  * A base class for manipulating piecemeal URLs with a chaining API.
@@ -60,20 +60,20 @@ public abstract class Url {
     }
 
     /**
-     * Parse user information component as a {@link UserInfo} object with
-     * username and password, or null if userinfo missing.
+     * Parse user information component as a {@link UserPass} object with
+     * username and optional password, or null if userinfo missing.
      * @return User info, or null if missing.
      */
-    public UserInfo getUserInfoAsUserPass() throws UrlDecodeException {
+    public UserPass getUserPass() throws UrlDecodeException {
         String raw = getUserInfoRaw();
-        return raw == null ? null : UserInfoParser.parseUserPass(raw);
+        return raw == null ? null : UserPassParser.parse(raw);
     }
 
     /**
      * Set raw userinfo by encoding provided userinfo with standard userinfo encoder.
      * @param userInfo Nullable
      */
-    public Url withUserInfo(UserInfo userInfo) {
+    public Url withUserPass(UserPass userInfo) {
         return withUserInfoRaw(userInfo == null ? null : userInfo.format());
     }
 
@@ -242,7 +242,7 @@ public abstract class Url {
     /**
      * Undecoded user info of URL, excluding "@" separator. Nullable.
      * If you expect a colon-delimited username/password pair, use
-     * {@link UserInfo} to decode it correctly. If this is instead expected
+     * {@link #getUserPass()} to decode it correctly. If this is instead expected
      * to be a single field, use {@link Codecs#percentDecode(String)}.
      */
     public abstract String getUserInfoRaw();

@@ -1,11 +1,11 @@
 (ns org.timmc.johnny.parts.userinfo
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Constants)
-           (org.timmc.johnny.parts UserInfo UserInfoParser)))
+  (:import (org.timmc.johnny Constants Urls)
+           (org.timmc.johnny.parts UserPass UserPassParser)))
 
 (deftest parsing
-  (let [parse (fn [raw] (let [ui (UserInfoParser/parseUserPass raw)]
+  (let [parse (fn [raw] (let [ui (UserPassParser/parse raw)]
                           [(.user ui) (.password ui)]))]
     (are [in out] (= (parse in) out)
          "" ["" nil]
@@ -13,10 +13,13 @@
          "::::" ["" ":::"]
          "%25" ["%" nil]
          "ab%3Acd:ef%3Agh:ij" ["ab:cd" "ef:gh:ij"]
-         "%E0%A5%AE:%E0%A5%AF" ["\u096e" "\u096f"])))
+         "%E0%A5%AE:%E0%A5%AF" ["\u096e" "\u096f"]))
+  (testing "nil handling"
+    (is (thrown? NullPointerException (UserPassParser/parse nil)))
+    (is (= (.getUserPass (Urls/parse "http://localhost"))))))
 
 (deftest formatting
-  (let [fmt (fn [[u p]] (let [ui (UserInfo. u p)]
+  (let [fmt (fn [[u p]] (let [ui (UserPass. u p)]
                           (.format ui)))]
     (are [in out] (= (fmt in) out)
          ["" nil] ""
@@ -44,12 +47,12 @@
                  (.format nil)))))
 
 (deftest object-overrides
-  (let [up-a1 (UserInfoParser/parseUserPass "a:b")
-        up-a2 (UserInfoParser/parseUserPass "a:b")
-        up-b (UserInfoParser/parseUserPass "c:d")
-        u-a1 (UserInfoParser/parseUserPass "a")
-        u-a2 (UserInfoParser/parseUserPass "a")
-        u-b (UserInfoParser/parseUserPass "c")]
+  (let [up-a1 (UserPassParser/parse "a:b")
+        up-a2 (UserPassParser/parse "a:b")
+        up-b (UserPassParser/parse "c:d")
+        u-a1 (UserPassParser/parse "a")
+        u-a2 (UserPassParser/parse "a")
+        u-b (UserPassParser/parse "c")]
     (testing "equality"
       (testing "segregated by password nil/not nil"
         (is (= up-a1 up-a2))

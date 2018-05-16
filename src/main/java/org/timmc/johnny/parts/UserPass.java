@@ -11,7 +11,7 @@ import org.timmc.johnny.Util;
  * Represents a username/password pair from the userinfo component of a URI's
  * authority section.
  */
-public class UserInfo {
+public class UserPass {
     /** Set of unencoded characters for username subcomponent. */
     public static final ImmutableBitSet ALLOW_CHARS_USERNAME = Constants.RFC3986_UNENCODED_USERINFO.clear(':');
     /** Set of unencoded characters for password subcomponent. */
@@ -28,12 +28,12 @@ public class UserInfo {
     public final String password;
 
     /** Construct with specified username (not null) and no password. */
-    public UserInfo(String user) {
+    public UserPass(String user) {
         this(user, null);
     }
 
     /** Construct with specified username (not null) and password (nullable). */
-    public UserInfo(String user, String password) {
+    public UserPass(String user, String password) {
         this.user = user;
         this.password = password;
     }
@@ -63,10 +63,10 @@ public class UserInfo {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof UserInfo)) {
+        if (!(o instanceof UserPass)) {
             return false;
         }
-        UserInfo other = (UserInfo) o;
+        UserPass other = (UserPass) o;
         return Util.equiv(user, other.user) && Util.equiv(password, other.password);
     }
 

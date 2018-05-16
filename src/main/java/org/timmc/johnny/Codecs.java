@@ -19,21 +19,17 @@ public class Codecs {
      * expose spurious delimiters. For example, using this to decode the path
      * <code>/one%2Fpart</code> will produce <code>/one/part</code>, which is
      * certainly not correct. Instead, use the appropriate component-specific parser.
-     * @param part Nullable
-     * @return Percent-decoded string, or null if input was null
+     * @param part Some percent-encoded string (non-null)
+     * @return Percent-decoded string (non-null)
      * @throws UrlDecodeException if there are invalid percent-escapes
      */
     public static String percentDecode(String part) throws UrlDecodeException {
-        if (part == null) {
-            return null;
-        } else {
-            try {
-                return URLDecoder.decode(part.replace("+", "%2B"), "UTF-8");
-            } catch (UnsupportedEncodingException uee) {
-                throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
-            } catch (IllegalArgumentException iae) {
-                throw new UrlDecodeException("Could not percent-decode URL component", iae);
-            }
+        try {
+            return URLDecoder.decode(part.replace("+", "%2B"), "UTF-8");
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException("Unexpected decoding exception: UTF-8 not available?");
+        } catch (IllegalArgumentException iae) {
+            throw new UrlDecodeException("Could not percent-decode URL component", iae);
         }
     }
 
