@@ -140,6 +140,10 @@ Parse and manipulate components:
         - Charset options: Decode from non-UTF-8, encode to non-UTF-8 (do we
           even want to allow this?)
         - WebUrl#reEncode: Decode and then encode with various options
+- Size limits
+    - Overall URL (check common browser, server, and proxy limits)
+    - Limits on any components? (Either number of parts, or length of
+      each part.)
 
 #### Host parsing
 
