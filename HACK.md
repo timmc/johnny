@@ -240,8 +240,15 @@ I have evaluated these and found them unuseful for this project:
 
 - com.google.gdata.util.common.base.CharEscapers
 - Apache HttpCore & HttpClient
-- Urly (mostly the API choices)
+
+#### Possibly interesting APIs
+
+- Urly
 - https://github.com/mikaelhg/urlbuilder
+- https://docs.racket-lang.org/net/url.html
+- https://github.com/sporkmonger/addressable
+- https://stackoverflow.com/questions/5913613/standard-java-class-for-common-url-uri-manipulation
+- https://gist.github.com/agentgt/3011049
 
 ## Compliance
 
