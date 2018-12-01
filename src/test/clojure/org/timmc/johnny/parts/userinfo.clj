@@ -1,8 +1,8 @@
 (ns org.timmc.johnny.parts.userinfo
   "Tests for userinfo parsing."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Constants Urls)
-           (org.timmc.johnny.parts UserPass UserPassParser)))
+  (:import (org.timmc.johnny Urls UserPass)
+           (org.timmc.johnny.internal Constants UserPassParser)))
 
 (deftest parsing
   (let [parse (fn [raw] (let [ui (UserPassParser/parse raw)]

@@ -4,18 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.timmc.johnny.coll.MapEntry;
-import org.timmc.johnny.parts.Params;
+import org.timmc.johnny.internal.ImmutableOrderedParams;
+import org.timmc.johnny.internal.PairQueryFormatter;
+import org.timmc.johnny.internal.QueryFormatter;
+import org.timmc.johnny.internal.coll.MapEntry;
 
 /**
  * Convenience methods for working with {@link Params} for use in queries, fragments, or even paths.
  */
 public class Queries {
+
+    private static final Params emptyParams = ImmutableOrderedParams.EMPTY;
+    private static final QueryFormatter formatter = new PairQueryFormatter();
+
     /**
      * Yield an empty param collection.
      */
     public static Params empty() {
-        return Urls.emptyParams;
+        return emptyParams;
     }
 
     /**
@@ -28,7 +34,7 @@ public class Queries {
         if (key == null) {
             throw new NullPointerException("Param key may not be null");
         }
-        return Urls.emptyParams.append(key, val);
+        return emptyParams.append(key, val);
     }
 
     /**
@@ -48,7 +54,7 @@ public class Queries {
         for (String val : vals) {
             pairs.add(new MapEntry<String, String>(key, val));
         }
-        return Urls.emptyParams.appendAll(pairs);
+        return emptyParams.appendAll(pairs);
     }
 
     /**
@@ -57,13 +63,13 @@ public class Queries {
      * @param mapping Non-null.
      */
     public static Params from(Map<String, String> mapping) {
-        return Urls.emptyParams.appendAll(mapping.entrySet());
+        return emptyParams.appendAll(mapping.entrySet());
     }
 
     /**
      * Format a param collection as a raw query.
      */
     public static String formatQuery(Params p) {
-        return Urls.queryFormatter.format(p);
+        return formatter.format(p);
     }
 }

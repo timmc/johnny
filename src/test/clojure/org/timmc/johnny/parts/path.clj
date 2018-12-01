@@ -1,8 +1,7 @@
 (ns org.timmc.johnny.parts.path
   "Tests for path parsing, manipulation, and encoding."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Urls Paths)
-           (org.timmc.johnny.parts TextPath)))
+  (:import (org.timmc.johnny Urls Paths TextPath)))
 
 (deftest path-utils
   (are [i o] (= (Paths/explode i) o)

@@ -2,12 +2,10 @@ package org.timmc.johnny;
 
 import java.util.Collection;
 
-import org.timmc.johnny.parts.Host;
-import org.timmc.johnny.parts.Params;
-import org.timmc.johnny.parts.QueryParser;
-import org.timmc.johnny.parts.TextPath;
-import org.timmc.johnny.parts.UserPass;
-import org.timmc.johnny.parts.UserPassParser;
+import org.timmc.johnny.internal.Codecs;
+import org.timmc.johnny.internal.QueryParser;
+import org.timmc.johnny.internal.UserPassParser;
+import org.timmc.johnny.internal.Util;
 
 /**
  * A base class for manipulating piecemeal URLs with a chaining API.
@@ -125,7 +123,7 @@ public abstract class Url {
      * @param q Possibly null Query
      */
     public Url withQuery(Params q) {
-        return withQueryRaw(Urls.queryFormatter.format(q));
+        return withQueryRaw(Queries.formatQuery(q));
     }
 
     /**
@@ -239,12 +237,7 @@ public abstract class Url {
     /** See {@link #getSchemeRaw()}. */
     public abstract Url withSchemeRaw(String schemeRaw);
 
-    /**
-     * Undecoded user info of URL, excluding "@" separator. Nullable.
-     * If you expect a colon-delimited username/password pair, use
-     * {@link #getUserPass()} to decode it correctly. If this is instead expected
-     * to be a single field, use {@link Codecs#percentDecode(String)}.
-     */
+    /** Undecoded user info of URL, excluding "@" separator. Nullable. */
     public abstract String getUserInfoRaw();
 
     /** See {@link #getUserInfoRaw()}. */

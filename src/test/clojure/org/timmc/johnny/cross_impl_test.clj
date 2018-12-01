@@ -4,7 +4,7 @@
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny.parts RegNameHost)))
+  (:import (org.timmc.johnny RegNameHost)))
 
 (defmacro cross
   [binding-overlay & body]

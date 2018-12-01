@@ -6,9 +6,6 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import org.timmc.johnny.parts.Params;
-import org.timmc.johnny.parts.RegNameHost;
-
 /** Demonstrate basic usage. */
 public class SyntaxDemoTest {
 

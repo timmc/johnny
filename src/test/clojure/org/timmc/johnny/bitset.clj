@@ -1,7 +1,7 @@
 (ns org.timmc.johnny.bitset
   "Testing bitsets."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Constants ImmutableBitSet BitSetUtils)))
+  (:import (org.timmc.johnny.internal Constants ImmutableBitSet BitSetUtils)))
 
 ;; TODO generative testing for behavioral equivalency to j.u.BitSet
 

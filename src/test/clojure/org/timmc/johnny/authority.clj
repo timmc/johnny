@@ -1,8 +1,8 @@
 (ns org.timmc.johnny.authority
   "Tests for URiAuthority parsing."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Urls UriAuthority)
-           (org.timmc.johnny.parts RegNameHost)))
+  (:import (org.timmc.johnny Urls RegNameHost)
+           (org.timmc.johnny.internal UriAuthority)))
 
 (defn parse
   [s]

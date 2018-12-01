@@ -1,9 +1,8 @@
 (ns org.timmc.johnny.parts.host
   "Tests for host parsing, manipulation, and encoding."
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny Urls)
-           (org.timmc.johnny.parts
-            Host RegNameHost IPv4Host IPv6Host IPvFutureHost)))
+  (:import (org.timmc.johnny
+            Urls Host RegNameHost IPv4Host IPv6Host IPvFutureHost)))
 
 (deftest parsing-basic
   (testing "Parse & retrieve, check type and equality"

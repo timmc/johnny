@@ -1,6 +1,12 @@
 package org.timmc.johnny;
 
-import org.timmc.johnny.parts.*;
+import org.timmc.johnny.internal.ImmutableOrderedParams;
+import org.timmc.johnny.internal.ImmutableUrl;
+import org.timmc.johnny.internal.NullableValueQueryParser;
+import org.timmc.johnny.internal.QueryParser;
+import org.timmc.johnny.internal.TextPathParser;
+import org.timmc.johnny.internal.UrlParser;
+import org.timmc.johnny.internal.antlr.AntlrUriParser;
 
 
 /**
@@ -9,12 +15,9 @@ import org.timmc.johnny.parts.*;
  */
 public class Urls {
 
-    public static final UrlParser urlParser = new AntlrUriParser();
-    public static final TextPathParser pathParser = new TextPathParser();
-    public static final TextPath emptyPath = TextPath.EMPTY;
-    public static final QueryParser queryParser = new NullableValueQueryParser();
-    public static final Params emptyParams = ImmutableOrderedParams.EMPTY;
-    public static final QueryFormatter queryFormatter = new PairQueryFormatter();
+    private static final UrlParser urlParser = new AntlrUriParser();
+    private static final TextPathParser pathParser = new TextPathParser();
+    private static final QueryParser queryParser = new NullableValueQueryParser();
 
     private Urls() { }
 

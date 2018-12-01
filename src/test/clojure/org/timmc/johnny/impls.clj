@@ -1,13 +1,10 @@
 (ns org.timmc.johnny.impls
-  (:import (org.timmc.johnny
-            Urls
-            UrlParser AntlrUriParser SchemeSpecificUriParser
-            Url ImmutableUrl))
-  (:import (org.timmc.johnny.parts
-            Host
-            TextPathParser TextPath
+  (:import (org.timmc.johnny Urls Url Host TextPath)
+           (org.timmc.johnny.internal
+            UrlParser  SchemeSpecificUriParser TextPathParser ImmutableUrl
             NullableValueQueryParser ImmutableOrderedParams
-            PairQueryFormatter)))
+            PairQueryFormatter)
+           (org.timmc.johnny.internal.antlr AntlrUriParser)))
 
 ;;;; Known implementations
 
@@ -25,14 +22,7 @@
 ;; The defaults manips are the empty instances, except for URL (which
 ;; does not yet support empty instances.)
 
-(def default-url-parser Urls/urlParser)
-
-(def default-path-parser Urls/pathParser)
-(def default-path-inst Urls/emptyPath)
-
-(def default-q-parser Urls/queryParser)
-(def default-q-inst Urls/emptyParams)
-(def default-q-format Urls/queryFormatter)
+(def default-url-parser (AntlrUriParser.))
 
 ;;;; Bindings for current preferred implementation
 

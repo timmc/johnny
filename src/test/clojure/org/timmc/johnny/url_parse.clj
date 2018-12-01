@@ -3,8 +3,8 @@
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny ImmutableUrl UrlDecodeException)
-           (org.timmc.johnny.parts RegNameHost)))
+  (:import (org.timmc.johnny RegNameHost UrlDecodeException)
+           (org.timmc.johnny.internal ImmutableUrl)))
 
 (defmacro cross
   [& body]

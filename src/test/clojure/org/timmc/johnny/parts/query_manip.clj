@@ -3,9 +3,9 @@
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i])
-  (:import (org.timmc.johnny.coll MapEntry)
-           (org.timmc.johnny Urls)))
-(.importClass *ns* 'ME org.timmc.johnny.coll.MapEntry)
+  (:import (org.timmc.johnny Urls)
+           (org.timmc.johnny.internal.coll MapEntry)))
+(.importClass *ns* 'ME org.timmc.johnny.internal.coll.MapEntry)
 
 (defmacro cross
   [binding-overlay & body]

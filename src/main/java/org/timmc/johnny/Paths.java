@@ -1,5 +1,7 @@
 package org.timmc.johnny;
 
+import org.timmc.johnny.internal.Codecs;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;

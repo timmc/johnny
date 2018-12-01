@@ -1,6 +1,6 @@
 (ns org.timmc.johnny.string-encoder
   (:require [clojure.test :refer :all])
-  (:import (org.timmc.johnny
+  (:import (org.timmc.johnny.internal
             Constants StringEncoder ByCharPercentEncoder
             Ascii7Oracle ImmutableBitSet BitSetUtils)))
 
