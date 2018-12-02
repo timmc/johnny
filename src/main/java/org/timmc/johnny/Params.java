@@ -23,7 +23,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @param key Key string, not null.
      * @return True iff key is present (has at least one value.)
      */
-    public boolean hasKey(String key);
+    boolean hasKey(String key);
 
     /**
      * Check if key-value pair is present.
@@ -31,7 +31,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @param val Value string, nullable.
      * @return True iff key-value pair is present.
      */
-    public boolean hasPair(String key, String val);
+    boolean hasPair(String key, String val);
 
     /**
      * Get the last value for the specified key.
@@ -39,32 +39,32 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return last value for key, null if missing or the value is null.
      * @see #hasKey(String)
      */
-    public String getLast(String key);
+    String getLast(String key);
 
     /**
      * Get all values for the key.
      * @param key Key string, not null.
      * @return Collection of zero or more param values, some of which may be null.
      */
-    public Collection<String> getAll(String key);
+    Collection<String> getAll(String key);
 
     /**
      * Produce a key-value pair representation.
      * @return non-null collection of key-value pairs
      */
-    public Collection<Map.Entry<String, String>> getPairs();
+    Collection<Map.Entry<String, String>> getPairs();
 
     /*== Size ==*/
 
     /**
      * Count unique keys.
      */
-    public int countKeys();
+    int countKeys();
 
     /**
      * Count key-value pairs.
      */
-    public int countPairs();
+    int countPairs();
 
     /*== Mutation ==*/
 
@@ -73,7 +73,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return An empty Params of the same type (or at least with the same
      *  behaviors).
      */
-    public Params empty();
+    Params empty();
 
     /**
      * Remove all values for this key.
@@ -81,7 +81,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return Params on which {@link #hasKey(String)} will return false for
      *  <code>key</code>.
      */
-    public Params removeAll(String key);
+    Params removeAll(String key);
 
     /**
      * Remove all pairs matching this key and value.
@@ -90,7 +90,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return Params on which {@link #getAll(String)} with <code>key</code>
      *  will return a collection that does not contain <code>val</code>.
      */
-    public Params removeAll(String key, String val);
+    Params removeAll(String key, String val);
 
     /**
      * Append an additional key-value pair.
@@ -100,13 +100,13 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      *  will return <code>val</code> and on which {@link #getAll(String)}
      *  will be larger by 1.
      */
-    public Params append(String key, String val);
+    Params append(String key, String val);
 
     /**
      * Append a sequence of key-value pairs.
      * @param source Non-null iterable of key-value pairs
      */
-    public Params appendAll(Iterable<? extends Map.Entry<String, String>> source);
+    Params appendAll(Iterable<? extends Map.Entry<String, String>> source);
 
     /**
      * Replace all <code>key</code> pairs with a single pair containing
@@ -116,7 +116,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return Params on which {@link #getAll(String)} with <code>key</code>
      *  will return a one-element collection containing <code>val</code>.
      */
-    public Params replace(String key, String val);
+    Params replace(String key, String val);
 
     /**
      * Remove last value of key (if present) and add new value.
@@ -127,5 +127,5 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      *  {@link #getAll(String)} will return a collection containing
      *  <code>val</code> (for all implementations.)
      */
-    public Params replaceLast(String key, String val);
+    Params replaceLast(String key, String val);
 }
