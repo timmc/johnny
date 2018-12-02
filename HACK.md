@@ -80,6 +80,7 @@ course.)
 - Harden query impls against HashDoS attack
 - Equality & comparators (see RFC 3986 section 6)
 - Normalizers (e.g. decode all unreserved chars)
+- Validation of ports as being 1–65535?
 
 #### Component processing
 

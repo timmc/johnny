@@ -3,7 +3,6 @@ package org.timmc.johnny;
 import java.util.Collection;
 
 import org.timmc.johnny.internal.Codecs;
-import org.timmc.johnny.internal.QueryParser;
 import org.timmc.johnny.internal.UserPassParser;
 import org.timmc.johnny.internal.Util;
 
@@ -148,8 +147,7 @@ public abstract class Url {
 
     /**
      * Convenience method for {@link Params#replace(String, String)}; for heavy
-     * manipulation, use a {@link QueryParser} to produce a {@link Params},
-     * which can be manipulated more efficiently. Uses {@link #getQuery()}.
+     * manipulation, use {@link #getQuery()} and {@link #withQuery(Params)}.
      *
      * @param key Non-null query param key (may be empty)
      * @param value Nullable query param value
@@ -163,8 +161,7 @@ public abstract class Url {
 
     /**
      * Convenience method for {@link Params#getAll(String)}; for heavy
-     * inspection use a {@link QueryParser} to produce a {@link Params},
-     * which can be inspected more efficiently. Uses {@link #getQuery()}.
+     * inspection use {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
@@ -178,8 +175,7 @@ public abstract class Url {
 
     /**
      * Convenience method for {@link Params#getLast(String)}; for heavy
-     * inspection use a {@link QueryParser} to produce a {@link Params},
-     * which can be inspected more efficiently. Uses {@link #getQuery()}.
+     * inspection use {@link #getQuery()}.
      *
      * @param key Non-null query param key (may be empty)
      * @return Last value for key, null iff key not present.
@@ -272,7 +268,7 @@ public abstract class Url {
 
     /**
      * Undecoded query portion of URL, excluding "?" separator. Nullable.
-     * To decode a query into keys and values, use a {@link QueryParser}.
+     * To decode a query into keys and values, use {@link #getQuery()}.
      */
     public abstract String getQueryRaw();
 

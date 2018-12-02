@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.timmc.johnny.internal.ImmutableOrderedParams;
 import org.timmc.johnny.internal.PairQueryFormatter;
-import org.timmc.johnny.internal.QueryFormatter;
 import org.timmc.johnny.internal.coll.MapEntry;
 
 /**
@@ -15,7 +14,7 @@ import org.timmc.johnny.internal.coll.MapEntry;
 public class Queries {
 
     private static final Params emptyParams = ImmutableOrderedParams.EMPTY;
-    private static final QueryFormatter formatter = new PairQueryFormatter();
+    private static final PairQueryFormatter formatter = new PairQueryFormatter();
 
     /**
      * Yield an empty param collection.

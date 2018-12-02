@@ -5,10 +5,10 @@ import java.util.Map.Entry;
 import org.timmc.johnny.*;
 
 /**
- * Encodes queries in the standard fashion, defaulting to ampersand and equals
- * as delimiters and allowing null values.
+ * Query formatter whcih encodes queries in the standard fashion, defaulting
+ * to ampersand and equals as delimiters and allowing null values.
  */
-public class PairQueryFormatter implements QueryFormatter {
+public class PairQueryFormatter {
 
     private String pairSep;
     private final char kSep = '=';
@@ -28,6 +28,12 @@ public class PairQueryFormatter implements QueryFormatter {
         valEnc = new ByCharPercentEncoder(new Ascii7Oracle(Constants.RFC3986_UNENCODED_QUERY.or(BitSetUtils.fromChars(pairSep))));
     }
 
+    /**
+     * Format a query as a raw query string.
+     * @param q Query object (nullable)
+     * @return String (possibly null) suitable for
+     *  {@link Url#withQueryRaw(String)}
+     */
     public String format(Params q) {
         return q == null ? null : format(q.getPairs());
     }

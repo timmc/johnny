@@ -1,4 +1,4 @@
-package org.timmc.johnny.internal.antlr;
+package org.timmc.johnny.internal;
 
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
@@ -7,8 +7,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 import org.timmc.johnny.*;
-import org.timmc.johnny.internal.ImmutableUrl;
-import org.timmc.johnny.internal.UrlParser;
+import org.timmc.johnny.internal.antlr.FlaggingErrorListener;
 import org.timmc.johnny.internal.gen.parse.RFC_3986_6874Lexer;
 import org.timmc.johnny.internal.gen.parse.RFC_3986_6874Parser;
 import org.timmc.johnny.internal.gen.parse.RFC_3986_6874Parser.*;

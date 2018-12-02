@@ -18,5 +18,5 @@ public interface UrlParser {
      *  {@link Url#getPathRaw()}, {@link Url#getQueryRaw()}, {@link Url#getFragmentRaw()}.
      * @throws UrlDecodeException if the URL is not well-formed
      */
-    public Url parse(String url) throws UrlDecodeException;
+    Url parse(String url) throws UrlDecodeException;
 }
