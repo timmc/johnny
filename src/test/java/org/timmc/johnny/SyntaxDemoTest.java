@@ -52,7 +52,8 @@ public class SyntaxDemoTest {
     @Test
     public void testConstruction() {
         Url u = Urls.from("https", new RegNameHost("brightcove.com"))
-                    .withQuery(Queries.from("foo", "bar"));
-        assertEquals(u.format(), "https://brightcove.com?foo=bar");
+            .withPath(Paths.from("v1", "api", "123"))
+            .withQuery(Queries.from("foo", "bar"));
+        assertEquals(u.format(), "https://brightcove.com/v1/api/123?foo=bar");
     }
 }

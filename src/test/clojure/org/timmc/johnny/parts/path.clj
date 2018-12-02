@@ -4,34 +4,34 @@
   (:import (org.timmc.johnny Urls Paths TextPath)))
 
 (deftest path-utils
-  (are [i o] (= (Paths/explode i) o)
+  (are [i o] (= (Paths/explodeRaw i) o)
        "" []
        "/" [""]
        "//a" ["" "a"]
        "/a/b/c" ["a" "b" "c"]
        ".././a%2Fb/..b/c../.d/" [".." "." "a%2Fb" "..b" "c.." ".d" ""])
   (is (thrown? NullPointerException
-               (Paths/explode nil)))
+               (Paths/explodeRaw nil)))
   (are [i o] (= (Paths/isAbsolute i) o)
        "" false
+       "%2F" false
        "/" true
        "//" true
        "../../" false
        "a" false)
   (is (thrown? NullPointerException
                (Paths/isAbsolute nil)))
-  (are [path abs back added] (= (let [effect (Paths/effectOf path)]
-                                  [(.absolute effect)
-                                   (.backwards effect)
-                                   (.added effect)])
-                                [abs back added])
-       "" false 0 []))
+  (let [trailing (.addRawPath (Paths/parse "/foo/bar/") "")]
+    (is (.hasTrailingSlash trailing))
+    (is (= (.format trailing) "/foo/bar/"))))
 
 ;; TODO: Test Paths, TextPath, and parsers and encoders
 
 (deftest parsing
-  (is (= (.getPathRaw (Urls/parse "http://google.com")) ""))
-  (is (= (.getSegments (.getPath (Urls/parse "http://google.com"))) []))
+  (let [no-path (Urls/parse "https://example.com")]
+    (is (= (.getPathRaw no-path) ""))
+    (is (= (.getSegments (.getPath no-path)) []))
+    (is (= (.hasTrailingSlash (.getPath no-path)) false)))
   (let [parsed (Urls/parsePath "/.././/foo;page=1;sort=asc/;=&/_/../ba%2fr")]
     (is (= (.getSegments parsed)
            ["foo;page=1;sort=asc" ";=&" "ba/r"])))
@@ -40,7 +40,7 @@
 
 (deftest manipulation
   (is (= (.getSegments
-          (.addSegments (TextPath. ["a" "b" ".." "c"])
+          (.addSegments (Paths/from (into-array ["a" "b" ".." "c"]))
                         ["." "" "d" "e" ".."]))
          ["a" "c" "d"])))
 

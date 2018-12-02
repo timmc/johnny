@@ -1,7 +1,7 @@
 (ns org.timmc.johnny.impls
-  (:import (org.timmc.johnny Urls Url Host TextPath)
+  (:import (org.timmc.johnny Host)
            (org.timmc.johnny.internal
-            UrlParser  SchemeSpecificUriParser TextPathParser ImmutableUrl
+             SchemeSpecificUriParser
             NullableValueQueryParser ImmutableOrderedParams
             PairQueryFormatter)
            (org.timmc.johnny.internal.antlr AntlrUriParser)))
@@ -11,9 +11,6 @@
 ;; Parsers are listed by instance, manipulation impls by class.
 
 (def url-parse-impls #{(AntlrUriParser.) (SchemeSpecificUriParser.)})
-
-(def path-parse-impls #{(TextPathParser.)})
-(def path-manip-impls #{TextPath})
 
 (def q-parse-impls #{(NullableValueQueryParser.)})
 (def q-manip-impls #{ImmutableOrderedParams})
@@ -39,10 +36,6 @@
 
 (def url-impl-bindings
   {#'*url-parser* url-parse-impls})
-
-(def path-impl-bindings
-  {#'*path-parser* path-parse-impls
-   #'*path-manip* path-manip-impls})
 
 (def query-impl-bindings
   {#'*query-parser* q-parse-impls

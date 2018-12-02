@@ -4,7 +4,6 @@ import org.timmc.johnny.internal.ImmutableOrderedParams;
 import org.timmc.johnny.internal.ImmutableUrl;
 import org.timmc.johnny.internal.NullableValueQueryParser;
 import org.timmc.johnny.internal.QueryParser;
-import org.timmc.johnny.internal.TextPathParser;
 import org.timmc.johnny.internal.UrlParser;
 import org.timmc.johnny.internal.antlr.AntlrUriParser;
 
@@ -16,7 +15,6 @@ import org.timmc.johnny.internal.antlr.AntlrUriParser;
 public class Urls {
 
     private static final UrlParser urlParser = new AntlrUriParser();
-    private static final TextPathParser pathParser = new TextPathParser();
     private static final QueryParser queryParser = new NullableValueQueryParser();
 
     private Urls() { }
@@ -69,7 +67,7 @@ public class Urls {
      * @param pathRaw Non-null path component
      */
     public static TextPath parsePath(String pathRaw) throws UrlDecodeException {
-        return TextPath.EMPTY.addSegments(Urls.pathParser.parse(pathRaw));
+        return Paths.parse(pathRaw);
     }
 
     /**
