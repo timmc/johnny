@@ -1,6 +1,6 @@
 (def antlr-ver "4.7.1")
 
-(defproject org.timmc/johnny "0.1.2-SNAPSHOT"
+(defproject org.timmc/johnny "0.2.0-SNAPSHOT"
   :min-lein-version  "2.1.0" ;; 2.1.0 introduced jar classifiers
   :description "A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use."
   :url "https://github.com/timmc/johnny"
