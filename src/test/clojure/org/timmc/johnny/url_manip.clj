@@ -2,14 +2,14 @@
   "Tests for URL manipulation."
   (:require [clojure.test :refer :all]
             [org.timmc.johnny.util :as u]
-            [org.timmc.johnny.impls :as i]))
+            [org.timmc.johnny.impls :as i])
+  (:import (org.timmc.johnny RegNameHost IPv4Host IPv6Host)))
 
 (defmacro cross
   [binding-overlay & body]
   `((u/cross-thunk (merge i/url-impl-bindings ~binding-overlay)
                    #(do ~@body))))
 
-#_ ;; FIXME -- revisit the purpose and structure of this test
 (deftest swap-single
   (cross
    {#'i/*url-parser* [i/default-url-parser]}
@@ -18,7 +18,9 @@
      ;; value and serialized text (with delimiters).
      (let [variations [{"https" "https://", "http" "http://"}
                        {"to%3aen" "to%3aen@", nil nil, "" "@"}
-                       {"timmc.local" "timmc.local"}
+                       {(RegNameHost. "timmc.local") "timmc.local",
+                        (IPv4Host. 1 2 3 255) "1.2.3.255"
+                        (IPv6Host. "::1" "eth0") "[::1%25eth0]"}
                        {nil "", 43 ":43"}
                        {"" "", "/" "/"}
                        {nil "", "" "?", "a=b?" "?a=b?"}
