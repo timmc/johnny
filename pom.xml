@@ -22,8 +22,15 @@
   </scm>
 
   <properties>
-    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.source>1.6</maven.compiler.source> <!-- XXX -->
     <maven.compiler.target>1.6</maven.compiler.target>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <kotlin.compiler.jvmTarget>1.6</kotlin.compiler.jvmTarget>
+    <kotlin.code.style>official</kotlin.code.style>
+
+    <kotlin.version>1.3.10</kotlin.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
   <repositories>
@@ -41,6 +48,12 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-stdlib</artifactId>
+      <version>${kotlin.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.antlr</groupId>
       <artifactId>antlr4-runtime</artifactId>
       <version>4.7.1</version>
@@ -52,15 +65,22 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
+      <groupId>org.projectlombok</groupId> <!-- XXX -->
       <artifactId>lombok</artifactId>
       <version>1.18.4</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jetbrains.kotlin</groupId>
+      <artifactId>kotlin-test-junit</artifactId>
+      <version>${kotlin.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -78,7 +98,35 @@
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
-        <!-- Work around an issue with surefire crashing, by specifying it directly... -->
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-maven-plugin</artifactId>
+        <version>${kotlin.version}</version>
+        <configuration>
+          <jvmTarget>1.6</jvmTarget>
+        </configuration>
+        <executions>
+          <execution>
+            <id>compile</id>
+            <phase>process-sources</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>test-compile</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!--
+        For complicated and boring reasons, overriding the plugin
+        version to 3.0.0-M1 or higher avoids an issue on Linux OpenJDK 8
+        https://stackoverflow.com/questions/53010200/maven-surefire-could-not-find-forkedbooter-class/53016532#53016532
+        -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M1</version>
