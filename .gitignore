@@ -1,7 +1,2 @@
 /target/
-/.settings/
-/.project
-/.classpath
 /.lein-*
-/pom.xml
-/pom.xml.asc
