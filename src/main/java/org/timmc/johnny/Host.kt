@@ -15,36 +15,32 @@ import org.timmc.johnny.internal.Util;
  *     <li>{@link IPvFutureHost}, an IP address of a future version</li>
  * </ol>
  */
-public abstract class Host {
+abstract class Host { // TODO interface
     /**
      * Get string for this host address that is suitable for inclusion in a URI.
      * Non-null.
      */
-    public abstract String format();
+    abstract fun format(): String
 
     /**
      * Get original raw string for this host. May be same as {@link #format()},
      * or might be misencoded if a loose parser was used. Non-null.
      */
-    public abstract String getRaw();
+    abstract val raw: String
 
-    @Override
-    public int hashCode() {
+    override fun hashCode(): Int { // XXX
         return format().hashCode();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Host)) {
+    override fun equals(other: Any?): Boolean {
+        if (!(other is Host)) {
             return false;
         }
-        Host other = (Host) obj;
         return Util.equiv(format(), other.format());
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         // TODO something less like Clojure's stringification format, to be less confusing
-        return String.format("#<%s %s>", this.getClass().getSimpleName(), format());
+        return String.format("#<%s %s>", this::class.java.getSimpleName(), format());
     }
 }
