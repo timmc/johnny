@@ -85,7 +85,7 @@ public class UriAuthority {
     private static Host parseHost(String hostRaw) {
         Matcher ipv4Match = ipv4.matcher(hostRaw);
         if (ipv4Match.find()) {
-            List<Integer> quad = new ArrayList<>();
+            List<Integer> quad = new ArrayList<Integer>();
             quad.add(Integer.parseInt(ipv4Match.group(1)));
             quad.add(Integer.parseInt(ipv4Match.group(2)));
             quad.add(Integer.parseInt(ipv4Match.group(3)));

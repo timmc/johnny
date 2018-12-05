@@ -23,7 +23,9 @@ public class AntlrUriParser implements UrlParser {
     public Url parse(String in) throws UrlDecodeException {
         try {
             return parseInner(in);
-        } catch (RecognitionException | ParseCancellationException e) {
+        } catch (RecognitionException e) {
+            throw new UrlDecodeException("Could not recognize URI from input", e);
+        } catch (ParseCancellationException e) {
             throw new UrlDecodeException("Could not recognize URI from input", e);
         } catch (NullPointerException npe) {
             throw new UrlDecodeException("Unexpected null reference when reading URI parse tree", npe);
@@ -134,7 +136,7 @@ public class AntlrUriParser implements UrlParser {
         if (regname != null) {
             return new RegNameHost(host.getText());
         } else if (ipv4 != null) {
-            List<Integer> octets = new ArrayList<>(4);
+            List<Integer> octets = new ArrayList<Integer>(4);
             for (Dec_octetContext octet : ipv4.dec_octet()) {
                 octets.add(Integer.parseInt(octet.getText()));
             }

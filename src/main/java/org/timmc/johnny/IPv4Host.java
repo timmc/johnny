@@ -40,7 +40,7 @@ public class IPv4Host extends Host {
      */
     public IPv4Host(@NonNull List<Integer> quad, @NonNull String raw) {
         // Copy, and then validate the copy
-        this.quad = Collections.unmodifiableList(new ArrayList<>(quad));
+        this.quad = Collections.unmodifiableList(new ArrayList<Integer>(quad));
         if (this.quad.size() != 4) {
             throw new IllegalArgumentException("IPv4 quad must contain 4 entries");
         }

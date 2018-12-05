@@ -49,9 +49,9 @@ public class Queries {
         if (key == null) {
             throw new NullPointerException("Param key may not be null");
         }
-        List<MapEntry<String, String>> pairs = new ArrayList<>();
+        List<MapEntry<String, String>> pairs = new ArrayList<MapEntry<String, String>>();
         for (String val : vals) {
-            pairs.add(new MapEntry<>(key, val));
+            pairs.add(new MapEntry<String, String>(key, val));
         }
         return emptyParams.appendAll(pairs);
     }

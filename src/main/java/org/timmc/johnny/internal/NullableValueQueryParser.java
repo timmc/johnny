@@ -50,7 +50,7 @@ public class NullableValueQueryParser {
     }
 
     public Iterable<Map.Entry<String, String>> parse(String queryRaw) throws UrlDecodeException {
-        LinkedList<Map.Entry<String, String>> ret = new LinkedList<>();
+        LinkedList<Map.Entry<String, String>> ret = new LinkedList<Map.Entry<String, String>>();
         String[] pairs = pairSep.split(queryRaw);
         for (String pair : pairs) {
             if (pair.isEmpty()) {
@@ -59,7 +59,7 @@ public class NullableValueQueryParser {
             String[] kv = kSep.split(pair, 2);
             String k = Codecs.percentDecode(kv[0]);
             String v = kv.length == 1 ? null : Codecs.percentDecode(kv[1]);
-            ret.addLast(new MapEntry<>(k, v));
+            ret.addLast(new MapEntry<String, String>(k, v));
         }
         return Collections.unmodifiableList(ret);
     }

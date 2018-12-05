@@ -93,7 +93,7 @@ public class HostTest {
     /** Check if IPv4Host copies array on input */
     @Test
     public void ipv4SafetyCopying() {
-        List<Integer> quad = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+        List<Integer> quad = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         IPv4Host ipA = new IPv4Host(quad);
         IPv4Host ipB = new IPv4Host(quad, "1.2.3.4");
         // Mutate after passing

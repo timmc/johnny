@@ -134,7 +134,7 @@ public class TextPath {
         if (effect.absolute) {
             return new TextPath(effect.added, effect.hadTrailingSlash);
         } else {
-            List<String> build = new ArrayList<>(segments);
+            List<String> build = new ArrayList<String>(segments);
 
             if (effect.backwards > 0) {
                 int newSize = Math.max(0, build.size() - effect.backwards);
@@ -221,7 +221,7 @@ public class TextPath {
      */
     private static PathEffect effectOf(Iterable<String> pathRefSegs) {
         int removed = 0;
-        List<String> added = new ArrayList<>();
+        List<String> added = new ArrayList<String>();
         for (String seg : pathRefSegs) {
             if (seg == null) {
                 throw new NullPointerException("Path segments may not be null");
@@ -243,7 +243,7 @@ public class TextPath {
 
     /** Percent-decode each segment. */
     private static Iterable<String> decodeEach(Iterable<String> rawSegs) throws UrlDecodeException {
-        List<String> build = new ArrayList<>();
+        List<String> build = new ArrayList<String>();
         for (String raw : rawSegs) {
             build.add(Codecs.percentDecode(raw));
         }
