@@ -1,5 +1,7 @@
 package org.timmc.johnny;
 
+import lombok.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,7 +28,7 @@ public class IPv4Host extends Host {
     /**
      * Create an IPv4Host from an array of 4 integers. Raw form is derived.
      */
-    public IPv4Host(List<Integer> quad) {
+    public IPv4Host(@NonNull List<Integer> quad) {
         this(quad, IPv4Host.format(quad));
     }
 
@@ -36,10 +38,7 @@ public class IPv4Host extends Host {
      * @param quad Array of 4 ints from 0 to 255 inclusive. Non-null.
      * @param raw Raw form of host before it was parsed. Non-null.
      */
-    public IPv4Host(List<Integer> quad, String raw) {
-        if (quad == null) {
-            throw new NullPointerException("IPv4 quad must not be null");
-        }
+    public IPv4Host(@NonNull List<Integer> quad, @NonNull String raw) {
         // Copy, and then validate the copy
         this.quad = Collections.unmodifiableList(new ArrayList<>(quad));
         if (this.quad.size() != 4) {
@@ -54,9 +53,6 @@ public class IPv4Host extends Host {
                 throw new IllegalArgumentException("IPv4 segments must not be greater than 255");
             }
         }
-        if (raw == null) {
-            throw new NullPointerException("IPv4 raw form must not be null");
-        }
         this.raw = raw;
     }
 
@@ -67,7 +63,7 @@ public class IPv4Host extends Host {
     /**
      * Format an IP v4 quad as a string, for URL representation.
      */
-    public static String format(List<Integer> quad) {
+    public static String format(@NonNull List<Integer> quad) {
         return quad.get(0) + "." + quad.get(1) + "." + quad.get(2) + "." + quad.get(3);
     }
 

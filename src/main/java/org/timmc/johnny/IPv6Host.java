@@ -1,5 +1,6 @@
 package org.timmc.johnny;
 
+import lombok.NonNull;
 import org.timmc.johnny.internal.Codecs;
 
 /**
@@ -22,7 +23,7 @@ public class IPv6Host extends Host {
      * Create IPv6 host representation from plain address.
      * @param address Just the IPv6 address -- no brackets or zone
      */
-    public IPv6Host(String address) {
+    public IPv6Host(@NonNull String address) {
         this(address, null);
     }
 
@@ -31,7 +32,7 @@ public class IPv6Host extends Host {
      * @param address Just the IPv6 address -- no brackets or zone
      * @param zone Optional zone identifier, nullable (very rare)
      */
-    public IPv6Host(String address, String zone) {
+    public IPv6Host(@NonNull String address, String zone) {
         this(address, zone, IPv6Host.format(address, zone));
     }
 
@@ -41,19 +42,13 @@ public class IPv6Host extends Host {
      * @param zone Optional zone identifier, nullable (very rare)
      * @param raw Raw form of address, properly encoded and bracketed
      */
-    public IPv6Host(String address, String zone, String raw) {
-        if (address == null) {
-            throw new NullPointerException("IPV6 address may not be null");
-        }
-        if (raw == null) {
-            throw new NullPointerException("Raw form of address may not be null");
-        }
+    public IPv6Host(@NonNull String address, String zone, @NonNull String raw) {
         this.address = address;
         this.zone = zone;
         this.raw = raw;
     }
 
-    public static String format(String address, String zone) {
+    public static String format(@NonNull String address, String zone) {
         String zonepart = zone == null ? "" : "%25" + Codecs.percentEncodeIPv6Zone(zone);
         return String.format("[%s%s]", address, zonepart);
     }

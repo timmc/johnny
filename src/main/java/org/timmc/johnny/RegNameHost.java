@@ -1,5 +1,6 @@
 package org.timmc.johnny;
 
+import lombok.NonNull;
 import org.timmc.johnny.internal.Codecs;
 
 /**
@@ -8,10 +9,7 @@ import org.timmc.johnny.internal.Codecs;
 public class RegNameHost extends Host {
     private final String raw;
 
-    public RegNameHost(String raw) { // TODO: Should we accept decoded name instead? When is that safe?
-        if (raw == null) {
-            throw new NullPointerException("Registered-name host must not be null");
-        }
+    public RegNameHost(@NonNull String raw) { // TODO: Should we accept decoded name instead? When is that safe?
         this.raw = raw;
     }
 

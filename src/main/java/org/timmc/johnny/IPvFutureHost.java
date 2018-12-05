@@ -1,5 +1,7 @@
 package org.timmc.johnny;
 
+import lombok.NonNull;
+
 /**
  * The host component of a URI using a future IP literal format. This is a
  * syntax reservation which, as of this writing, has no specification.
@@ -19,10 +21,7 @@ public class IPvFutureHost extends Host {
      */
     public final int formatVersion;
 
-    public IPvFutureHost(int formatVersion, String raw) {
-        if (raw == null) {
-            throw new NullPointerException("IPvFuture host must not be null");
-        }
+    public IPvFutureHost(int formatVersion, @NonNull String raw) {
         this.formatVersion = formatVersion;
         this.raw = raw;
     }
