@@ -1,17 +1,14 @@
 package org.timmc.johnny;
 
-import lombok.NonNull;
 import org.timmc.johnny.internal.Codecs;
 
 /**
  * A URI host that is a name, e.g. a domain name.
  */
-public class RegNameHost extends Host {
-    private final String raw;
-
-    public RegNameHost(@NonNull String raw) { // TODO: Should we accept decoded name instead? When is that safe?
-        this.raw = raw;
-    }
+data class RegNameHost(
+    // TODO: Should we accept decoded name instead? When is that safe?
+    override val raw: String
+): Host() {
 
     // TODO: parseDomain that parses into a sequence of domain labels,
     // reified as a class. Should also expose local/absolute re: empty
@@ -22,18 +19,15 @@ public class RegNameHost extends Host {
     // doesn't give any instruction.)
 
     // TODO Under what circumstances is it possible for a *valid* regname to need decoding?
-    public String getName() throws UrlDecodeException {
+    /**
+     * @throws UrlDecodeException
+     */
+    fun getName(): String {
         return Codecs.percentDecode(raw);
     }
 
-    @Override
-    public String format() {
-        // TODO Should we return a potentially cleaner version that has been round-tripped through decode/encode?
-        return raw;
-    }
-
-    @Override
-    public String getRaw() {
+    // TODO Should we return a potentially cleaner version that has been round-tripped through decode/encode?
+    override fun format(): String {
         return raw;
     }
 }
