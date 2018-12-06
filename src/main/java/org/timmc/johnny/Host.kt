@@ -13,7 +13,7 @@ package org.timmc.johnny
  *     <li>{@link IPvFutureHost}, an IP address of a future version</li>
  * </ol>
  */
-abstract class Host {
+abstract class Host { // TODO Showing up as non-abstract in dokka javadocs
 
     // Why is the raw string stored here, instead of in the containing Url
     // instance? Because it's pre-parsed by AntlrUriParser, and it seems
