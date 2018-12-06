@@ -119,8 +119,8 @@ public class HostTest {
 
     @Test
     public void ipvFutureVersion() {
-        assertEquals(1, ((IPvFutureHost) Urls.parse("http://[v1.foo]").getHost()).formatVersion);
-        assertEquals(255, ((IPvFutureHost) Urls.parse("http://[vff.~$]").getHost()).formatVersion);
+        assertEquals(1, ((IPvFutureHost) Urls.parse("http://[v1.foo]").getHost()).getFormatVersion());
+        assertEquals(255, ((IPvFutureHost) Urls.parse("http://[vff.~$]").getHost()).getFormatVersion());
     }
 
     // TODO test:
