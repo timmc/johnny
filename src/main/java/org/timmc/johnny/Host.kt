@@ -1,6 +1,4 @@
-package org.timmc.johnny;
-
-import org.timmc.johnny.internal.Util;
+package org.timmc.johnny
 
 /**
  * The host in a URI, either a registered name or an IP address.
@@ -15,15 +13,15 @@ import org.timmc.johnny.internal.Util;
  *     <li>{@link IPvFutureHost}, an IP address of a future version</li>
  * </ol>
  */
-abstract class Host { // TODO interface
-    /**
-     * Get string for this host address that is suitable for inclusion in a URI.
-     * Non-null.
-     */
-    abstract fun format(): String
+abstract class Host {
+
+    // Why is the raw string stored here, instead of in the containing Url
+    // instance? Because it's pre-parsed by AntlrUriParser, and it seems
+    // a shame to waste that work, so the raw form is stored here after
+    // the fact.
 
     /**
-     * Get original raw string for this host. May be same as {@link #format()},
+     * Original raw string for this host. May be same as {@link #format()},
      * or might be misencoded if a loose parser was used. Non-null.
      */
     abstract val raw: String
@@ -36,11 +34,16 @@ abstract class Host { // TODO interface
         if (!(other is Host)) {
             return false;
         }
-        return Util.equiv(format(), other.format());
+        return format() == other.format()
     }
 
     override fun toString(): String {
         // TODO something less like Clojure's stringification format, to be less confusing
         return String.format("#<%s %s>", this::class.java.getSimpleName(), format());
     }
+    /**
+     * Get string for this host address that is suitable for inclusion in a URI.
+     * Non-null.
+     */
+    abstract fun format(): String
 }

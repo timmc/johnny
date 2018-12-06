@@ -14,6 +14,7 @@ public class HostTest {
         List<List<Object>> samples = Arrays.asList(
             Arrays.asList("example.com", new RegNameHost("example.com")),
             Arrays.asList("1.2.3.4", new IPv4Host(1, 2, 3, 4)),
+            Arrays.asList("1.2.3.4", new IPv4Host(1, 2, 3, 4, "1.2.3.4")),
             Arrays.asList("1.2.3.4", new IPv4Host(Arrays.asList(1, 2, 3, 4))),
             Arrays.asList("1.2.3.4", new IPv4Host(Arrays.asList(1, 2, 3, 4), "1.2.3.4")),
             Arrays.asList("[2620:0:861:ed1a::1]",
@@ -69,6 +70,12 @@ public class HostTest {
             fail("No exception was thrown (expected NPE)");
         } catch (NullPointerException npe) {
             // do nothing
+        } catch (IllegalArgumentException iae) {
+            // This is how Kotlin handles null checks
+            String msg = iae.getMessage();
+            if (msg == null || !msg.contains("Parameter specified as non-null is null")) {
+                fail("Wrong exception thrown: " + iae);
+            }
         } catch (Throwable t) {
             fail("Wrong exception was thrown: " + t);
         }
@@ -95,13 +102,11 @@ public class HostTest {
     public void ipv4SafetyCopying() {
         List<Integer> quad = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
         IPv4Host ipA = new IPv4Host(quad);
-        IPv4Host ipB = new IPv4Host(quad, "1.2.3.4");
         // Mutate after passing
         quad.set(0, 100);
 
         assertEquals((Object) 100, quad.get(0));
-        assertEquals(Arrays.asList(1, 2, 3, 4), ipA.quad);
-        assertEquals(Arrays.asList(1, 2, 3, 4), ipB.quad);
+        assertEquals(Arrays.asList(1, 2, 3, 4), ipA.getQuad());
     }
 
     @Test
