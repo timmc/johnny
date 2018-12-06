@@ -26,21 +26,6 @@ abstract class Host {
      */
     abstract val raw: String
 
-    override fun hashCode(): Int { // XXX
-        return format().hashCode();
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (!(other is Host)) {
-            return false;
-        }
-        return format() == other.format()
-    }
-
-    override fun toString(): String {
-        // TODO something less like Clojure's stringification format, to be less confusing
-        return String.format("#<%s %s>", this::class.java.getSimpleName(), format());
-    }
     /**
      * Get string for this host address that is suitable for inclusion in a URI.
      * Non-null.
