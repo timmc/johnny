@@ -37,6 +37,14 @@ public class HostTest {
     }
 
     @Test
+    public void ipv6() {
+        IPv6Host h6 = (IPv6Host) Urls.parse("https://[::1%25a%2Fb]/").getHost();
+        assertEquals("::1", h6.getAddress());
+        assertEquals("[::1%25a%2Fb]", h6.getRaw());
+        assertEquals("a/b", h6.getZone());
+    }
+
+    @Test
     public void nullChecks() {
         assertThrowsNPE(new Runnable() { public void run() {
             new RegNameHost(null); } });

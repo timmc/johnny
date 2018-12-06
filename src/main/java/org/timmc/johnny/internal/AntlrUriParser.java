@@ -145,7 +145,8 @@ public class AntlrUriParser implements UrlParser {
             return new IPv6Host(ipv6.getText(), null, host.getText());
         } else if (ipv6zoned != null) {
             String ipv6addr = ipv6zoned.ipv6address().getText();
-            String zone = ipv6zoned.zoneid().getText();
+            String zoneRaw = ipv6zoned.zoneid().getText();
+            String zone = zoneRaw == null ? null : Codecs.percentDecode(zoneRaw);
             return new IPv6Host(ipv6addr, zone, host.getText());
         } else if (ipFuture != null ){
             StringBuilder hexver = new StringBuilder();
