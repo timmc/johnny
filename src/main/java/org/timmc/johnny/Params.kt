@@ -1,7 +1,4 @@
-package org.timmc.johnny;
-
-import java.util.Collection;
-import java.util.Map;
+package org.timmc.johnny
 
 /**
  * A key-value parameter listing. Implementations are free to make decisions
@@ -14,7 +11,7 @@ import java.util.Map;
  * Implementations are expected to have a public nullary constructor which
  * can be used in conjunction with {@link #appendAll(Iterable)}.
  */
-public interface Params extends Iterable<Map.Entry<String, String>>{
+interface Params: Iterable<Map.Entry<String, String?>> {
 
     /*== Value accessors ==*/
 
@@ -23,15 +20,15 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @param key Key string, not null.
      * @return True iff key is present (has at least one value.)
      */
-    boolean hasKey(String key);
+    fun hasKey(key: String): Boolean
 
     /**
      * Check if key-value pair is present.
      * @param key Key string, not null.
-     * @param val Value string, nullable.
+     * @param value Value string, nullable.
      * @return True iff key-value pair is present.
      */
-    boolean hasPair(String key, String val);
+    fun hasPair(key: String, value: String?): Boolean
 
     /**
      * Get the last value for the specified key.
@@ -39,32 +36,32 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return last value for key, null if missing or the value is null.
      * @see #hasKey(String)
      */
-    String getLast(String key);
+    fun getLast(key: String): String?
 
     /**
      * Get all values for the key.
      * @param key Key string, not null.
      * @return Collection of zero or more param values, some of which may be null.
      */
-    Collection<String> getAll(String key);
+    fun getAll(key: String): List<String?>
 
     /**
      * Produce a key-value pair representation.
      * @return non-null collection of key-value pairs
      */
-    Collection<Map.Entry<String, String>> getPairs();
+    fun getPairs(): List<Map.Entry<String, String?>>
 
     /*== Size ==*/
 
     /**
      * Count unique keys.
      */
-    int countKeys();
+    fun countKeys(): Int
 
     /**
      * Count key-value pairs.
      */
-    int countPairs();
+    fun countPairs(): Int
 
     /*== Mutation ==*/
 
@@ -73,7 +70,7 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return An empty Params of the same type (or at least with the same
      *  behaviors).
      */
-    Params empty();
+    fun empty(): Params
 
     /**
      * Remove all values for this key.
@@ -81,51 +78,51 @@ public interface Params extends Iterable<Map.Entry<String, String>>{
      * @return Params on which {@link #hasKey(String)} will return false for
      *  <code>key</code>.
      */
-    Params removeAll(String key);
+    fun removeAll(key: String): Params
 
     /**
      * Remove all pairs matching this key and value.
      * @param key Key string, not null.
-     * @param val Value string, nullable.
+     * @param value Value string, nullable.
      * @return Params on which {@link #getAll(String)} with <code>key</code>
      *  will return a collection that does not contain <code>val</code>.
      */
-    Params removeAll(String key, String val);
+    fun removeAll(key: String, value: String?): Params
 
     /**
      * Append an additional key-value pair.
      * @param key Key string, not null.
-     * @param val Value string, nullable.
+     * @param value Value string, nullable.
      * @return Params on which {@link #getLast(String)} with <code>key</code>
      *  will return <code>val</code> and on which {@link #getAll(String)}
      *  will be larger by 1.
      */
-    Params append(String key, String val);
+    fun append(key: String, value: String?): Params
 
     /**
      * Append a sequence of key-value pairs.
      * @param source Non-null iterable of key-value pairs
      */
-    Params appendAll(Iterable<? extends Map.Entry<String, String>> source);
+    fun appendAll(source: Iterable<Map.Entry<String, String?>>): Params
 
     /**
      * Replace all <code>key</code> pairs with a single pair containing
      * <code>val</code> as the value.
      * @param key Key string, not null.
-     * @param val New value string, nullable.
+     * @param value New value string, nullable.
      * @return Params on which {@link #getAll(String)} with <code>key</code>
      *  will return a one-element collection containing <code>val</code>.
      */
-    Params replace(String key, String val);
+    fun replace(key: String, value: String?): Params
 
     /**
      * Remove last value of key (if present) and add new value.
      * @param key Key string, not null.
-     * @param val New value string, nullable.
+     * @param value New value string, nullable.
      * @return Params on which {@link #getLast(String)} with <code>key</code>
      *  will return <code>val</code> and on which
      *  {@link #getAll(String)} will return a collection containing
      *  <code>val</code> (for all implementations.)
      */
-    Params replaceLast(String key, String val);
+    fun replaceLast(key: String, value: String?): Params
 }

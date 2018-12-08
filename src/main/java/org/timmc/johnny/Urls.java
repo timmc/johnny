@@ -1,8 +1,6 @@
 package org.timmc.johnny;
 
-import org.timmc.johnny.internal.ImmutableOrderedParams;
 import org.timmc.johnny.internal.ImmutableUrl;
-import org.timmc.johnny.internal.NullableValueQueryParser;
 import org.timmc.johnny.internal.UrlParser;
 import org.timmc.johnny.internal.AntlrUriParser;
 
@@ -14,7 +12,6 @@ import org.timmc.johnny.internal.AntlrUriParser;
 public class Urls {
 
     private static final UrlParser urlParser = new AntlrUriParser();
-    private static final NullableValueQueryParser queryParser = new NullableValueQueryParser();
 
     private Urls() { }
 
@@ -70,15 +67,10 @@ public class Urls {
     }
 
     /**
-     * Parse a query string to the default piecewise URI query representation
-     * using the default parser.
-     * @param queryRaw Query component, or null
-     * @return Params, or null if input was null
+     * Parse a query string (convenience passthrough for
+     * {@link Queries#parse(String)}).
      */
     public static Params parseQuery(String queryRaw) throws UrlDecodeException {
-        if (queryRaw == null) {
-            return null;
-        }
-        return ImmutableOrderedParams.EMPTY.appendAll(Urls.queryParser.parse(queryRaw));
+        return Queries.parse(queryRaw);
     }
 }

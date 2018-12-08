@@ -15,28 +15,28 @@ class FlaggingErrorListener : ANTLRErrorListener {
     var error: String? = null
         private set
 
-    override fun syntaxError(recognizer: Recognizer<*, *>, offendingSymbol: Any,
-        line: Int, charPositionInLine: Int, msg: String, e: RecognitionException) {
+    override fun syntaxError(recognizer: Recognizer<*, *>?, offendingSymbol: Any?,
+        line: Int, charPositionInLine: Int, msg: String?, e: RecognitionException?) {
         error = "Error on line $line at position $charPositionInLine: $msg"
     }
 
     override fun reportAmbiguity(
-        recognizer: Parser, dfa: DFA, startIndex: Int, stopIndex: Int,
-        exact: Boolean, ambigAlts: BitSet, configs: ATNConfigSet
+        recognizer: Parser?, dfa: DFA, startIndex: Int, stopIndex: Int,
+        exact: Boolean, ambigAlts: BitSet?, configs: ATNConfigSet?
     ) {
         // do nothing
     }
 
     override fun reportAttemptingFullContext(
-        recognizer: Parser, dfa: DFA, startIndex: Int, stopIndex: Int,
-        conflictingAlts: BitSet, configs: ATNConfigSet
+        recognizer: Parser?, dfa: DFA?, startIndex: Int, stopIndex: Int,
+        conflictingAlts: BitSet?, configs: ATNConfigSet?
     ) {
         // do nothing
     }
 
     override fun reportContextSensitivity(
-        recognizer: Parser, dfa: DFA, startIndex: Int, stopIndex: Int,
-        prediction: Int, configs: ATNConfigSet
+        recognizer: Parser?, dfa: DFA?, startIndex: Int, stopIndex: Int,
+        prediction: Int, configs: ATNConfigSet?
     ) {
         // do nothing
     }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.timmc.johnny.internal.ImmutableOrderedParams;
+import org.timmc.johnny.internal.NullableValueQueryParser;
 import org.timmc.johnny.internal.PairQueryFormatter;
 import org.timmc.johnny.internal.coll.MapEntry;
 
@@ -13,6 +14,7 @@ import org.timmc.johnny.internal.coll.MapEntry;
  */
 public class Queries {
 
+    private static final NullableValueQueryParser queryParser = new NullableValueQueryParser();
     private static final Params emptyParams = ImmutableOrderedParams.EMPTY;
     private static final PairQueryFormatter formatter = new PairQueryFormatter();
 
@@ -21,6 +23,19 @@ public class Queries {
      */
     public static Params empty() {
         return emptyParams;
+    }
+
+    /**
+     * Parse a query string to the default piecewise URI query representation
+     * using the default parser.
+     * @param queryRaw Query component, or null
+     * @return Params, or null if input was null
+     */
+    public static Params parse(String queryRaw) throws UrlDecodeException {
+        if (queryRaw == null) {
+            return null;
+        }
+        return emptyParams.appendAll(queryParser.parse(queryRaw));
     }
 
     /**

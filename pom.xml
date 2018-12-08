@@ -14,12 +14,21 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <!-- scm and developers are required by the Central Repo -->
   <scm>
     <url>git@github.com:timmc/johnny.git</url>
     <connection>scm:git:git://github.com/timmc/johnny.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/timmc/johnny.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+  <developers>
+    <developer>
+      <name>Tim McCormack</name>
+      <email>cortex@brainonfire.net</email>
+      <url>https://www.brainonfire.net/</url>
+    </developer>
+  </developers>
 
   <properties>
     <maven.compiler.source>1.6</maven.compiler.source> <!-- XXX -->
@@ -84,14 +93,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <developers>
-    <developer>
-      <name>Tim McCormack</name>
-      <email>cortex@brainonfire.net</email>
-      <url>https://www.brainonfire.net/</url>
-    </developer>
-  </developers>
 
   <pluginRepositories>
     <pluginRepository>
