@@ -25,11 +25,7 @@
   (is (empty? (els e)))
   (is (= (.nextSetBit e 0) -1))
   (is (= (.nextClearBit e 0) 0))
-  (is (= (.previousSetBit e 50) -1))
-  (is (= (.previousClearBit e -1) -1))
-  (is (= (.clone e) e))
-  (is (= (empty? (.toByteArray e))))
-  (is (= (empty? (.toLongArray e)))))
+  (is (= (.clone e) e)))
 
 (deftest solid
   (let [ten (.set e 0 10)]
@@ -46,8 +42,6 @@
     (is (= (els ten) (range 10)))
     (is (= (.nextSetBit ten 0) 0))
     (is (= (.nextClearBit ten 0) 10))
-    (is (= (.previousSetBit ten 50) 9))
-    (is (= (.previousClearBit ten 5) -1))
     (is (= (.clone ten) ten))))
 
 (deftest modified

@@ -37,16 +37,6 @@ public class ImmutableBitSet implements Iterable<Integer>, Cloneable {
 
     /*== Delegated accessors ==*/
 
-    /** See {@link BitSet#toByteArray()}. */
-    public byte[] toByteArray() {
-        return backing.toByteArray();
-    }
-
-    /** See {@link BitSet#toLongArray()}. */
-    public long[] toLongArray() {
-        return backing.toLongArray();
-    }
-
     /** See {@link BitSet#get(int)}. */
     public boolean get(int bitIndex) {
         return backing.get(bitIndex);
@@ -65,16 +55,6 @@ public class ImmutableBitSet implements Iterable<Integer>, Cloneable {
     /** See {@link BitSet#nextClearBit(int)}. */
     public int nextClearBit(int fromIndex) {
         return backing.nextClearBit(fromIndex);
-    }
-
-    /** See {@link BitSet#previousSetBit(int)}. */
-    public int previousSetBit(int fromIndex) {
-        return backing.previousSetBit(fromIndex);
-    }
-
-    /** See {@link BitSet#previousClearBit(int)}. */
-    public int previousClearBit(int fromIndex) {
-        return backing.previousClearBit(fromIndex);
     }
 
     /** See {@link BitSet#length()}. */
