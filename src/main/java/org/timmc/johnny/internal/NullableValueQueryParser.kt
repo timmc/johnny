@@ -37,11 +37,9 @@ class NullableValueQueryParser
     }
 
     companion object {
-        @JvmStatic
         private val EQUALS = Pattern.compile("=")
 
         /** Pattern that finds ampersands.  */
-        @JvmStatic
         private val AMPERSAND = Pattern.compile("&")
     }
 }
