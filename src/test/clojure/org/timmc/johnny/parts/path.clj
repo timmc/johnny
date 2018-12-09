@@ -35,8 +35,8 @@
   (let [parsed (Urls/parsePath "/.././/foo;page=1;sort=asc/;=&/_/../ba%2fr")]
     (is (= (.getSegments parsed)
            ["foo;page=1;sort=asc" ";=&" "ba/r"])))
-  (is (thrown? NullPointerException
-               (Urls/parsePath nil))))
+  (is (thrown-with-msg? IllegalArgumentException #"specified as non-null is null"
+                        (Urls/parsePath nil))))
 
 (deftest manipulation
   (is (= (.getSegments
