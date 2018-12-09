@@ -75,8 +75,7 @@
   ;; failures for remaining tests in the block.
   (are [i o] (are [pre] (is (= (BitSetUtils/fromChars (pre i)) o))
                   identity
-                  char-array
-                  #(or (seq %) %))
+                  char-array)
        ""       e
        "\u0000" (.set e 0)
        ;; TODO: Test surrogate pairs, or leave unspecified?

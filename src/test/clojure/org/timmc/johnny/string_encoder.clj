@@ -47,7 +47,6 @@ sets of integer code points."
 (deftest construction
   (testing "empty"
     (doseq [e [Ascii7Oracle/EMPTY
-               (Ascii7Oracle.)
                (Ascii7Oracle. ImmutableBitSet/EMPTY)]]
       ;; Test alpha, control, non-ASCII, and surrogate half
       (in-out-char e #{} #{\a \space \u0000 \u096e (char 0xd800)})
