@@ -31,9 +31,6 @@
   </developers>
 
   <properties>
-    <maven.compiler.source>1.6</maven.compiler.source> <!-- XXX -->
-    <maven.compiler.target>1.6</maven.compiler.target>
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <kotlin.compiler.jvmTarget>1.6</kotlin.compiler.jvmTarget>
     <kotlin.code.style>official</kotlin.code.style>
@@ -73,12 +70,6 @@
       <version>4.7.1</version>
       <scope>compile</scope>
     </dependency>
-    <dependency>
-      <groupId>org.projectlombok</groupId> <!-- XXX -->
-      <artifactId>lombok</artifactId>
-      <version>1.18.4</version>
-      <scope>compile</scope>
-    </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -104,7 +95,7 @@
   </pluginRepositories>
 
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
+    <sourceDirectory>src/main/generated-java</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
@@ -121,6 +112,12 @@
             <goals>
               <goal>compile</goal>
             </goals>
+            <configuration>
+              <sourceDirs>
+                <source>src/main/generated-java</source>
+                <source>src/main/kotlin</source>
+              </sourceDirs>
+            </configuration>
           </execution>
           <execution>
             <id>test-compile</id>

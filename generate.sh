@@ -3,7 +3,7 @@
 
 set -eu -o pipefail
 
-dest=src/main/java/org/timmc/johnny/internal/gen/parse
+dest=src/main/generated-java/org/timmc/johnny/internal/gen/parse
 
 if [[ ! -d "$dest" ]]; then
     echo "Must run code generation from johnny project root"
