@@ -1,10 +1,9 @@
 (ns org.timmc.johnny.impls
-  (:import (org.timmc.johnny Host)
+  (:import (org.timmc.johnny Host Queries)
            (org.timmc.johnny.internal
-             SchemeSpecificUriParser
+            SchemeSpecificUriParser
             NullableValueQueryParser ImmutableOrderedParams
-            PairQueryFormatter)
-           (org.timmc.johnny.internal.antlr AntlrUriParser)))
+            PairQueryFormatter AntlrUriParser)))
 
 ;;;; Known implementations
 
@@ -29,7 +28,6 @@
 (def ^:dynamic *path-manip* nil)
 
 (def ^:dynamic *query-parser* nil)
-(def ^:dynamic *query-manip* nil)
 (def ^:dynamic *query-formatter* nil)
 
 ;;;; Binding sets
@@ -39,7 +37,6 @@
 
 (def query-impl-bindings
   {#'*query-parser* q-parse-impls
-   #'*query-manip* q-manip-impls
    #'*query-formatter* q-format-impls})
 
 ;;;; Parsing
@@ -71,12 +68,7 @@
   [^String s]
   (.addSegments (create-p) (.parse *path-parser* s)))
 
-(defn create-q
-  "Construct a Query of the current impl."
-  []
-  (get-empty-instance *query-manip*))
-
 (defn parse-q
   "Parse a string as a Query."
   [^String s]
-  (.appendAll (create-q) (.parse *query-parser* s)))
+  (Queries/parse s))

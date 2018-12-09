@@ -10,8 +10,8 @@
        "//a" ["" "a"]
        "/a/b/c" ["a" "b" "c"]
        ".././a%2Fb/..b/c../.d/" [".." "." "a%2Fb" "..b" "c.." ".d" ""])
-  (is (thrown? NullPointerException
-               (Paths/explodeRaw nil)))
+  (is (thrown-with-msg? IllegalArgumentException #"specified as non-null is null"
+                        (Paths/explodeRaw nil)))
   (are [i o] (= (Paths/isAbsolute i) o)
        "" false
        "%2F" false
@@ -19,7 +19,7 @@
        "//" true
        "../../" false
        "a" false)
-  (is (thrown? NullPointerException
+  (is (thrown-with-msg? IllegalArgumentException #"specified as non-null is null"
                (Paths/isAbsolute nil)))
   (let [trailing (.addRawPath (Paths/parse "/foo/bar/") "")]
     (is (.hasTrailingSlash trailing))
@@ -35,8 +35,8 @@
   (let [parsed (Urls/parsePath "/.././/foo;page=1;sort=asc/;=&/_/../ba%2fr")]
     (is (= (.getSegments parsed)
            ["foo;page=1;sort=asc" ";=&" "ba/r"])))
-  (is (thrown? NullPointerException
-               (Urls/parsePath nil))))
+  (is (thrown-with-msg? IllegalArgumentException #"specified as non-null is null"
+                        (Urls/parsePath nil))))
 
 (deftest manipulation
   (is (= (.getSegments

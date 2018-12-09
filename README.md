@@ -1,6 +1,6 @@
 # Johnny: Read and write URLs on the JVM
 
-Johnny is a Java library that helps you read, modify, and write URLs
+Johnny is a Kotlin library that helps you read, modify, and write URLs
 with in a safe, efficient, and standards-compliant fashion. Here's
 Johnny replacing a host name and adding a query parameter:
 

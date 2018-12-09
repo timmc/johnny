@@ -15,7 +15,8 @@
          "ab%3Acd:ef%3Agh:ij" ["ab:cd" "ef:gh:ij"]
          "%E0%A5%AE:%E0%A5%AF" ["\u096e" "\u096f"]))
   (testing "nil handling"
-    (is (thrown? NullPointerException (UserPassParser/parse nil)))
+    (is (thrown-with-msg? IllegalArgumentException #"specified as non-null is null"
+                          (UserPassParser/parse nil)))
     (is (= (.getUserPass (Urls/parse "http://localhost"))))))
 
 (deftest formatting

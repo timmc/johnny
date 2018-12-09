@@ -21,62 +21,10 @@
   (and (empty? coll)
        (not (nil? coll))))
 
-(deftest nil-raw
-  (testing "Url-level q-parse defaults"
-    (is (nil? (.getQuery (Urls/parse "http://localhost")))))
-  (testing "Urls-level q-parse defaults"
-    (is (nil? (Urls/parseQuery nil)))))
-
-(deftest base-case
-  (cross-all
-   (doseq [raw ["" "&&&&&"]
-           :let [qc #(i/parse-q raw)]] ;; there are mutable representations
-     (testing (str "raw=" raw)
-       (doseq [k [nil "foo"]]
-         (testing (str "key=" k)
-           (is (= (.hasKey (qc) k) false))
-           (is (= (.getLast (qc) k) nil))
-           (is (empty-not-nil? (.getAll (qc) k)))))
-       (is (empty-not-nil? (.getPairs (qc))))
-       (is (= (.countKeys (qc)) 0))
-       (is (= (.countPairs (qc)) 0))))))
-
-(deftest construction
-  (cross
-   {#'i/*query-formatter* [nil]}
-   (let [val (i/parse-q "a=5&b=&a=6")]
-     (is (= (.countKeys val) 2))
-     (is (.hasKey val "a"))
-     (is (.hasKey val "b"))
-     (do (is (= (.countPairs val) 3))
-         (is (= (.getLast val "a") "6"))
-         (is (= (.getLast val "b") ""))
-         (is (= (.getAll val "a") ["5" "6"]))
-         (let [ordered [(ME. "a" "5") (ME. "b" "") (ME. "a" "6")]]
-           (is (= (.getPairs val) ordered)))))))
-
 ;; TODO add tests for + vs. %20
 
 (deftest non-null-invariants
-  ;; Detailed tests of .appendAll first
-  (cross
-   {#'i/*query-parser* [nil]
-    #'i/*query-formatter* [nil]}
-   ;; Empty
-   (doseq [[which val] {:fresh (i/create-q)
-                        :append-nothing (.appendAll (i/create-q) [])}]
-     (testing which
-       (is (zero? (.countKeys val)))
-       (is (zero? (.countPairs val)))
-       (is (empty-not-nil? (.getPairs val)))
-       (doseq [k [nil "" "foo"]]
-         (testing (str "k=" (pr-str k))
-           (is (not (.hasKey val k)))
-           (is (nil? (.getLast val k)))
-           (is (empty-not-nil? (.getAll val k)))
-           (doseq [v [nil "" "bar"]]
-             (testing (str "v=" (pr-str v))
-               (is (not (.hasPair val k v))))))))))
+
   (cross-all
    ;; Appending to various non-empty queries
    (let [base (i/parse-q "m=5&m=6")]
@@ -111,7 +59,7 @@
            (is (= (- (.countPairs orig) (.countPairs val))
                   (count (.getAll orig "a"))))))
        (testing ".removeAll(k,v)"
-         (doseq [k [nil "foo" "a"]
+         (doseq [k ["foo" "a"]
                  v [nil "   " "bar"]
                  :let [val (.removeAll (qc) k v)]]
            (testing (str "k=" (pr-str k) " v=" (pr-str v))
@@ -126,7 +74,7 @@
              (is (= (- (.countPairs orig) (.countPairs val))
                     (if (.hasPair orig k v) 1 0))))))
        (testing ".append"
-         (doseq [k [nil "foo" "a"] ;; at least one existing key
+         (doseq [k ["foo" "a"] ;; at least one existing key
                  v [nil "" "bar"]] ;; at least one existing val for that key
            (testing (str "k=" (pr-str k) " v=" (pr-str v))
              (let [app (.append (qc) k v)]
