@@ -48,6 +48,7 @@ public class QueriesTest {
     public void parsed() {
         Params q = Queries.parse("a&b=&a=65");
 
+        assertNotNull(q);
         assertEquals(2, q.countKeys());
         assertTrue(q.hasKey("a"));
         assertTrue(q.hasKey("b"));
@@ -61,13 +62,14 @@ public class QueriesTest {
             q.getPairs());
 
         assertEquals("65", q.getLast("a"));
-        assertEquals(null, q.getAll("a").iterator().next());
+        assertNull(q.getAll("a").iterator().next());
         assertEquals("", q.getLast("b"));
     }
 
     @Test
     public void appending() {
         Params base = Queries.parse("m=5&m=6");
+        assertNotNull(base);
         Params appended = base.append("m", "6") // again
             .append("a", "before")
             .append("m", "7")

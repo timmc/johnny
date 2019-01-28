@@ -66,14 +66,15 @@ object Paths {
      */
     @JvmStatic
     fun explodeRaw(path: String): Iterable<String> {
-        var path = path
         if (path.isEmpty()) {
             return emptyList()
         }
-        if (path.startsWith("/")) {
-            path = path.substring(1)
+        val pathNoLead = if (path.startsWith("/")) {
+            path.substring(1)
+        } else {
+            path
         }
-        return path.split("/".toRegex()).toList()
+        return pathNoLead.split("/".toRegex()).toList()
     }
 
     /**
