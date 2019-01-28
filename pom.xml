@@ -141,27 +141,27 @@
       </plugin>
 
       <plugin>
+        <!--
+        Generate javadocs from Kotlin sources when packaging
+
+        https://github.com/Kotlin/dokka
+        -->
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-maven-plugin</artifactId>
         <version>0.9.17</version>
         <executions>
           <execution>
-            <phase>pre-site</phase>
+            <phase>package</phase>
             <goals>
               <goal>javadocJar</goal>
             </goals>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <!--
-        Needed for dokka, which has a transitive dependency version issue:
-        https://issues.apache.org/jira/browse/CRUNCH-671
-        -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.7.1</version>
+        <configuration>
+          <sourceDirectories>
+            <sourceDirectory>src/main/kotlin</sourceDirectory>
+          </sourceDirectories>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -191,7 +191,7 @@
 
       <plugin>
         <!--
-        Generate sources jar on `mvn package`
+        Generate sources jar when packaging
         -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -206,6 +206,7 @@
           </execution>
         </executions>
       </plugin>
+
     </plugins>
   </build>
 </project>
