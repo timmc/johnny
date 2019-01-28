@@ -14,14 +14,8 @@
                                   [org.antlr/antlr4 ~antlr-ver]
                                   [org.jetbrains.kotlin/kotlin-stdlib "1.3.10"]]}}
   ;; TODO move sources/javadocs config to pom
-  ;; Since we're deploying Java to Maven Central, we omit source from
-  ;; the main jar and produce separate -sources and -javadoc jars.
-  :omit-source true
   :classifiers
-  {:sources
-   {:java-source-paths ^:replace []
-    :resource-paths ["src/main/java"]}
-   :javadoc
+  {:javadoc
    {:resource-paths ^:replace ["target/javadoc/javadoc"]
     :javadoc-opts
     {:package-names ["org.timmc.johnny"]

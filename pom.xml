@@ -128,6 +128,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <!--
         For complicated and boring reasons, overriding the plugin
@@ -138,6 +139,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M1</version>
       </plugin>
+
       <plugin>
         <groupId>org.jetbrains.dokka</groupId>
         <artifactId>dokka-maven-plugin</artifactId>
@@ -151,6 +153,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <!--
         Needed for dokka, which has a transitive dependency version issue:
@@ -159,6 +162,49 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>3.7.1</version>
+      </plugin>
+
+      <plugin>
+        <!--
+         Generate sources jar with `mvn source:jar` that includes ANTLR g4
+         grammar files, generated Java parser sources, and Kotlin sources.
+        -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/grammar</source>
+                <source>src/main/generated-java</source>
+                <source>src/main/kotlin</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <!--
+        Generate sources jar on `mvn package`
+        -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
