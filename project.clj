@@ -10,11 +10,4 @@
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.5.1"]
                                   [org.antlr/antlr4 ~antlr-ver]
                                   [org.jetbrains.kotlin/kotlin-stdlib "1.3.10"]]}}
-  :deploy-repositories
-  [["releases"
-    {:url "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-     :creds :gpg}]
-   ["snapshots"
-    {:url "https://oss.sonatype.org/content/repositories/snapshots/"
-     :creds :gpg}]]
   )
