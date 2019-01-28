@@ -161,6 +161,9 @@
           <sourceDirectories>
             <sourceDirectory>src/main/kotlin</sourceDirectory>
           </sourceDirectories>
+          <includes>
+            <include>src/main/kotlin/dokka.md</include>
+          </includes>
         </configuration>
       </plugin>
 

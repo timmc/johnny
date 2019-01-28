@@ -6,7 +6,18 @@ import org.timmc.johnny.internal.AntlrUriParser
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
- * Start by calling [.parse], then use builder methods on the return value.
+ *
+ * Start by calling [.parse], then use builder methods on the returned `Url`
+ * instance. The `Url` may be inspected, manipulated, and re-encoded
+ * without mutation, including the path and query subcomponents.
+ *
+ * ```
+ * Url orig = Urls.parse("https://example.com/login?a=b=c&amp;a=?d");
+ * Url result = orig.withQuery(orig.getQuery()
+ *                                 .append("foo", "bar")
+ *                                 .replace("a", null));
+ * result.format(); // "https://example.com/login?foo=bar&amp;a"
+ * ```
  */
 object Urls {
 
