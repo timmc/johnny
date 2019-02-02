@@ -60,7 +60,7 @@ object Paths {
     /**
      * Explode a raw path (component or reference) without decoding it. This
      * will lose information about whether a path reference started with a
-     * slash; see [.isAbsolute].
+     * slash; see [isAbsolute].
      * @param path Raw path, possibly relative. Not null.
      * @return Raw segments of path, including empty and traversal segments.
      */

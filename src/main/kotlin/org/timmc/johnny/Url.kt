@@ -121,7 +121,7 @@ abstract class Url {
 
     /**
      * Undecoded query portion of URL, excluding "?" separator. Nullable.
-     * To decode a query into keys and values, use [.getQuery].
+     * To decode a query into keys and values, use [query].
      */
     abstract val queryRaw: String?
 
@@ -138,7 +138,7 @@ abstract class Url {
     }
 
     /**
-     * Set scheme component. This is no different from [.withSchemeRaw]
+     * Set scheme component. This is no different from [withSchemeRaw]
      * and is included only for completeness.
      * @param scheme Nullable
      */
@@ -154,7 +154,7 @@ abstract class Url {
         return withUserInfoRaw(userInfo?.format())
     }
 
-    /** See [.getPort].  */
+    /** See [port].  */
     fun withPort(port: Int?): Url {
         val portRaw = if (port == null) null else Integer.toString(port)
         return withPortRaw(portRaw)
@@ -189,7 +189,7 @@ abstract class Url {
 
     /**
      * Convenience method for [Params.replace]; for heavy
-     * manipulation, use [.getQuery] and [.withQuery].
+     * manipulation, use [query] and [withQuery].
      *
      * @param key Non-null query param key (may be empty)
      * @param value Nullable query param value
@@ -204,7 +204,7 @@ abstract class Url {
 
     /**
      * Convenience method for [Params.getAll]; for heavy
-     * inspection use [.getQuery].
+     * inspection use [query].
      *
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
@@ -219,7 +219,7 @@ abstract class Url {
 
     /**
      * Convenience method for [Params.getLast]; for heavy
-     * inspection use [.getQuery].
+     * inspection use [query].
      *
      * @param key Non-null query param key (may be empty)
      * @return Last value for key, null iff key not present.
@@ -232,24 +232,24 @@ abstract class Url {
         return query!!.getLast(key)
     }
 
-    /** See [.getSchemeRaw].  */
+    /** See [schemeRaw].  */
     abstract fun withSchemeRaw(schemeRaw: String): Url
 
-    /** See [.getUserInfoRaw].  */
+    /** See [userInfoRaw].  */
     abstract fun withUserInfoRaw(userInfoRaw: String?): Url
 
-    /** See [.getHost].  */
+    /** See [host].  */
     abstract fun withHost(host: Host): Url
 
-    /** See [.getPortRaw].  */
+    /** See [portRaw].  */
     abstract fun withPortRaw(portRaw: String?): Url
 
-    /** See [.getPathRaw].  */
+    /** See [pathRaw].  */
     abstract fun withPathRaw(pathRaw: String): Url
 
-    /** See [.getQueryRaw].  */
+    /** See [queryRaw].  */
     abstract fun withQueryRaw(queryRaw: String?): Url
 
-    /** See [.getFragmentRaw].  */
+    /** See [fragmentRaw].  */
     abstract fun withFragmentRaw(fragmentRaw: String?): Url
 }

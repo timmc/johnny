@@ -13,9 +13,9 @@ interface UrlParser {
     /**
      * Parse a full URL into an intermediate representation that a [Url]
      * implementation can read.
-     * @return Array of values suitable for return from [Url.getSchemeRaw],
-     * [Url.getUserInfoRaw], [Url.getHostRaw], [Url.getPortRaw],
-     * [Url.getPathRaw], [Url.getQueryRaw], [Url.getFragmentRaw].
+     * @return Array of values suitable for return from [Url.schemeRaw],
+     * [Url.userInfoRaw], [Url.hostRaw], [Url.portRaw],
+     * [Url.pathRaw], [Url.queryRaw], [Url.fragmentRaw].
      * @throws UrlDecodeException if the URL is not well-formed
      */
     @Throws(UrlDecodeException::class)

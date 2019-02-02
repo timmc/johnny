@@ -183,7 +183,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
         }
 
         /**
-         * Same as [.effectOf], but accepts a path
+         * Same as [effectOf], but accepts a path
          * reference as a string and returns the decoded effect.
          * @param pathRef Path reference, not null.
          * @return Effect on an existing path component, with decoded segments.
@@ -247,11 +247,11 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
 
 /**
  * The results of applying a relative path reference to a URI. The effect
- * may either be absolute (replaces entire path, iff [.absolute] =
- * true) or relative. If absolute, [.added] is the new
- * path. If relative, [.backwards] indicates how many existing path
+ * may either be absolute (replaces entire path, iff [absolute] =
+ * true) or relative. If absolute, [added] is the new
+ * path. If relative, [backwards] indicates how many existing path
  * segments are to be removed from the old path (if available) before
- * [.added] is appended.
+ * [added] is appended.
  */
 internal class PathEffect
 /**
@@ -262,7 +262,7 @@ internal class PathEffect
 constructor (
     /**
      * True iff entire old path should be replaced by contents of
-     * [.added].
+     * [added].
      */
     val absolute: Boolean,
     backwards: Int,
@@ -279,8 +279,8 @@ constructor (
     val hadTrailingSlash: Boolean
 ) {
     /**
-     * Iff [.absolute] is false, remove this many elements from
-     * old path before appending [.added].
+     * Iff [absolute] is false, remove this many elements from
+     * old path before appending [added].
      */
     val backwards: Int = if (absolute) 0 else backwards
 

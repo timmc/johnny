@@ -7,7 +7,7 @@ import org.timmc.johnny.internal.AntlrUriParser
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
  *
- * Start by calling [.parse], then use builder methods on the returned `Url`
+ * Start by calling [parse], then use builder methods on the returned `Url`
  * instance. The `Url` may be inspected, manipulated, and re-encoded
  * without mutation, including the path and query subcomponents.
  *

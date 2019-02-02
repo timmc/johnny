@@ -17,7 +17,7 @@ object BitSetUtils {
     }
 
     /**
-     * Same as [.fromChars], but directly given a char array.
+     * Same as [fromChars], but directly given a char array.
      */
     @JvmStatic
     fun fromChars(included: CharArray): ImmutableBitSet {
