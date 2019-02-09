@@ -7,28 +7,27 @@ import java.util.NoSuchElementException
  * An immutable version of [BitSet] that provides derivers equivalent to BitSet's mutators.
  */
 data class ImmutableBitSet
-/**
- * Create a set backed by a mutable bitset that the caller promises not to mutate.
- * The safe equivalent is `ImmutableBitSet.EMPTY.or(mutable)`.
- */
-    (private val backing: BitSet) : Iterable<Int>, Cloneable {
-
-    /** See [BitSet.isEmpty].  */
-    fun isEmpty(): Boolean {
-        return backing.isEmpty
-    }
-
     /**
-     * Create an empty set. Prefer [ImmutableBitSet.EMPTY].
+     * Create a set backed by a mutable bitset that the caller promises not to mutate.
+     * The safe equivalent is `ImmutableBitSet.EMPTY.or(mutable)`.
      */
-    private constructor() : this(EMPTY_BITSET) {}
+    (private val backing: BitSet): Iterable<Int>, Cloneable  {
+
 
     /** Clone the backing set for later mutation.  */
     private fun cloneOwnSet(): BitSet {
         return backing.clone() as BitSet
     }
 
+    // Override to make public
+    public override fun clone(): Any = super.clone()
+
     /*== Delegated accessors ==*/
+
+    /** See [BitSet.isEmpty].  */
+    fun isEmpty(): Boolean {
+        return backing.isEmpty
+    }
 
     /** See [BitSet.get].  */
     fun get(bitIndex: Int): Boolean {
@@ -65,11 +64,6 @@ data class ImmutableBitSet
         return backing.cardinality()
     }
 
-    /** See [BitSet.size].  */
-    fun size(): Int {
-        return backing.size()
-    }
-
     /*== Additional accessors ==*/
 
     /*
@@ -89,23 +83,21 @@ data class ImmutableBitSet
      *                        %))
      *    false))
      */
-    override fun iterator(): Iterator<Int> {
-        return object : Iterator<Int> {
-            /** Location to search for next element from. May or may not itself be next value.  */
-            private var searchFrom = 0
+    override fun iterator() = object : Iterator<Int> {
+        /** Location to search for next element from. May or may not itself be next value.  */
+        private var searchFrom = 0
 
-            override fun hasNext(): Boolean {
-                return backing.nextSetBit(searchFrom) != -1
-            }
+        override fun hasNext(): Boolean {
+            return backing.nextSetBit(searchFrom) != -1
+        }
 
-            override fun next(): Int {
-                val nextVal = backing.nextSetBit(searchFrom)
-                if (nextVal == -1) {
-                    throw NoSuchElementException("No more elements.")
-                }
-                searchFrom = nextVal + 1
-                return nextVal
+        override fun next(): Int {
+            val nextVal = backing.nextSetBit(searchFrom)
+            if (nextVal == -1) {
+                throw NoSuchElementException("No more elements.")
             }
+            searchFrom = nextVal + 1
+            return nextVal
         }
     }
 
@@ -207,6 +199,6 @@ data class ImmutableBitSet
 
         /** The empty set.  */
         @JvmField
-        val EMPTY = ImmutableBitSet()
+        val EMPTY = ImmutableBitSet(EMPTY_BITSET)
     }
 }
