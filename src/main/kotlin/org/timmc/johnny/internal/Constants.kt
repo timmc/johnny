@@ -1,15 +1,9 @@
 package org.timmc.johnny.internal
 
-import java.nio.charset.Charset
-
 /**
  * Constants used throughout Johnny.
  */
 object Constants {
-    /** UTF-8 character encoding.  */
-    @JvmField
-    val UTF_8 = Charset.forName("UTF-8")
-
     /** The set of lower ASCII characters.  */
     @JvmField
     val ASCII = ImmutableBitSet.EMPTY.set(0x00, 0x80)
@@ -66,6 +60,7 @@ object Constants {
      */
     @JvmField
     val RFC3986_UNENCODED_USERINFO = RFC3986_UNRESERVED.or(RFC3986_SUB_DELIMS).or(BitSetUtils.fromChars(":"))
+    // TODO Review the below docstring, does that description make sense?
     /**
      * Characters allowed to be left unencoded in an RFC 6874 IPv6 zone identifier.
      */

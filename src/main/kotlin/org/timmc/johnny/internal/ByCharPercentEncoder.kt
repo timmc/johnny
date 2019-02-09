@@ -15,7 +15,7 @@ class ByCharPercentEncoder
      * of UTF-16 may result in spurious Byte Order Marks. For now, that
      * charset is permitted but not supported.
      */
-    val encoding: Charset = Constants.UTF_8
+    val encoding: Charset = Charsets.UTF_8
 ): StringEncoder {
 
     override fun encode(input: String): String {
