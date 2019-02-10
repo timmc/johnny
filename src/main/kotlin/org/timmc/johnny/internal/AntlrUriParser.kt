@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.RecognitionException
+import org.antlr.v4.runtime.atn.PredictionMode
 import org.antlr.v4.runtime.misc.ParseCancellationException
 import org.timmc.johnny.*
 import org.timmc.johnny.internal.antlr.FlaggingErrorListener
@@ -42,6 +43,10 @@ class AntlrUriParser : UrlParser {
         val lexer = RFC_3986_6874Lexer(CharStreams.fromString(`in`))
         val parser = RFC_3986_6874Parser(CommonTokenStream(lexer))
         parser.errorHandler = BailErrorStrategy()
+        // We can use SLL prediction mode since there should never be ambiguity
+        // in what state transition the next character introduces in a full
+        // URI parse. Parsing URI references may be different.
+        parser.interpreter.predictionMode = PredictionMode.SLL
 
         // Record whether any errors have been reported during parsing,
         // don't print to stdout...
@@ -60,6 +65,8 @@ class AntlrUriParser : UrlParser {
         }
 
         // Check if entire string was consumed and matched
+        //
+        // Alternatively, should we use an EOF token in the grammar?
         val matched = root.text
         if (`in` != matched) {
             throw UrlDecodeException(

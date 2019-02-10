@@ -20,24 +20,25 @@ class FlaggingErrorListener : ANTLRErrorListener {
         error = "Error on line $line at position $charPositionInLine: $msg"
     }
 
-    override fun reportAmbiguity(
-        recognizer: Parser?, dfa: DFA, startIndex: Int, stopIndex: Int,
-        exact: Boolean, ambigAlts: BitSet?, configs: ATNConfigSet?
-    ) {
-        // do nothing
-    }
-
     override fun reportAttemptingFullContext(
         recognizer: Parser?, dfa: DFA?, startIndex: Int, stopIndex: Int,
         conflictingAlts: BitSet?, configs: ATNConfigSet?
     ) {
-        // do nothing
+        // Do nothing: It's OK if the parser falls back to full-context parsing
+    }
+
+    override fun reportAmbiguity(
+        recognizer: Parser?, dfa: DFA, startIndex: Int, stopIndex: Int,
+        exact: Boolean, ambigAlts: BitSet?, configs: ATNConfigSet?
+    ) {
+        error = "Ambiguous parse between $startIndex and $stopIndex"
     }
 
     override fun reportContextSensitivity(
         recognizer: Parser?, dfa: DFA?, startIndex: Int, stopIndex: Int,
         prediction: Int, configs: ATNConfigSet?
     ) {
-        // do nothing
+        // Do nothing: Context-sensitivity isn't great, but this does not
+        // indicate an ambiguity; there was a unique result.
     }
 }
