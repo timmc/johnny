@@ -57,10 +57,7 @@ Leiningen:
 
 ## Usage
 
-TODO: Post the generated Javadocs somewhere browseable. In the
-meantime, start with the package docs:
-
-https://github.com/timmc/johnny/blob/johnny-0.1.1/src/main/java/org/timmc/johnny/http/package-info.java
+TODO: Post the generated Javadocs somewhere browseable.
 
 ## Features
 
@@ -89,19 +86,16 @@ will use it.
 
 ## Contributing
 
-If you're willing to help out, let me know! I'm also considering
-opening up a Bitcoin bug bounty once the library is at the alpha
-stage, and I would appreciate both deposits and withdrawals at that
-point.
+If you're willing to help out, let me know!
 
 See [HACK.md](HACK.md) for loosely arranged thoughts on the roadmap,
 extant bugs, and decisions that need to be made.
 
 ## License
 
-Copyright 2013–2015 Brightcove, Inc. (where commits authored using
-brightcove.com email address) and Tim McCormack (where using personal
-address) as well as other contributers as commit metadata indicates.
+Copyright 2013–2019 Tim McCormack (where commits authored using personal
+email address) and Brightcove, Inc. (where using brightcove.com address)
+as well as other contributers as commit metadata indicates.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

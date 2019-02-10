@@ -14,8 +14,8 @@ fi
 rm -f "$dest/"*.java
 
 function java_run {
-    # Ask Leiningen to set up the classpath
-    java -cp "$(lein cp)" "$@"
+    # Ask Maven to set up the classpath
+    java -cp "$(mvn dependency:build-classpath  | grep -v '^\[')" "$@"
 }
 
 function antlr_build {
@@ -24,7 +24,7 @@ function antlr_build {
         -o "$dest/" -package org.timmc.johnny.internal.gen.parse "$1"
 }
 
-antlr_build src/main/grammar/RFC_3986_6874.g4
+antlr_build src/main/antlr4/RFC_3986_6874.g4
 
 # Clean up intermediate compilation files
 rm "$dest/"*.{interp,tokens}

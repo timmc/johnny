@@ -7,9 +7,10 @@ to the library and give you guidance on what needs work.
 
 ### Structure
 
-While the johnny library is written entirely in Java, the test suite
-is mostly Clojure to allow for rapid development of comprehensive
-tests.
+While the johnny library is written in Kotlin, the test suite
+includes Java to ensure that the API is Java-friendly.
+
+Some tests are still in Clojure from an earlier iteration.
 
 ### Development ideals:
 
@@ -27,19 +28,13 @@ tests.
 
 ### Building
 
-johnny is managed with the [Leiningen][lein] build tool.
+johnny is managed with the aven build tool.
 
-- Build: `lein do clean, deps, javac` (not usually necessary, but if
+- Build: `mvn clean compile` (not usually necessary, but if
   you encounter surprising behavior during tests, you may want to do
   this clean rebuild)
-- Test: `lein test` (should incrementally recompile)
-- Package with JDK 7 compatibility:
-  `JAVA_CMD=/usr/lib/jvm/java-1.7.0-openjdk-amd64/bin/java lein do clean, pom, jar`
-
-The generated pom.xml file is only sufficient for basic IDE usage and
-deployment; mvn commands may not in general work properly against it.
-
-[lein]: http://leiningen.org/
+- Test: `mvn test`
+- Package: `mvn package`
 
 ### Process
 

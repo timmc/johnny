@@ -28,3 +28,6 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
       wherein the Unicode character escapes `\u000A` and `\u000D` are
       emitted directly into Java sources, which will cause compilation
       errors. (See https://github.com/antlr/antlr4/issues/2281)
+
+To compile the g4 grammar into Java files, run `generate.sh` from the root
+directory.

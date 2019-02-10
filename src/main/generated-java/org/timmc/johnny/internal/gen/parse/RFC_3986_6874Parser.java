@@ -1,4 +1,4 @@
-// Generated from src/main/grammar/RFC_3986_6874.g4 by ANTLR 4.7.1
+// Generated from src/main/antlr4/RFC_3986_6874.g4 by ANTLR 4.7.1
 package org.timmc.johnny.internal.gen.parse;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
