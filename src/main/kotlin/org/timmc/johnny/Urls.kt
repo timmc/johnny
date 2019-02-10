@@ -1,6 +1,5 @@
 package org.timmc.johnny
 
-import org.timmc.johnny.internal.ImmutableUrl
 import org.timmc.johnny.internal.AntlrUriParser
 
 
@@ -43,7 +42,7 @@ object Urls {
     @JvmStatic
     fun from(scheme: String, host: Host): Url {
         // NB: We're passing in scheme for the schemeRaw
-        return ImmutableUrl(scheme, null, host, null, "", null, null)
+        return Url(scheme, null, host, null, "", null, null)
     }
 
     /**

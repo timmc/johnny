@@ -17,7 +17,7 @@ class SchemeSpecificUriParser : UrlParser {
         } else {
             authority = uri.parseAuthority()
         }
-        return ImmutableUrl(
+        return Url(
             uri.scheme, authority.userinfoRaw, authority.host, authority.portRaw,
             uri.path, uri.query, uri.fragment
         )

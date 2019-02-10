@@ -131,7 +131,7 @@ class AntlrUriParser : UrlParser {
         val fragment = if (uriAbs != null) uriAbs.fragment_1() else uriRef.fragment_1()
         fragmentRaw = maybeText(fragment)
 
-        return ImmutableUrl(schemeRaw!!, userInfoRaw, host!!, portRaw, pathRaw, queryRaw, fragmentRaw)
+        return Url(schemeRaw!!, userInfoRaw, host!!, portRaw, pathRaw, queryRaw, fragmentRaw)
     }
 
     private fun parseHost(host: HostContext): Host {

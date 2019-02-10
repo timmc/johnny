@@ -4,34 +4,59 @@ import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.UserPassParser
 
 /**
- * A base class for manipulating piecemeal URLs with a chaining API.
+ * A concurrency-safe class for manipulating piecemeal URLs with a chaining API.
  *
- * "Setters" return a [Url] instance instead of returning void. The old
- * instance should be discarded unless the relying code is using a known
- * implementation class that relies on mutation. Client code should always use
- * a chaining technique, which will work with mutable versions as well:
- *
- *
- * `url.withScheme("http").withHost("example.net").format()`
- *
- *
- * Implementations SHOULD have the following:
- *
- *  * constructor `(String scheme, String host)`
- *  * factory method `from(String url, UrlParser parser)`
- *  * constructor `(String scheme, String userInfoRaw, String host,
- *    String portRaw, String pathRaw, String queryRaw, String fragmentRaw)`
+ * Methods are thread-safe, and instances may be freely shared outside of
+ * the scope they are created in.
  */
-abstract class Url {
+data class Url
+    /**
+     * Create a URL piecewise, with no validation.
+     */
+    constructor(
+        /**
+         * Raw, unnormalized scheme of URL. (Might not be all lowercase.) Not
+         * null.
+         */
+        val schemeRaw: String,
 
+        /** Undecoded user info of URL, excluding "@" separator. Nullable. */
+        val userInfoRaw: String?,
+
+        /** Host address (domain or IP address). Not null. */
+        val host: Host,
+
+        /** Undecoded port of host. Nullable. */
+        val portRaw: String?,
+
+        /**
+         * Undecoded path portion of URL, possibly empty. If not empty, must
+         * start with `/`. Not null.
+         * To decode a path into segments and path parameters, use
+         * [TextPath]. Do not simply percent-decode the raw path,
+         * as that may expose encoded slashes.
+         */
+        val pathRaw: String,
+
+        /**
+         * Undecoded query portion of URL, excluding "?" separator. Nullable.
+         * To decode a query into keys and values, use [query].
+         */
+        val queryRaw: String?,
+
+        /**
+         * Undecoded fragment portion of URL, excluding "#" separator. Nullable.
+         */
+        val fragmentRaw: String?
+) {
     /**
      * Retrieve case-folded scheme component, if present.
      * @return Lowercased scheme, or null if missing.
      */
 
-    val scheme: String?
+    val scheme: String
         get() {
-            return schemeRaw?.toLowerCase() // TODO choose locale?
+            return schemeRaw.toLowerCase() // TODO choose locale?
         }
 
     /**
@@ -44,6 +69,11 @@ abstract class Url {
         get() {
             return userInfoRaw?.let{ UserPassParser.parse(it) }
         }
+
+    /** Unparsed host component. */
+    val hostRaw: String
+        get() = host.raw
+
 
     /** Port of host, in valid range. Nullable.  */ // TODO: must be valid?
     val port: Int?
@@ -92,41 +122,6 @@ abstract class Url {
             val fragmentRaw = fragmentRaw
             return if (fragmentRaw == null) null else Codecs.percentDecode(fragmentRaw)
         }
-
-    /*== Accessors ==*/
-
-    /** Raw, unnormalized scheme of URL. (Might not be all lowercase.) Not null.  */
-    abstract val schemeRaw: String? // TODO Should this be nullable?
-
-    /** Undecoded user info of URL, excluding "@" separator. Nullable.  */
-    abstract val userInfoRaw: String?
-
-    /** Host address (domain or IP address). Not null.  */
-    abstract val host: Host
-
-    /** Unparsed host component.  */
-    abstract val hostRaw: String
-
-    /** Undecoded port of host. Nullable.  */
-    abstract val portRaw: String?
-
-    /**
-     * Undecoded path portion of URL, possibly empty. If not empty, must
-     * start with `/`. Not null.
-     * To decode a path into segments and path parameters, use
-     * [TextPath]. Do not simply percent-decode the raw path,
-     * as that may expose encoded slashes.
-     */
-    abstract val pathRaw: String
-
-    /**
-     * Undecoded query portion of URL, excluding "?" separator. Nullable.
-     * To decode a query into keys and values, use [query].
-     */
-    abstract val queryRaw: String?
-
-    /** Undecoded fragment portion of URL, excluding "#" separator. Nullable.  */
-    abstract val fragmentRaw: String?
 
     /*== Convenience ==*/
 
@@ -232,24 +227,38 @@ abstract class Url {
         return query!!.getLast(key)
     }
 
-    /** See [schemeRaw].  */
-    abstract fun withSchemeRaw(schemeRaw: String): Url
+    /** See [schemeRaw]. */
+    fun withSchemeRaw(schemeRaw: String): Url {
+        return copy(schemeRaw = schemeRaw)
+    }
 
-    /** See [userInfoRaw].  */
-    abstract fun withUserInfoRaw(userInfoRaw: String?): Url
+    /** See [userInfoRaw]. */
+    fun withUserInfoRaw(userInfoRaw: String?): Url  {
+        return copy(userInfoRaw = userInfoRaw)
+    }
 
-    /** See [host].  */
-    abstract fun withHost(host: Host): Url
+    /** See [host]. */
+    fun withHost(host: Host): Url  {
+        return copy(host = host)
+    }
 
-    /** See [portRaw].  */
-    abstract fun withPortRaw(portRaw: String?): Url
+    /** See [portRaw]. */
+    fun withPortRaw(portRaw: String?): Url  {
+        return copy(portRaw = portRaw)
+    }
 
-    /** See [pathRaw].  */
-    abstract fun withPathRaw(pathRaw: String): Url
+    /** See [pathRaw]. */
+    fun withPathRaw(pathRaw: String): Url  {
+        return copy(pathRaw = pathRaw)
+    }
 
-    /** See [queryRaw].  */
-    abstract fun withQueryRaw(queryRaw: String?): Url
+    /** See [queryRaw]. */
+    fun withQueryRaw(queryRaw: String?): Url  {
+        return copy(queryRaw = queryRaw)
+    }
 
-    /** See [fragmentRaw].  */
-    abstract fun withFragmentRaw(fragmentRaw: String?): Url
+    /** See [fragmentRaw]. */
+    fun withFragmentRaw(fragmentRaw: String?): Url  {
+        return copy(fragmentRaw = fragmentRaw)
+    }
 }
