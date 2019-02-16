@@ -24,13 +24,22 @@ object Urls {
     private val urlParser: UrlParser = AntlrUriParser()
 
     /**
-     * Parse a URL string to the default piecewise HTTP URL representation
-     * using the default parser.
+     * Parse a URI from a string, assuming it is of a type that specifies a
+     * host, e.g. HTTP and FTP URLs.
      */
     @JvmStatic
     @Throws(UrlDecodeException::class)
-    fun parse(url: String): HostedUri {
-        return Urls.urlParser.parseHostedUri(url)
+    fun parse(uri: String): HostedUri {
+        return Urls.urlParser.parseHostedUri(uri)
+    }
+
+    /**
+     * Parse a URI of any sort from a string.
+     */
+    @JvmStatic
+    @Throws(UrlDecodeException::class)
+    fun parseGeneric(uri: String): GenericUri {
+        return Urls.urlParser.parseGenericUri(uri)
     }
 
     /**

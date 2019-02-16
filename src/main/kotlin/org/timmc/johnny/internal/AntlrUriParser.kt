@@ -21,17 +21,7 @@ import java.util.ArrayList
 class AntlrUriParser : UrlParser {
 
     @Throws(UrlDecodeException::class)
-    override fun parseHostedUri(input: String): HostedUri {
-        val uri = parseGenericUri(input)
-        try {
-            return narrowToHostedUri(uri)
-        } catch(e: Exception) {
-            throw UrlDecodeException("Valid URI, but does not have a host component")
-        }
-    }
-
-    @Throws(UrlDecodeException::class)
-    fun parseGenericUri(input: String): GenericUri {
+    override fun parseGenericUri(input: String): GenericUri {
         try {
             return parseInner(input)
         } catch (e: RecognitionException) {

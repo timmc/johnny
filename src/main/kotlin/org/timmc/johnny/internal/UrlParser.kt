@@ -11,12 +11,27 @@ import org.timmc.johnny.UrlDecodeException
  * case-folding of scheme and host.)
  */
 interface UrlParser {
+
     /**
-     * Parse an absolute URL.
+     * Parse a generic URI.
      * @throws UrlDecodeException if the URL is not well-formed
      */
     @Throws(UrlDecodeException::class)
-    fun parseHostedUri(input: String): HostedUri
+    fun parseGenericUri(input: String): GenericUri
+
+    /**
+     * Parse a URI with a host component.
+     * @throws UrlDecodeException if the URL is not well-formed
+     */
+    @Throws(UrlDecodeException::class)
+    fun parseHostedUri(input: String): HostedUri {
+        val uri = parseGenericUri(input)
+        try {
+            return narrowToHostedUri(uri)
+        } catch(e: Exception) {
+            throw UrlDecodeException("Valid URI, but does not have a host component")
+        }
+    }
 }
 
 /**
@@ -34,7 +49,7 @@ fun narrowToHostedUri(generic: GenericUri): HostedUri {
         userInfoRaw = generic.authority.userinfoRaw,
         host = generic.authority.host,
         portRaw = generic.authority.portRaw,
-        pathRaw = generic.path,
+        pathRaw = generic.pathRaw,
         queryRaw = generic.queryRaw,
         fragmentRaw = generic.fragmentRaw
     )

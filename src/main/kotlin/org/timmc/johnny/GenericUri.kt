@@ -17,8 +17,8 @@ constructor(
     /** Authority component, nullable. */
     val authority: UriAuthority?,
 
-    /** Path component, non-null but may be empty. */
-    val path: String,
+    /** Undecoded path component, non-null but may be empty. */
+    val pathRaw: String,
 
     /**
      * Undecoded query portion of URL, excluding "?" separator. Null indicates
