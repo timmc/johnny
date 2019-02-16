@@ -1,6 +1,7 @@
 package org.timmc.johnny.internal
 
 import org.timmc.johnny.UrlDecodeException
+import org.timmc.johnny.UriAuthority
 
 import java.util.regex.Pattern
 
@@ -44,7 +45,7 @@ constructor(
      */
     @Throws(UrlDecodeException::class)
     fun parseAuthority(): UriAuthority {
-        return UriAuthority.parseGeneric(authority!!)
+        return UriAuthorityParser.parseGeneric(authority!!)
     }
 
     companion object {

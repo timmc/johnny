@@ -1,6 +1,7 @@
 package org.timmc.johnny.internal
 
 import org.timmc.johnny.HostedUri
+import org.timmc.johnny.UriAuthority
 import org.timmc.johnny.UrlDecodeException
 
 /**
@@ -9,9 +10,9 @@ import org.timmc.johnny.UrlDecodeException
 class SchemeSpecificUriParser : UrlParser {
 
     @Throws(UrlDecodeException::class)
-    override fun parse(url: String): HostedUri {
+    override fun parseHostedUri(input: String): HostedUri {
         val authority: UriAuthority
-        val uri = Rfc3986Uri.parseGeneric(url)
+        val uri = Rfc3986Uri.parseGeneric(input)
         if (uri.authority == null) {
             throw UrlDecodeException("Generic URI did not have an authority component.")
         } else {

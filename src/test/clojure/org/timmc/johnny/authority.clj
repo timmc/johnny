@@ -2,14 +2,14 @@
   "Tests for URiAuthority parsing."
   (:require [clojure.test :refer :all])
   (:import (org.timmc.johnny Urls RegNameHost)
-           (org.timmc.johnny.internal UriAuthority)))
+           (org.timmc.johnny.internal UriAuthorityParser)))
 
 (defn parse
-  [s]
-  (UriAuthority/parseGeneric s))
+      [s]
+      (UriAuthorityParser/parseGeneric s))
 
 (deftest parsing
-  (are [in out] (= (let [ua (try (UriAuthority/parseGeneric in)
+  (are [in out] (= (let [ua (try (UriAuthorityParser/parseGeneric in)
                                  (catch Exception e :exc))]
                      [(.userinfoRaw ua) (.host ua) (.portRaw ua)])
                    out)

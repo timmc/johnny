@@ -47,7 +47,7 @@
 (defn parse-u
   "Parse a string as a URL according to the current impl."
   [^String s]
-  (.parse *url-parser* s))
+  (.parseHostedUri *url-parser* s))
 
 (defn ^:internal get-nullary-constructor
   [^Class impl]

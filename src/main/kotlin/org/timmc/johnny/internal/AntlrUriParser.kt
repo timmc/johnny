@@ -21,26 +21,35 @@ import java.util.ArrayList
 class AntlrUriParser : UrlParser {
 
     @Throws(UrlDecodeException::class)
-    override fun parse(url: String): HostedUri {
+    override fun parseHostedUri(input: String): HostedUri {
+        val uri = parseGenericUri(input)
         try {
-            return parseInner(url)
+            return narrowToHostedUri(uri)
+        } catch(e: Exception) {
+            throw UrlDecodeException("Valid URI, but does not have a host component")
+        }
+    }
+
+    @Throws(UrlDecodeException::class)
+    fun parseGenericUri(input: String): GenericUri {
+        try {
+            return parseInner(input)
         } catch (e: RecognitionException) {
             throw UrlDecodeException("Could not recognize URI from input", e)
         } catch (e: ParseCancellationException) {
             throw UrlDecodeException("Could not recognize URI from input", e)
-        } catch (npe: NullPointerException) {
-            throw UrlDecodeException("Unexpected null reference when reading URI parse tree", npe)
+        } catch (e: NullPointerException) {
+            throw UrlDecodeException("Unexpected null reference when reading URI parse tree", e)
+        } catch (e: Exception) {
+            throw UrlDecodeException("Unexpected exception when parsing URI", e)
+        } catch (e: AssertionError) {
+            throw UrlDecodeException("Unexpected assertion error when parsing URI", e)
         }
-
     }
 
     @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
-    private fun parseInner(`in`: String?): HostedUri {
-        if (`in` == null) {
-            throw NullPointerException("uri may not be null.")
-        }
-
-        val lexer = RFC_3986_6874Lexer(CharStreams.fromString(`in`))
+    private fun parseInner(input: String): GenericUri {
+        val lexer = RFC_3986_6874Lexer(CharStreams.fromString(input))
         val parser = RFC_3986_6874Parser(CommonTokenStream(lexer))
         parser.errorHandler = BailErrorStrategy()
         // We can use SLL prediction mode since there should never be ambiguity
@@ -56,7 +65,7 @@ class AntlrUriParser : UrlParser {
         parser.addErrorListener(errorListener)
         lexer.addErrorListener(errorListener)
 
-        val root = parser.uri_reference()
+        val root = parser.uri()
         val ret = parseUri(root)
 
         val errMsg = errorListener.error
@@ -68,7 +77,7 @@ class AntlrUriParser : UrlParser {
         //
         // Alternatively, should we use an EOF token in the grammar?
         val matched = root.text
-        if (`in` != matched) {
+        if (input != matched) {
             throw UrlDecodeException(
                 "Could not parse URI: " +
                     "error at position " + matched.length
@@ -78,60 +87,30 @@ class AntlrUriParser : UrlParser {
         return ret
     }
 
-    private fun parseUri(root: Uri_referenceContext): HostedUri {
-        val schemeRaw: String?
-        val userInfoRaw: String?
-        val host: Host?
-        val portRaw: String?
-        val pathRaw: String
-        val queryRaw: String?
-        val fragmentRaw: String?
+    private fun parseUri(uriAbs: UriContext): GenericUri {
+        val schemeRaw = uriAbs.scheme().text
 
-        val uriAbs = root.uri()
-        val uriRef = root.relative_ref()
+        val hier = uriAbs.hier_part()
+        val parsedAuthority = hier.authority()?.let { parseAuthority(it) }
+        val pathRaw = firstPath(
+            hier.path_abempty(),
+            hier.path_absolute(),
+            hier.path_rootless(),
+            hier.path_empty()
+        )
 
-        schemeRaw = uriAbs?.scheme()?.text
+        val queryRaw = uriAbs.query()?.text
+        val fragmentRaw = uriAbs.fragment_1()?.text
 
-        val authority: AuthorityContext?
-        if (uriAbs != null) {
-            val hier = uriAbs.hier_part()
-            authority = hier.authority()
-            pathRaw = firstPath(
-                hier.path_abempty(),
-                hier.path_absolute(),
-                hier.path_rootless(),
-                hier.path_empty()
-            )
-        } else {
-            val relpart = uriRef.relative_part()
-            authority = relpart.authority()
-            pathRaw = firstPath(
-                relpart.path_abempty(),
-                relpart.path_absolute(),
-                relpart.path_noscheme(),
-                relpart.path_empty()
-            )
-        }
+        return GenericUri(schemeRaw, parsedAuthority, pathRaw, queryRaw, fragmentRaw)
+    }
 
-        if (authority != null) {
-            val userinfo = authority.userinfo()
-            userInfoRaw = userinfo?.text
-            val hostRaw = authority.host()
-            host = hostRaw?.let{ parseHost(it) }
-            val port = authority.port()
-            portRaw = port?.text
-        } else {
-            userInfoRaw = null
-            host = null
-            portRaw = null
-        }
-
-        val query = if (uriAbs != null) uriAbs.query() else uriRef.query()
-        queryRaw = maybeText(query)
-        val fragment = if (uriAbs != null) uriAbs.fragment_1() else uriRef.fragment_1()
-        fragmentRaw = maybeText(fragment)
-
-        return HostedUri(schemeRaw!!, userInfoRaw, host!!, portRaw, pathRaw, queryRaw, fragmentRaw)
+    private fun parseAuthority(authority: AuthorityContext): UriAuthority {
+        return UriAuthority(
+            userinfoRaw = authority.userinfo()?.text,
+            host = parseHost(authority.host()),
+            portRaw = authority.port()?.text
+        )
     }
 
     private fun parseHost(host: HostContext): Host {
@@ -176,9 +155,5 @@ class AntlrUriParser : UrlParser {
             }
         }
         throw UrlDecodeException("Grammar mismatch: hier_part/rel_part did not contain any known path variant")
-    }
-
-    private fun maybeText(x: ParserRuleContext?): String? {
-        return x?.text
     }
 }

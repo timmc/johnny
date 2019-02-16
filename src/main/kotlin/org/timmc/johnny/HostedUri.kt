@@ -73,7 +73,7 @@ data class HostedUri
 
     /** Unparsed host component. */
     val hostRaw: String?
-        get() = host?.raw
+        get() = host.raw
 
 
     /** Port of host, in valid range. Nullable.  */ // TODO: must be valid?

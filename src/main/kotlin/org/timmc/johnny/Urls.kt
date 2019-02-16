@@ -29,12 +29,8 @@ object Urls {
      */
     @JvmStatic
     @Throws(UrlDecodeException::class)
-    fun parse(url: String?): HostedUri {
-        if (url == null) {
-            throw NullPointerException("url may not be null.")
-        }
-
-        return Urls.urlParser.parse(url)
+    fun parse(url: String): HostedUri {
+        return Urls.urlParser.parseHostedUri(url)
     }
 
     /**
