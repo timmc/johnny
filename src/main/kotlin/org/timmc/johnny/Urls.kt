@@ -21,7 +21,7 @@ import org.timmc.johnny.internal.UrlParser
  */
 object Urls {
 
-    private val urlParser = AntlrUriParser()
+    private val urlParser: UrlParser = AntlrUriParser()
 
     /**
      * Parse a URL string to the default piecewise HTTP URL representation
