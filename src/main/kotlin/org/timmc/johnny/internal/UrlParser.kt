@@ -1,6 +1,6 @@
 package org.timmc.johnny.internal
 
-import org.timmc.johnny.Url
+import org.timmc.johnny.HostedUri
 import org.timmc.johnny.UrlDecodeException
 
 /**
@@ -11,13 +11,9 @@ import org.timmc.johnny.UrlDecodeException
  */
 interface UrlParser {
     /**
-     * Parse a full URL into an intermediate representation that a [Url]
-     * implementation can read.
-     * @return Array of values suitable for return from [Url.schemeRaw],
-     * [Url.userInfoRaw], [Url.hostRaw], [Url.portRaw],
-     * [Url.pathRaw], [Url.queryRaw], [Url.fragmentRaw].
+     * Parse an absolute URL.
      * @throws UrlDecodeException if the URL is not well-formed
      */
     @Throws(UrlDecodeException::class)
-    fun parse(url: String): Url
+    fun parse(url: String): HostedUri
 }

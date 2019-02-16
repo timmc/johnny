@@ -4,12 +4,13 @@ import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.UserPassParser
 
 /**
- * A concurrency-safe class for manipulating piecemeal URLs with a chaining API.
+ * A URI with a host component (usually synonymous with URL).
  *
+ * This is a concurrency-safe class for manipulating URLs with a chaining API.
  * Methods are thread-safe, and instances may be freely shared outside of
  * the scope they are created in.
  */
-data class Url
+data class HostedUri
     /**
      * Create a URL piecewise, with no validation.
      */
@@ -71,8 +72,8 @@ data class Url
         }
 
     /** Unparsed host component. */
-    val hostRaw: String
-        get() = host.raw
+    val hostRaw: String?
+        get() = host?.raw
 
 
     /** Port of host, in valid range. Nullable.  */ // TODO: must be valid?
@@ -95,7 +96,7 @@ data class Url
      * Parse and return the path component.
      * @return Non-null
      */
-    val path: TextPath
+    val path: TextPath?
         @Throws(UrlDecodeException::class)
         get() = Urls.parsePath(pathRaw)
 
@@ -137,7 +138,7 @@ data class Url
      * and is included only for completeness.
      * @param scheme Nullable
      */
-    fun withScheme(scheme: String): Url {
+    fun withScheme(scheme: String): HostedUri {
         return withSchemeRaw(scheme)
     }
 
@@ -145,12 +146,12 @@ data class Url
      * Set raw userinfo by encoding provided userinfo with standard userinfo encoder.
      * @param userInfo Nullable
      */
-    fun withUserPass(userInfo: UserPass?): Url {
+    fun withUserPass(userInfo: UserPass?): HostedUri {
         return withUserInfoRaw(userInfo?.format())
     }
 
     /** See [port].  */
-    fun withPort(port: Int?): Url {
+    fun withPort(port: Int?): HostedUri {
         val portRaw = if (port == null) null else Integer.toString(port)
         return withPortRaw(portRaw)
     }
@@ -159,7 +160,7 @@ data class Url
      * Set raw path by encoding provided path with standard path encoder. (TODO: Different language for with*)
      * @param path Non-null
      */
-    fun withPath(path: TextPath): Url {
+    fun withPath(path: TextPath): HostedUri {
         return withPathRaw(path.format())
     }
 
@@ -167,7 +168,7 @@ data class Url
      * Set raw query by encoding provided query with standard query encoder.
      * @param q Possibly null Query
      */
-    fun withQuery(q: Params): Url {
+    fun withQuery(q: Params): HostedUri {
         return withQueryRaw(Queries.formatQuery(q))
     }
 
@@ -175,7 +176,7 @@ data class Url
      * Set raw fragment by encoding provided fragment with standard encoder.
      * @param fragment Possibly null fragment string
      */
-    fun withFragment(fragment: String?): Url {
+    fun withFragment(fragment: String?): HostedUri {
         val fragmentRaw = if (fragment == null) null else Codecs.percentEncodeFragment(fragment)
         return withFragmentRaw(fragmentRaw)
     }
@@ -190,7 +191,7 @@ data class Url
      * @param value Nullable query param value
      */
     @Throws(UrlDecodeException::class)
-    fun querySetKey(key: String?, value: String): Url {
+    fun querySetKey(key: String?, value: String): HostedUri {
         if (key == null) {
             throw NullPointerException("Cannot append null query key")
         }
@@ -228,37 +229,37 @@ data class Url
     }
 
     /** See [schemeRaw]. */
-    fun withSchemeRaw(schemeRaw: String): Url {
+    fun withSchemeRaw(schemeRaw: String): HostedUri {
         return copy(schemeRaw = schemeRaw)
     }
 
     /** See [userInfoRaw]. */
-    fun withUserInfoRaw(userInfoRaw: String?): Url  {
+    fun withUserInfoRaw(userInfoRaw: String?): HostedUri  {
         return copy(userInfoRaw = userInfoRaw)
     }
 
     /** See [host]. */
-    fun withHost(host: Host): Url  {
+    fun withHost(host: Host): HostedUri  {
         return copy(host = host)
     }
 
     /** See [portRaw]. */
-    fun withPortRaw(portRaw: String?): Url  {
+    fun withPortRaw(portRaw: String?): HostedUri  {
         return copy(portRaw = portRaw)
     }
 
     /** See [pathRaw]. */
-    fun withPathRaw(pathRaw: String): Url  {
+    fun withPathRaw(pathRaw: String): HostedUri  {
         return copy(pathRaw = pathRaw)
     }
 
     /** See [queryRaw]. */
-    fun withQueryRaw(queryRaw: String?): Url  {
+    fun withQueryRaw(queryRaw: String?): HostedUri  {
         return copy(queryRaw = queryRaw)
     }
 
     /** See [fragmentRaw]. */
-    fun withFragmentRaw(fragmentRaw: String?): Url  {
+    fun withFragmentRaw(fragmentRaw: String?): HostedUri  {
         return copy(fragmentRaw = fragmentRaw)
     }
 }

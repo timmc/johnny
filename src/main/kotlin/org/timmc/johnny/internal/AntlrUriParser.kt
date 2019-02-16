@@ -21,7 +21,7 @@ import java.util.ArrayList
 class AntlrUriParser : UrlParser {
 
     @Throws(UrlDecodeException::class)
-    override fun parse(url: String): Url {
+    override fun parse(url: String): HostedUri {
         try {
             return parseInner(url)
         } catch (e: RecognitionException) {
@@ -35,7 +35,7 @@ class AntlrUriParser : UrlParser {
     }
 
     @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
-    private fun parseInner(`in`: String?): Url {
+    private fun parseInner(`in`: String?): HostedUri {
         if (`in` == null) {
             throw NullPointerException("uri may not be null.")
         }
@@ -78,7 +78,7 @@ class AntlrUriParser : UrlParser {
         return ret
     }
 
-    private fun parseUri(root: Uri_referenceContext): Url {
+    private fun parseUri(root: Uri_referenceContext): HostedUri {
         val schemeRaw: String?
         val userInfoRaw: String?
         val host: Host?
@@ -131,7 +131,7 @@ class AntlrUriParser : UrlParser {
         val fragment = if (uriAbs != null) uriAbs.fragment_1() else uriRef.fragment_1()
         fragmentRaw = maybeText(fragment)
 
-        return Url(schemeRaw!!, userInfoRaw, host!!, portRaw, pathRaw, queryRaw, fragmentRaw)
+        return HostedUri(schemeRaw!!, userInfoRaw, host!!, portRaw, pathRaw, queryRaw, fragmentRaw)
     }
 
     private fun parseHost(host: HostContext): Host {

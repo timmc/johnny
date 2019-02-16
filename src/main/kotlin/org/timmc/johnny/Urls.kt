@@ -1,18 +1,19 @@
 package org.timmc.johnny
 
 import org.timmc.johnny.internal.AntlrUriParser
+import org.timmc.johnny.internal.UrlParser
 
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
  *
- * Start by calling [parse], then use builder methods on the returned `Url`
- * instance. The `Url` may be inspected, manipulated, and re-encoded
+ * Start by calling [parse], then use builder methods on the returned `HostedUri`
+ * instance. The `HostedUri` may be inspected, manipulated, and re-encoded
  * without mutation, including the path and query subcomponents.
  *
  * ```
- * Url orig = Urls.parse("https://example.com/login?a=b=c&amp;a=?d");
- * Url result = orig.withQuery(orig.getQuery()
+ * HostedUri orig = Urls.parse("https://example.com/login?a=b=c&amp;a=?d");
+ * HostedUri result = orig.withQuery(orig.getQuery()
  *                                 .append("foo", "bar")
  *                                 .replace("a", null));
  * result.format(); // "https://example.com/login?foo=bar&amp;a"
@@ -28,7 +29,7 @@ object Urls {
      */
     @JvmStatic
     @Throws(UrlDecodeException::class)
-    fun parse(url: String?): Url {
+    fun parse(url: String?): HostedUri {
         if (url == null) {
             throw NullPointerException("url may not be null.")
         }
@@ -40,16 +41,16 @@ object Urls {
      * Create a URL piecewise with the bare minimum of components.
      */
     @JvmStatic
-    fun from(scheme: String, host: Host): Url {
+    fun from(scheme: String, host: Host): HostedUri {
         // NB: We're passing in scheme for the schemeRaw
-        return Url(scheme, null, host, null, "", null, null)
+        return HostedUri(scheme, null, host, null, "", null, null)
     }
 
     /**
-     * Format a [Url] to a string.
+     * Format a [HostedUri] to a string.
      */
     @JvmStatic
-    fun format(url: Url): String {
+    fun format(url: HostedUri): String {
         val build = StringBuilder()
         build.append(url.schemeRaw).append("://")
         if (url.userInfoRaw != null) {

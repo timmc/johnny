@@ -1,6 +1,6 @@
 package org.timmc.johnny.internal
 
-import org.timmc.johnny.Url
+import org.timmc.johnny.HostedUri
 import org.timmc.johnny.UrlDecodeException
 
 /**
@@ -9,7 +9,7 @@ import org.timmc.johnny.UrlDecodeException
 class SchemeSpecificUriParser : UrlParser {
 
     @Throws(UrlDecodeException::class)
-    override fun parse(url: String): Url {
+    override fun parse(url: String): HostedUri {
         val authority: UriAuthority
         val uri = Rfc3986Uri.parseGeneric(url)
         if (uri.authority == null) {
@@ -17,7 +17,7 @@ class SchemeSpecificUriParser : UrlParser {
         } else {
             authority = uri.parseAuthority()
         }
-        return Url(
+        return HostedUri(
             uri.scheme, authority.userinfoRaw, authority.host, authority.portRaw,
             uri.path, uri.query, uri.fragment
         )

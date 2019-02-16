@@ -24,7 +24,7 @@ public class SyntaxDemoTest {
      */
     @Test
     public void testWorkflow() throws UrlDecodeException {
-        Url result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
+        HostedUri result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
                          .withPort(8443)
                          .withScheme("https")
                          .querySetKey("unicode", "☃");
@@ -36,8 +36,8 @@ public class SyntaxDemoTest {
      */
     @Test
     public void testQS() throws UrlDecodeException {
-        Url orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
-        Url result = orig.withQuery(orig.getQuery()
+        HostedUri orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
+        HostedUri result = orig.withQuery(orig.getQuery()
                                         .append("foo", "bar")
                                         .replace("a", null));
         assertTrue(Arrays.<String>asList(
@@ -51,7 +51,7 @@ public class SyntaxDemoTest {
      */
     @Test
     public void testConstruction() {
-        Url u = Urls.from("https", new RegNameHost("brightcove.com"))
+        HostedUri u = Urls.from("https", new RegNameHost("brightcove.com"))
             .withPath(Paths.from("v1", "api", "123"))
             .withQuery(Queries.from("foo", "bar"));
         assertEquals(u.format(), "https://brightcove.com/v1/api/123?foo=bar");

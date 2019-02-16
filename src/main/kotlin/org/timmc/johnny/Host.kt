@@ -15,7 +15,7 @@ package org.timmc.johnny
  */
 abstract class Host { // TODO Showing up as non-abstract in dokka javadocs
 
-    // Why is the raw string stored here, instead of in the containing Url
+    // Why is the raw string stored here, instead of in the containing HostedUri
     // instance? Because it's pre-parsed by AntlrUriParser, and it seems
     // a shame to waste that work, so the raw form is stored here after
     // the fact.
