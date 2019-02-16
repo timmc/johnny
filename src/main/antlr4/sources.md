@@ -28,6 +28,13 @@ The `RFC_3986_6874.g4` grammar was derived by the following process:
       wherein the Unicode character escapes `\u000A` and `\u000D` are
       emitted directly into Java sources, which will cause compilation
       errors. (See https://github.com/antlr/antlr4/issues/2281)
+- Replace the `ipvfuture` rule to allow capture of the version and data
+  components.
+    - Old version: `ipvfuture     : (CAP_V | V) hexdig+ PERIOD ( unreserved | sub_delims | COLON )+;`
+    - New version:
+        - `ipvfuture     : (CAP_V | V) ipvfuture_version PERIOD ipvfuture_data;`
+        - `ipvfuture_version : hexdig+;`
+        - `ipvfuture_data    : ( unreserved | sub_delims | COLON )+;`
 
 To compile the g4 grammar into Java files, run `generate.sh` from the root
 directory.

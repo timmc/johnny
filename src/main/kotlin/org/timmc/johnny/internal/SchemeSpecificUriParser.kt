@@ -68,7 +68,7 @@ class SchemeSpecificUriParser : UrlParser {
         private val digitsOrEmpty = Pattern.compile("[0-9]*")
         private val ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25(.*))?]$")
         private val ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)$")
-        private val ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\..+]")
+        private val ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\.(.+)]")
 
         /**
          * Parse a URI based on generic syntax (not scheme-specific.)
@@ -146,7 +146,8 @@ class SchemeSpecificUriParser : UrlParser {
             val ipvFutureMatch = ipvFuture.matcher(hostRaw)
             if (ipvFutureMatch.find()) {
                 val formatVersion = Integer.parseInt(ipvFutureMatch.group(1), 16)
-                return IPvFutureHost(formatVersion, hostRaw)
+                val data = ipvFutureMatch.group(2)
+                return IPvFutureHost(formatVersion, data, hostRaw)
             }
 
             val ipv6Match = ipv6.matcher(hostRaw)

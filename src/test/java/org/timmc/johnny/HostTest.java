@@ -22,7 +22,7 @@ public class HostTest {
             Arrays.asList("[::1%25a%2Fb]", new IPv6Host("::1", "a/b")),
             Arrays.asList("[2620::10.2.3.40]",
                 new IPv6Host("2620::10.2.3.40", null, "[2620::10.2.3.40]")),
-            Arrays.asList("[v7.xyz]", new IPvFutureHost(7, "[v7.xyz]"))
+            Arrays.asList("[v7.xyz]", new IPvFutureHost(7, "xyz", "[v7.xyz]"))
         );
 
         for (List sample: samples) {
@@ -71,7 +71,9 @@ public class HostTest {
         assertThrowsNPE(new Runnable() { public void run() {
             new IPv6Host("::1", "eth0", null); } });
         assertThrowsNPE(new Runnable() { public void run() {
-            new IPvFutureHost(5, null); } });
+            new IPvFutureHost(5, "abcd",null); } });
+        assertThrowsNPE(new Runnable() { public void run() {
+            new IPvFutureHost(5, null,"v5.abcd"); } });
     }
 
     private void assertThrowsNPE(Runnable thunk) {

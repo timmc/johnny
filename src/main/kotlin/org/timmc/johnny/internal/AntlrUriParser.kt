@@ -127,12 +127,10 @@ class AntlrUriParser : UrlParser {
             val zone = if (zoneRaw == null) null else Codecs.percentDecode(zoneRaw)
             return IPv6Host(ipv6addr, zone, host.text)
         } else if (ipFuture != null) {
-            val hexver = StringBuilder()
-            for (digit in ipFuture.hexdig()) {
-                hexver.append(digit.text)
-            }
-            val formatVersion = Integer.parseInt(hexver.toString(), 16)
-            return IPvFutureHost(formatVersion, host.text)
+            val hexver = ipFuture.ipvfuture_version().text
+            val futureData = ipFuture.ipvfuture_data().text
+            val formatVersion = Integer.parseInt(hexver, 16)
+            return IPvFutureHost(formatVersion, futureData, host.text)
         } else {
             throw UrlDecodeException("Grammar mismatch: authority did not contain any known host variant")
         }

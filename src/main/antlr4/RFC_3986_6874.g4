@@ -29,7 +29,9 @@ userinfo      : ( unreserved | pct_encoded | sub_delims | COLON )*;
 host          : ip_literal | ipv4address | reg_name;
 port          : digit*;
 
-ipvfuture     : (CAP_V | V) hexdig+ PERIOD ( unreserved | sub_delims | COLON )+;
+ipvfuture     : (CAP_V | V) ipvfuture_version PERIOD ipvfuture_data;
+ipvfuture_version : hexdig+;
+ipvfuture_data    : ( unreserved | sub_delims | COLON )+;
 
 ipv6address   :                            (( h16 COLON ) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) ls32)
               |                       ((COLON COLON) ( h16 COLON ) (h16 COLON) (h16 COLON) (h16 COLON) (h16 COLON) ls32)
