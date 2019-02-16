@@ -1,6 +1,7 @@
 package org.timmc.johnny
 
 import org.timmc.johnny.internal.AntlrUriParser
+import org.timmc.johnny.internal.SchemeSpecificUriParser
 import org.timmc.johnny.internal.UrlParser
 
 
@@ -21,7 +22,13 @@ import org.timmc.johnny.internal.UrlParser
  */
 object Urls {
 
-    private val urlParser: UrlParser = AntlrUriParser()
+    private val urlParser: UrlParser =
+        if (System.getProperty("org.timmc.johnny.Urls.testing.altParser") == "true")
+            // Hand-written parser, only used in testing. Use in tests:
+            // mvn test -DargLine="-Dorg.timmc.johnny.Urls.testing.altParser=true"
+            SchemeSpecificUriParser()
+        else
+            AntlrUriParser() // default
 
     /**
      * Parse a URI from a string, assuming it is of a type that specifies a

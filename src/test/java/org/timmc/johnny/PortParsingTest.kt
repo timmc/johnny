@@ -25,6 +25,8 @@ class PortParsingTest {
         assertEquals("http://example.com:0/path", uri.format())
     }
 
+    // TODO Port number with giant numeric sequence
+
     @Test
     fun asHighAsMaxInt() {
         // TODO Revisit: Is a port value over 65535 acceptable?

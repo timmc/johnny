@@ -66,9 +66,9 @@ class SchemeSpecificUriParser : UrlParser {
         }
 
         private val digitsOrEmpty = Pattern.compile("[0-9]*")
-        private val ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25.*)?\\]$")
-        private val ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)\\$")
-        private val ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\..*\\]")
+        private val ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25(.*))?]$")
+        private val ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)$")
+        private val ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\..+]")
 
         /**
          * Parse a URI based on generic syntax (not scheme-specific.)
@@ -122,26 +122,38 @@ class SchemeSpecificUriParser : UrlParser {
         fun parseHost(hostRaw: String): Host {
             val ipv4Match = ipv4.matcher(hostRaw)
             if (ipv4Match.find()) {
-                return IPv4Host(
-                    Integer.parseInt(ipv4Match.group(1)),
-                    Integer.parseInt(ipv4Match.group(2)),
-                    Integer.parseInt(ipv4Match.group(3)),
-                    Integer.parseInt(ipv4Match.group(4)),
-                    hostRaw
-                )
+                val segs = (1..4).map {
+                    val decOctet = ipv4Match.group(it)
+                    if (decOctet.startsWith('0') && decOctet.length > 1) {
+                        null
+                    } else {
+                        val seg = Integer.parseInt(decOctet)
+                        if (seg > 255) {
+                            null
+                        } else {
+                            seg
+                        }
+                    }
+                }.filterNotNull()
+
+                if (segs.size == 4) {
+                    return IPv4Host(segs, hostRaw)
+                } else {
+                    return RegNameHost(hostRaw)
+                }
             }
 
             val ipvFutureMatch = ipvFuture.matcher(hostRaw)
             if (ipvFutureMatch.find()) {
-                val formatVersion = Integer.parseInt(ipvFutureMatch.group(1))
+                val formatVersion = Integer.parseInt(ipvFutureMatch.group(1), 16)
                 return IPvFutureHost(formatVersion, hostRaw)
             }
 
             val ipv6Match = ipv6.matcher(hostRaw)
             if (ipv6Match.find()) {
                 val addr = ipv6Match.group(1)
-                val zoneRaw = ipv6Match.group(2)
-                val zone = if (zoneRaw == null) null else Codecs.percentDecode(zoneRaw)
+                val zoneRaw = ipv6Match.group(3)
+                val zone = zoneRaw?.let { Codecs.percentDecode(it) }
                 return IPv6Host(addr, zone, hostRaw)
             }
 

@@ -17,6 +17,7 @@ data class IPvFutureHost(
      * Raw string of IP literal.
      * This has not been decoded or normalized in any way; it's up to you.
      */
+    // TODO extract data portion as well
     override val raw: String
 ): Host() {
     override fun format(): String {

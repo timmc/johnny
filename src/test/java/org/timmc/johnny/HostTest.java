@@ -36,6 +36,8 @@ public class HostTest {
         }
     }
 
+    // TODO IPv6 with giant numeric sequence
+
     @Test
     public void ipv6() {
         IPv6Host h6 = (IPv6Host) Urls.parse("https://[::1%25a%2Fb]/").getHost();
@@ -88,6 +90,8 @@ public class HostTest {
             fail("Wrong exception was thrown: " + t);
         }
     }
+
+    // TODO IPv4 with giant numeric sequence
 
     @Test
     public void ipv4Ambiguity() {
