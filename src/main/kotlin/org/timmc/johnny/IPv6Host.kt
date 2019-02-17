@@ -1,6 +1,6 @@
-package org.timmc.johnny;
+package org.timmc.johnny
 
-import org.timmc.johnny.internal.Codecs;
+import org.timmc.johnny.internal.Codecs
 
 /**
  * IPv6 host component of a URI, represented as IPv6 address and optional
@@ -26,7 +26,7 @@ data class IPv6Host @JvmOverloads constructor (
 ) : Host() {
 
     override fun format(): String {
-        return IPv6Host.format(address, zone);
+        return IPv6Host.format(address, zone)
     }
 
     companion object {

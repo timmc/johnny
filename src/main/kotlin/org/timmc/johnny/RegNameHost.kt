@@ -1,6 +1,6 @@
-package org.timmc.johnny;
+package org.timmc.johnny
 
-import org.timmc.johnny.internal.Codecs;
+import org.timmc.johnny.internal.Codecs
 
 /**
  * A URI host that is a name, e.g. a domain name.
@@ -23,11 +23,11 @@ data class RegNameHost(
      * @throws UrlDecodeException
      */
     fun getName(): String {
-        return Codecs.percentDecode(raw);
+        return Codecs.percentDecode(raw)
     }
 
     // TODO Should we return a potentially cleaner version that has been round-tripped through decode/encode?
     override fun format(): String {
-        return raw;
+        return raw
     }
 }
