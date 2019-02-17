@@ -66,7 +66,7 @@ class SchemeSpecificUriParser : UrlParser {
         }
 
         private val digitsOrEmpty = Pattern.compile("[0-9]*")
-        private val ipv6 = Pattern.compile("^\\[([0-9a-fA-F:/.]+)(%25(.*))?]$")
+        private val ipv6 = Pattern.compile("^\\[([0-9a-fA-F:.]+)(%25(.*))?]$")
         private val ipv4 = Pattern.compile("^([0-9]+)\\.([0-9]+)\\.([0-9]+)\\.([0-9]+)$")
         private val ipvFuture = Pattern.compile("^\\[[vV]([0-9a-fA-F]+)\\.(.+)]")
 
@@ -127,8 +127,12 @@ class SchemeSpecificUriParser : UrlParser {
                     if (decOctet.startsWith('0') && decOctet.length > 1) {
                         null
                     } else {
-                        val seg = Integer.parseInt(decOctet)
-                        if (seg > 255) {
+                        val seg = try {
+                            Integer.parseInt(decOctet)
+                        } catch(e: NumberFormatException) {
+                            null
+                        }
+                        if (seg == null || seg > 255) {
                             null
                         } else {
                             seg

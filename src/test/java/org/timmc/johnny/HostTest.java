@@ -34,9 +34,28 @@ public class HostTest {
             assertEquals("Parsed host",  expectedParsed, actual);
             assertEquals("Round-tripped raw host", raw, actual.getRaw());
         }
-    }
 
-    // TODO IPv6 with giant numeric sequence
+        // When given huge numeric sequence in IPv4-like address, fall back to
+        // treating it as a registered name.
+        assertEquals(new RegNameHost("1.2.3.444444444444444444444444444444"),
+            Urls.parse("https://1.2.3.444444444444444444444444444444/").getHost());
+
+        // SchemeSpecificParser doesn't throw here, because it doesn't
+        // validate IPv6 address internal structure.
+        try {
+            Urls.parse("https://[::111111111111111111111111111111]/");
+            fail("Expected UrlDecodeException when given huge numeric sequence in IPv6 address");
+        } catch (UrlDecodeException e) {
+            // expected
+        }
+
+        try {
+            Urls.parse("https://[vffffffffffffffffffffffffffffff.abcd]/");
+            fail("Expected UrlDecodeException when given huge numeric sequence in IPvFuture address");
+        } catch (UrlDecodeException e) {
+            // expected
+        }
+    }
 
     @Test
     public void ipv6() {
@@ -92,8 +111,6 @@ public class HostTest {
             fail("Wrong exception was thrown: " + t);
         }
     }
-
-    // TODO IPv4 with giant numeric sequence
 
     @Test
     public void ipv4Ambiguity() {
