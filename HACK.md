@@ -100,6 +100,7 @@ Parse and manipulate components:
 
 - Steal tests from other URL libs
 - Add fuzz tests/generative tests
+    - Perhaps grab data from https://commoncrawl.org and extract all hrefs
 - Test that `;` is escaped in at least one query encoder
 - Test that NPE is thrown whereever null is not accepted
 - Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
