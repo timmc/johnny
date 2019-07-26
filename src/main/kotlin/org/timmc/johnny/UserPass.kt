@@ -8,7 +8,7 @@ import org.timmc.johnny.internal.Constants
  * Represents a username/password pair from the userinfo component of a URI's
  * authority section.
  */
-data class UserPass(
+data class UserPass @JvmOverloads constructor (
     /** Required username portion of userinfo component. May be empty but not null.  */
     @JvmField
     val user: String,
