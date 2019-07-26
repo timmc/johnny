@@ -57,7 +57,12 @@ data class HostedUri
 
     val scheme: String
         get() {
-            return schemeRaw.toLowerCase() // TODO choose locale?
+            // Scheme is only supposed to be ASCII alphanumeric, so locale
+            // shouldn't *generally* matter, but it's possible that a user
+            // in a Turkish locale might have "IPFS".toLowerCase() -> "ıpfs"
+            // (dotless lowercase I). So, use the so-called "empty locale"
+            // to pin to English-like behavior.
+            return schemeRaw.toLowerCase(Locale.ROOT)
         }
 
     /**
