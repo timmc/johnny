@@ -2,6 +2,8 @@
 
 Instructions for releasing a version of Johnny.
 
+TODO: Update for Maven.
+
 ## If `lein deploy` works for you
 
 ...then use `lein deploy`.

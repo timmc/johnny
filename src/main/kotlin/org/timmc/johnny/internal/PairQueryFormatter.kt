@@ -26,12 +26,11 @@ class PairQueryFormatter @JvmOverloads constructor(
 
     /**
      * Format a query as a raw query string.
-     * @param q Query object (nullable)
-     * @return String (possibly null) suitable for
-     * [HostedUri.withQueryRaw]
+     * @param q Query object
+     * @return String suitable for [HostedUri.withQueryRaw]
      */
-    fun format(q: Params?): String? {
-        return if (q == null) null else format(q.getPairs())
+    fun format(q: Params): String {
+        return format(q.getPairs())
     }
 
     /**
@@ -40,6 +39,7 @@ class PairQueryFormatter @JvmOverloads constructor(
      * @return String suitable for [HostedUri.withQueryRaw]
      */
     fun format(pairs: Iterable<Entry<String, String?>>): String {
+        // This is almost, but not quite, a good place for joinToString
         val ret = StringBuilder()
         var writtenFirst = false
         for (e in pairs) {

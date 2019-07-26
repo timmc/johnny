@@ -10,9 +10,20 @@ public class QueriesTest {
     @Test
     public void missing() {
         // Url-level q-parse defaults
-        assertNull(Urls.parse("http://localhost").getQuery());
+        assertEquals(Queries.empty(), Urls.parse("http://localhost").getQuery());
         // Urls-level q-parse defaults
-        assertNull(Urls.parseQuery(null));
+        assertEquals(Queries.empty(), Urls.parseQuery(""));
+    }
+
+    @Test
+    public void emptyEquality() {
+        Params missing = Urls.parse("http://localhost").getQuery();
+        Params empty = Urls.parse("http://localhost?").getQuery();
+        Params degenerate = Urls.parse("http://localhost?&&&").getQuery();
+
+        assertEquals(missing, empty);
+        assertEquals(empty, degenerate);
+        assertEquals(degenerate, missing);
     }
 
     /**

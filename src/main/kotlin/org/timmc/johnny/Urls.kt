@@ -100,7 +100,7 @@ object Urls {
      */
     @JvmStatic
     @Throws(UrlDecodeException::class)
-    fun parseQuery(queryRaw: String?): Params? {
+    fun parseQuery(queryRaw: String): Params {
         return Queries.parse(queryRaw)
     }
 }

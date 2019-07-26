@@ -3,6 +3,8 @@ package org.timmc.johnny
 import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.UserPassParser
 
+import java.util.Locale
+
 /**
  * A URI with a host component (usually synonymous with URL).
  *
@@ -109,13 +111,13 @@ data class HostedUri
      * Get query decoded using standard parser. Assumes ampersand-separated
      * key-value pairs and treats missing values as empty strings. May not
      * preserve order of keys, but will preserve order of values.
-     * @return Decoded query, or null
+     * @return Decoded query, empty if no query component
      */
-    val query: Params?
+    val query: Params
         @Throws(UrlDecodeException::class)
         get() {
             val raw = queryRaw
-            return if (raw == null) null else Urls.parseQuery(raw)
+            return if (raw == null) Queries.empty() else Urls.parseQuery(raw)
         }
 
     /**
@@ -157,7 +159,7 @@ data class HostedUri
 
     /** See [port].  */
     fun withPort(port: Int?): HostedUri {
-        val portRaw = if (port == null) null else Integer.toString(port)
+        val portRaw = port?.toString()
         return withPortRaw(portRaw)
     }
 
@@ -200,7 +202,7 @@ data class HostedUri
         if (key == null) {
             throw NullPointerException("Cannot append null query key")
         }
-        return withQuery(query!!.replace(key, value))
+        return withQuery(query.replace(key, value))
     }
 
     /**
@@ -215,7 +217,7 @@ data class HostedUri
         if (key == null) {
             throw NullPointerException("Cannot search for null query key")
         }
-        return query!!.getAll(key)
+        return query.getAll(key)
     }
 
     /**
@@ -230,7 +232,7 @@ data class HostedUri
         if (key == null) {
             throw NullPointerException("Cannot search for null query key")
         }
-        return query!!.getLast(key)
+        return query.getLast(key)
     }
 
     /** See [schemeRaw]. */

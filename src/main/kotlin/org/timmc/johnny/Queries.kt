@@ -27,29 +27,24 @@ object Queries {
     /**
      * Parse a query string to the default piecewise URI query representation
      * using the default parser.
-     * @param queryRaw Query component, or null
-     * @return Params, or null if input was null
+     * @param queryRaw Query component, not null
+     * @return Params, possibly empty
      */
     @JvmStatic
     @Throws(UrlDecodeException::class)
-    fun parse(queryRaw: String?): Params? {
-        return if (queryRaw == null) {
-            null
-        } else emptyParams.appendAll(queryParser.parse(queryRaw))
+    fun parse(queryRaw: String): Params {
+        return emptyParams.appendAll(queryParser.parse(queryRaw))
     }
 
     /**
      * Create a param collection with a single key-value pair.
      *
      * @param key Non-null
-     * @param val Nullable
+     * @param value Nullable
      */
     @JvmStatic
-    fun from(key: String?, `val`: String): Params {
-        if (key == null) {
-            throw NullPointerException("Param key may not be null")
-        }
-        return emptyParams.append(key, `val`)
+    fun from(key: String, value: String?): Params {
+        return emptyParams.append(key, value)
     }
 
     /**
@@ -87,7 +82,7 @@ object Queries {
      * Format a param collection as a raw query.
      */
     @JvmStatic
-    fun formatQuery(p: Params?): String? {
+    fun formatQuery(p: Params): String {
         return formatter.format(p)
     }
 }

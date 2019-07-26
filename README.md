@@ -57,7 +57,15 @@ Leiningen:
 
 ## Usage
 
+The public interface is defined by the classes in the
+`org.timmc.johnny` package, starting with the `Urls` class. This
+interface follows semantic versioning.
+
 TODO: Post the generated Javadocs somewhere browseable.
+
+Packages with "internal" in the name are not part of the public
+interface and *may* change at any time, or not be as easily accessible
+from Java (as they are written in and tested from Kotlin).
 
 ## Features
 
