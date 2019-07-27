@@ -1,7 +1,7 @@
 (ns org.timmc.johnny.impls
   (:import (org.timmc.johnny Host Queries)
            (org.timmc.johnny.internal
-            SchemeSpecificUriParser
+            ArtisanalUriParser
             NullableValueQueryParser ImmutableOrderedParams
             PairQueryFormatter AntlrUriParser)))
 
@@ -9,7 +9,7 @@
 
 ;; Parsers are listed by instance, manipulation impls by class.
 
-(def url-parse-impls #{(AntlrUriParser.) (SchemeSpecificUriParser.)})
+(def url-parse-impls #{(AntlrUriParser.) (ArtisanalUriParser.)})
 
 (def q-parse-impls #{(NullableValueQueryParser.)})
 (def q-manip-impls #{ImmutableOrderedParams})

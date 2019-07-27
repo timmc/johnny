@@ -3,7 +3,7 @@
             [org.timmc.johnny.util :as u]
             [org.timmc.johnny.impls :as i]
             [clojure.string :as str])
-  (:import (org.timmc.johnny RegNameHost UrlDecodeException)))
+  (:import (org.timmc.johnny RegNameHost UriDecodeException)))
 
 (defmacro cross
   [& body]
@@ -44,5 +44,5 @@
    (testing "port-numerics"
      (is (= (.getPort (i/parse-u "http://google.com:80/")) 80))
      ;; ८० is Devanagari numerals
-     (is (thrown? UrlDecodeException
+     (is (thrown? UriDecodeException
           (i/parse-u "http://google.com:\u096E\u0966/"))))))
