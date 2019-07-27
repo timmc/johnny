@@ -32,4 +32,8 @@ interface UrlParser {
             throw UrlDecodeException("Valid URI, but does not have a host component")
         }
     }
+
+    /** Check if a proposed scheme component is valid; throw if not. */
+    @Throws(UrlDecodeException::class)
+    fun validateScheme(input: String)
 }

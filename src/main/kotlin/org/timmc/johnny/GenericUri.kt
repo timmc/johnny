@@ -1,5 +1,7 @@
 package org.timmc.johnny
 
+import org.timmc.johnny.internal.Codecs
+
 /**
  * A generic URI, where the only component guaranteed to exist is the scheme.
  */
@@ -34,6 +36,9 @@ constructor(
      */
     val fragmentRaw: String?
 ) {
+    init {
+        Codecs.urlParser.validateScheme(schemeRaw)
+    }
 
     /**
      * Convert to a [HostedUri] if possible, else throw an

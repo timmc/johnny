@@ -52,6 +52,10 @@ data class HostedUri
          */
         val fragmentRaw: String?
 ) {
+    init {
+        Codecs.urlParser.validateScheme(schemeRaw)
+    }
+
     /**
      * Retrieve case-folded scheme component, if present.
      * @return Lowercased scheme, or null if missing.

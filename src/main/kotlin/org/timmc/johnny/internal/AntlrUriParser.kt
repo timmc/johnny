@@ -37,8 +37,7 @@ class AntlrUriParser : UrlParser {
         }
     }
 
-    @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
-    private fun parseInner(input: String): GenericUri {
+    private fun setUpParser(input: String): Pair<RFC_3986_6874Parser, FlaggingErrorListener> {
         val lexer = RFC_3986_6874Lexer(CharStreams.fromString(input))
         val parser = RFC_3986_6874Parser(CommonTokenStream(lexer))
         parser.errorHandler = BailErrorStrategy()
@@ -55,26 +54,54 @@ class AntlrUriParser : UrlParser {
         parser.addErrorListener(errorListener)
         lexer.addErrorListener(errorListener)
 
-        val root = parser.uri()
-        val ret = parseUri(root)
+        return parser to errorListener
+    }
+
+    /**
+     * Attempt parsing some part of the grammar.
+     *
+     * Accepts an input and a function that will try to parse it according
+     * to some rule of the grammar. The function takes a parser and returns
+     * the context element + its parsed output, or throws if it could not parse.
+     *
+     * The parser context element is used to determine whether the parse took
+     * the complete input; if not, throw.
+     *
+     * [partDesc] is a noun phrase describing the part of the URI we're
+     * attempting to parse, such as "URI" or "scheme".
+     */
+    @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
+    private fun <R> tryParse(input: String, partDesc: String, partParser: (RFC_3986_6874Parser) -> Pair<ParserRuleContext, R>): R {
+        val (parser, errorListener) = setUpParser(input)
+
+        val (context, ret) = partParser(parser)
 
         val errMsg = errorListener.error
         if (errMsg != null) {
-            throw UrlDecodeException("Could not parse URI: $errMsg")
+            throw UrlDecodeException("Could not parse $partDesc: $errMsg")
         }
 
         // Check if entire string was consumed and matched
         //
-        // Alternatively, should we use an EOF token in the grammar?
-        val matched = root.text
+        // We use an EOF token in the grammar, but we would still need this
+        // code for validating subrules.
+        val matched = context.text
         if (input != matched) {
             throw UrlDecodeException(
-                "Could not parse URI: " +
+                "Could not parse $partDesc: " +
                     "error at position " + matched.length
             )
         }
 
         return ret
+    }
+
+    @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
+    private fun parseInner(input: String): GenericUri {
+        return tryParse(input, "URI") { parser ->
+            val context = parser.uri()
+            context to parseUri(context)
+        }
     }
 
     private fun parseUri(uriAbs: UriContext): GenericUri {
@@ -143,5 +170,13 @@ class AntlrUriParser : UrlParser {
             }
         }
         throw UrlDecodeException("Grammar mismatch: hier_part/rel_part did not contain any known path variant")
+    }
+
+    override fun validateScheme(input: String) {
+        tryParse(input, "scheme") { parser ->
+            val context = parser.scheme()
+            val read = context.text
+            context to read
+        }
     }
 }

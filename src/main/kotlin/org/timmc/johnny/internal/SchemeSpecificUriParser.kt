@@ -166,4 +166,12 @@ class SchemeSpecificUriParser : UrlParser {
             return RegNameHost(hostRaw)
         }
     }
+
+    @Throws(UrlDecodeException::class)
+    override fun validateScheme(input: String) {
+        if (!Regex("^[a-zA-Z].*").matches(input))
+            throw UrlDecodeException("Scheme must start with a letter in A-Z")
+        if (!Regex("""^[a-zA-Z0-9+\-.]+$""").matches(input))
+            throw UrlDecodeException("Scheme must only contain alphanumerics, +, -, and .")
+    }
 }

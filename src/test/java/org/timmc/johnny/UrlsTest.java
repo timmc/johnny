@@ -69,4 +69,11 @@ class UrlsTest {
 
         assertEquals("IPFS", Urls.parseGeneric(ipfsUpperRaw).getSchemeRaw());
     }
+
+    @Test
+    void construction() {
+        assertEquals("http://example.com", Urls.from("http", new RegNameHost("example.com")).format());
+
+        assertThrows(Exception.class, () -> Urls.from("_bad_scheme_", new RegNameHost("example.com")));
+    }
 }

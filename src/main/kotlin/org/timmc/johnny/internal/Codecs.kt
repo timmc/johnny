@@ -10,6 +10,15 @@ import java.net.URLDecoder
  */
 object Codecs {
 
+    internal val urlParser: UrlParser =
+        if (System.getProperty("org.timmc.johnny.Urls.testing.altParser") == "true")
+            // Hand-written parser, only used in testing. Use in tests:
+            // mvn test -DargLine="-Dorg.timmc.johnny.Urls.testing.altParser=true"
+            SchemeSpecificUriParser()
+        else
+            // Default, uses grammar from RFCs
+            AntlrUriParser()
+
     private val fragEnc = ByCharPercentEncoder(Ascii7Oracle(Constants.RFC3986_UNENCODED_FRAGMENT))
     private val zoneEnc = ByCharPercentEncoder(Ascii7Oracle(Constants.RFC6874_UNENCODED_ZONE))
 
