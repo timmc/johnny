@@ -70,13 +70,27 @@ from Java (as they are written in and tested from Kotlin).
 ## Features
 
 - Fluent builder interface for URLs and URL components
-- Optional validation
 - Minimal encoding of each URL component (e.g. querystring params can
   have unencoded "?")
 - Support for duplicate keys in querystrings
 - Support for querystring keys without values (`foo` vs. `foo=`)
 - Use of immutable data structures so that manipulations are
   thread-safe
+
+## Opinions
+
+I had to make some decisions on semantics where the RFCs leave things
+unspecified or the API would otherwise be overly pedantic.
+
+- There is no meaningful difference between querystrings that are
+  missing (`https://example.net/foo`) or empty
+  (`https://example.net/foo?`). Raw strings available if you care
+  about the difference.
+- Similarly, there is no meaningful difference between paths that are
+  missing (`https://example.net`) or just have the root slash
+  (`https://example.net/`).
+- Ports can only take values from 0 to 65535, inclusive, since that's
+  pretty well baked into everything now.
 
 ## Rationale
 
