@@ -26,16 +26,22 @@ class UrlsTest {
         // letter and followed by any combination of letters, digits, plus
         // ("+"), period ("."), or hyphen ("-"). »
 
-        // Valid but unusual schemes
+        // Actual, unusual schemes
         assertEquals("coaps+ws", Urls.parse("coaps+ws://example.org/weather").getScheme());
         assertEquals("h323", Urls.parse("h323://rfc3508.example.org/").getScheme());
         assertEquals("soap.beep", Urls.parse("soap.beep://rfc4227.example.com").getScheme());
         assertEquals("ms-settings", Urls.parseGeneric("ms-settings:screenrotation").getSchemeRaw());
 
+        // Nonexistent schemes are still allowed
+        assertEquals("a", Urls.parseGeneric("a://example.net").getSchemeRaw());
+        assertEquals("axjm283y2", Urls.parse("aXjm283y2://example.net").getScheme());
+
         // Invalid
         assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("2spooky://example.net"));
         assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric(".net://example.net"));
         assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("http_s://example.net"));
+        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("://example.net"));
+        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("mailtó:foo@example.com"));
     }
 
     // Scheme is supposed to be case-insensitive
