@@ -13,4 +13,17 @@ data class UriAuthority(
     /** Raw port component, nullable and possibly empty. */
     @JvmField
     val portRaw: String?
-)
+) {
+    /** Format back into a string. */
+    fun format(): String {
+        val build = StringBuilder()
+        if (userinfoRaw != null) {
+            build.append(userinfoRaw).append('@')
+        }
+        build.append(host.format())
+        if (portRaw != null && portRaw.isNotEmpty()) {
+            build.append(':').append(portRaw)
+        }
+        return build.toString()
+    }
+}

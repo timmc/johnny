@@ -135,14 +135,33 @@ data class HostedUri
             return if (fragmentRaw == null) null else Codecs.percentDecode(fragmentRaw)
         }
 
-    /*== Convenience ==*/
+    /**
+     * Convert into a GenericUri by collapsing the authority component back
+     * together.
+     */
+    fun toGenericUri(): GenericUri {
+        // TODO Inheritance hierarchy instead?
+        return GenericUri(
+            schemeRaw = schemeRaw,
+            authority = UriAuthority(
+                userinfoRaw = userInfoRaw, // TODO case clash
+                host = host,
+                portRaw = portRaw
+            ),
+            pathRaw = pathRaw,
+            queryRaw = queryRaw,
+            fragmentRaw = fragmentRaw
+        )
+    }
 
     /**
-     * Format this URL back into a string using default settings.
+     * Format back into a string.
      */
     fun format(): String {
-        return Urls.format(this)
+        return toGenericUri().format()
     }
+
+    /*== Convenience ==*/
 
     /**
      * Set scheme component. This is no different from [withSchemeRaw]

@@ -48,31 +48,6 @@ object Urls {
     }
 
     /**
-     * Format a [HostedUri] to a string.
-     */
-    @JvmStatic
-    fun format(url: HostedUri): String {
-        val build = StringBuilder()
-        build.append(url.schemeRaw).append("://")
-        if (url.userInfoRaw != null) {
-            build.append(url.userInfoRaw).append("@")
-        }
-        build.append(url.hostRaw)
-        val portRaw = url.portRaw
-        if (portRaw != null && !portRaw.isEmpty()) {
-            build.append(":").append(portRaw)
-        }
-        build.append(url.pathRaw)
-        if (url.queryRaw != null) {
-            build.append("?").append(url.queryRaw)
-        }
-        if (url.fragmentRaw != null) {
-            build.append("#").append(url.fragmentRaw)
-        }
-        return build.toString()
-    }
-
-    /**
      * Parse a path to the default piecewise URI query representation
      * using the default parser.
      * @param pathRaw Non-null path component

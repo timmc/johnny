@@ -27,7 +27,7 @@ object Queries {
     /**
      * Parse a query string to the default piecewise URI query representation
      * using the default parser.
-     * @param queryRaw Query component, not null
+     * @param queryRaw Query component, not null, not including initial "?"
      * @return Params, possibly empty
      */
     @JvmStatic

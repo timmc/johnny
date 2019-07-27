@@ -38,6 +38,26 @@ constructor(
 ) {
     init {
         Codecs.uriParser.validateScheme(schemeRaw)
+        // TODO validate that path does not contain leading double slash if authority is null
+    }
+
+    /**
+     * Format back into a string.
+     */
+    fun format(): String {
+        val build = StringBuilder()
+        build.append(schemeRaw).append(":")
+        if (authority != null) {
+            build.append("//").append(authority.format())
+        }
+        build.append(pathRaw)
+        if (queryRaw != null) {
+            build.append("?").append(queryRaw)
+        }
+        if (fragmentRaw != null) {
+            build.append("#").append(fragmentRaw)
+        }
+        return build.toString()
     }
 
     /**
