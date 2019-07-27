@@ -18,22 +18,22 @@ import java.util.ArrayList
 /**
  * A strict URI parser directly derived from ABNF grammars in the relevant RFCs.
  */
-class AntlrUriParser : UrlParser {
+class AntlrUriParser : UriParser {
 
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     override fun parseGenericUri(input: String): GenericUri {
         try {
             return parseInner(input)
         } catch (e: RecognitionException) {
-            throw UrlDecodeException("Could not recognize URI from input", e)
+            throw UriDecodeException("Could not recognize URI from input", e)
         } catch (e: ParseCancellationException) {
-            throw UrlDecodeException("Could not recognize URI from input", e)
+            throw UriDecodeException("Could not recognize URI from input", e)
         } catch (e: NullPointerException) {
-            throw UrlDecodeException("Unexpected null reference when reading URI parse tree", e)
+            throw UriDecodeException("Unexpected null reference when reading URI parse tree", e)
         } catch (e: Exception) {
-            throw UrlDecodeException("Unexpected exception when parsing URI", e)
+            throw UriDecodeException("Unexpected exception when parsing URI", e)
         } catch (e: AssertionError) {
-            throw UrlDecodeException("Unexpected assertion error when parsing URI", e)
+            throw UriDecodeException("Unexpected assertion error when parsing URI", e)
         }
     }
 
@@ -70,7 +70,7 @@ class AntlrUriParser : UrlParser {
      * [partDesc] is a noun phrase describing the part of the URI we're
      * attempting to parse, such as "URI" or "scheme".
      */
-    @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
+    @Throws(UriDecodeException::class, RecognitionException::class, ParseCancellationException::class)
     private fun <R> tryParse(input: String, partDesc: String, partParser: (RFC_3986_6874Parser) -> Pair<ParserRuleContext, R>): R {
         val (parser, errorListener) = setUpParser(input)
 
@@ -78,7 +78,7 @@ class AntlrUriParser : UrlParser {
 
         val errMsg = errorListener.error
         if (errMsg != null) {
-            throw UrlDecodeException("Could not parse $partDesc: $errMsg")
+            throw UriDecodeException("Could not parse $partDesc: $errMsg")
         }
 
         // Check if entire string was consumed and matched
@@ -87,7 +87,7 @@ class AntlrUriParser : UrlParser {
         // code for validating subrules.
         val matched = context.text
         if (input != matched) {
-            throw UrlDecodeException(
+            throw UriDecodeException(
                 "Could not parse $partDesc: " +
                     "error at position " + matched.length
             )
@@ -96,7 +96,7 @@ class AntlrUriParser : UrlParser {
         return ret
     }
 
-    @Throws(UrlDecodeException::class, RecognitionException::class, ParseCancellationException::class)
+    @Throws(UriDecodeException::class, RecognitionException::class, ParseCancellationException::class)
     private fun parseInner(input: String): GenericUri {
         return tryParse(input, "URI") { parser ->
             val context = parser.uri()
@@ -159,7 +159,7 @@ class AntlrUriParser : UrlParser {
             val formatVersion = Integer.parseInt(hexver, 16)
             return IPvFutureHost(formatVersion, futureData, host.text)
         } else {
-            throw UrlDecodeException("Grammar mismatch: authority did not contain any known host variant")
+            throw UriDecodeException("Grammar mismatch: authority did not contain any known host variant")
         }
     }
 
@@ -169,7 +169,7 @@ class AntlrUriParser : UrlParser {
                 return path.text
             }
         }
-        throw UrlDecodeException("Grammar mismatch: hier_part/rel_part did not contain any known path variant")
+        throw UriDecodeException("Grammar mismatch: hier_part/rel_part did not contain any known path variant")
     }
 
     override fun validateScheme(input: String) {

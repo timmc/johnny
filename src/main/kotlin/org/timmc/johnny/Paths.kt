@@ -32,13 +32,13 @@ object Paths {
      * empty or start with "/")
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parse(pathRaw: String?): TextPath {
         if (pathRaw == null) {
             throw NullPointerException("Raw path must not be null.")
         }
         if (!pathRaw.isEmpty() && !pathRaw.startsWith("/")) {
-            throw UrlDecodeException("Non-empty path component did not start with a slash")
+            throw UriDecodeException("Non-empty path component did not start with a slash")
         }
         return TextPath.EMPTY.addRawPath(pathRaw)
     }

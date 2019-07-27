@@ -72,7 +72,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
      * Append or replace with the provided path.
      * @param rawRelative Absolute or relative path.
      */
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun addRawPath(rawRelative: String): TextPath {
         return applyEffect(effectOf(rawRelative))
     }
@@ -188,7 +188,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
          * @param pathRef Path reference, not null.
          * @return Effect on an existing path component, with decoded segments.
          */
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         private fun effectOf(pathRef: String?): PathEffect {
             if (pathRef == null) {
                 throw NullPointerException("path reference may not be null.")
@@ -234,7 +234,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
         }
 
         /** Percent-decode each segment.  */
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         private fun decodeEach(rawSegs: Iterable<String>): Iterable<String> {
             val build = ArrayList<String>()
             for (raw in rawSegs) {

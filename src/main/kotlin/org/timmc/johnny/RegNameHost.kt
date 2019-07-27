@@ -20,7 +20,7 @@ data class RegNameHost(
 
     // TODO Under what circumstances is it possible for a *valid* regname to need decoding?
     /**
-     * @throws UrlDecodeException
+     * @throws UriDecodeException
      */
     fun getName(): String {
         return Codecs.percentDecode(raw)

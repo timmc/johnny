@@ -15,8 +15,8 @@ class UrlsTest {
         assertEquals("ipns", Urls.parse("ipns://example.com").getScheme());
 
         // Non-hosted URIs
-        assertThrows(UrlDecodeException.class, () -> Urls.parse("mailto:foo@example.com?subject=hi"));
-        assertThrows(UrlDecodeException.class, () -> Urls.parse("tel:1-800-222-1222"));
+        assertThrows(UriDecodeException.class, () -> Urls.parse("mailto:foo@example.com?subject=hi"));
+        assertThrows(UriDecodeException.class, () -> Urls.parse("tel:1-800-222-1222"));
         assertEquals("mailto", Urls.parseGeneric("mailto:foo@example.com?subject=hi").getSchemeRaw());
         assertEquals("tel", Urls.parseGeneric("tel:1-800-222-1222").getSchemeRaw());
 
@@ -37,11 +37,11 @@ class UrlsTest {
         assertEquals("axjm283y2", Urls.parse("aXjm283y2://example.net").getScheme());
 
         // Invalid
-        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("2spooky://example.net"));
-        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric(".net://example.net"));
-        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("http_s://example.net"));
-        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("://example.net"));
-        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("mailtó:foo@example.com"));
+        assertThrows(UriDecodeException.class, () -> Urls.parseGeneric("2spooky://example.net"));
+        assertThrows(UriDecodeException.class, () -> Urls.parseGeneric(".net://example.net"));
+        assertThrows(UriDecodeException.class, () -> Urls.parseGeneric("http_s://example.net"));
+        assertThrows(UriDecodeException.class, () -> Urls.parseGeneric("://example.net"));
+        assertThrows(UriDecodeException.class, () -> Urls.parseGeneric("mailtó:foo@example.com"));
     }
 
     // Scheme is supposed to be case-insensitive

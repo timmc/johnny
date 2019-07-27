@@ -1,6 +1,6 @@
 package org.timmc.johnny.internal
 
-import org.timmc.johnny.UrlDecodeException
+import org.timmc.johnny.UriDecodeException
 
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
@@ -10,11 +10,11 @@ import java.net.URLDecoder
  */
 object Codecs {
 
-    internal val urlParser: UrlParser =
+    internal val uriParser: UriParser =
         if (System.getProperty("org.timmc.johnny.Urls.testing.altParser") == "true")
-            // Hand-written parser, only used in testing. Use in tests:
+            // Hand-written parser, *only* used in testing. Use in tests:
             // mvn test -DargLine="-Dorg.timmc.johnny.Urls.testing.altParser=true"
-            SchemeSpecificUriParser()
+            ArtisanalUriParser()
         else
             // Default, uses grammar from RFCs
             AntlrUriParser()
@@ -32,17 +32,17 @@ object Codecs {
      * certainly not correct. Instead, use the appropriate component-specific parser.
      * @param part Some percent-encoded string (non-null)
      * @return Percent-decoded string (non-null)
-     * @throws UrlDecodeException if there are invalid percent-escapes
+     * @throws UriDecodeException if there are invalid percent-escapes
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun percentDecode(part: String): String {
         try {
             return URLDecoder.decode(part.replace("+", "%2B"), "UTF-8")
         } catch (uee: UnsupportedEncodingException) {
             throw RuntimeException("Unexpected decoding exception: UTF-8 not available?")
         } catch (iae: IllegalArgumentException) {
-            throw UrlDecodeException("Could not percent-decode URL component", iae)
+            throw UriDecodeException("Could not percent-decode URL component", iae)
         }
 
     }

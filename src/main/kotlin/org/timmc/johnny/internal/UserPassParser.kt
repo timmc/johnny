@@ -1,6 +1,6 @@
 package org.timmc.johnny.internal
 
-import org.timmc.johnny.UrlDecodeException
+import org.timmc.johnny.UriDecodeException
 import org.timmc.johnny.UserPass
 
 /**
@@ -14,7 +14,7 @@ object UserPassParser { // TODO Find RFC describing this format
      * @return Parsed and decoded UserInfo representation with username and password
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parse(userInfoRaw: String): UserPass {
         val parts = userInfoRaw.split(":".toRegex(), 2)
         val user = Codecs.percentDecode(parts[0])
@@ -28,7 +28,7 @@ object UserPassParser { // TODO Find RFC describing this format
      * @return Decoded username (non-null)
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parseJustUser(userInfoRaw: String): String {
         return Codecs.percentDecode(userInfoRaw)
     }

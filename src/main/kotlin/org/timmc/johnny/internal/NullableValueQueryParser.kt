@@ -2,7 +2,7 @@ package org.timmc.johnny.internal
 
 import java.util.regex.Pattern
 
-import org.timmc.johnny.UrlDecodeException
+import org.timmc.johnny.UriDecodeException
 import org.timmc.johnny.internal.coll.MapEntry
 
 /**
@@ -22,7 +22,7 @@ class NullableValueQueryParser
      */
     private val pairSep: Pattern = AMPERSAND
 ) {
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parse(queryRaw: String): Iterable<Map.Entry<String, String?>> {
         return pairSep.split(queryRaw).mapNotNull { pair ->
             if (pair.isEmpty()) {

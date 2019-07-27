@@ -23,7 +23,7 @@ class SyntaxDemoTest {
      * Demonstrate setter workflow.
      */
     @Test
-    void testWorkflow() throws UrlDecodeException {
+    void testWorkflow() throws UriDecodeException {
         HostedUri result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
                          .withPort(8443)
                          .withScheme("https")
@@ -35,7 +35,7 @@ class SyntaxDemoTest {
      * Demonstrate query manipulation.
      */
     @Test
-    void testQS() throws UrlDecodeException {
+    void testQS() throws UriDecodeException {
         HostedUri orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
         HostedUri result = orig.withQuery(orig.getQuery()
                                         .append("foo", "bar")

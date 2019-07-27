@@ -46,14 +46,14 @@ class HostTest {
         try {
             Urls.parse("https://[::111111111111111111111111111111]/");
             fail("Expected UrlDecodeException when given huge numeric sequence in IPv6 address");
-        } catch (UrlDecodeException e) {
+        } catch (UriDecodeException e) {
             // expected
         }
 
         try {
             Urls.parse("https://[vffffffffffffffffffffffffffffff.abcd]/");
             fail("Expected UrlDecodeException when given huge numeric sequence in IPvFuture address");
-        } catch (UrlDecodeException e) {
+        } catch (UriDecodeException e) {
             // expected
         }
     }

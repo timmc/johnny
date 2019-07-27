@@ -31,7 +31,7 @@ object Queries {
      * @return Params, possibly empty
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parse(queryRaw: String): Params {
         return emptyParams.appendAll(queryParser.parse(queryRaw))
     }

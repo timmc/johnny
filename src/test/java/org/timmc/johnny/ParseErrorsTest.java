@@ -9,7 +9,7 @@ class ParseErrorsTest {
         try {
             Urls.parse("/.well-known/robots.txt");
             fail("Expected decode exception for relative URI");
-        } catch (UrlDecodeException ude) {
+        } catch (UriDecodeException ude) {
             // do nothing
         }
     }
@@ -19,7 +19,7 @@ class ParseErrorsTest {
         try {
             Urls.parse("tel:+1-800-222-1222");
             fail("Expected decode exception for hostless URI scheme");
-        } catch (UrlDecodeException ude) {
+        } catch (UriDecodeException ude) {
             // do nothing
         }
     }

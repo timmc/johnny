@@ -53,7 +53,7 @@ data class HostedUri
         val fragmentRaw: String?
 ) {
     init {
-        Codecs.urlParser.validateScheme(schemeRaw)
+        Codecs.uriParser.validateScheme(schemeRaw)
     }
 
     /**
@@ -77,7 +77,7 @@ data class HostedUri
      * @return User info, or null if missing.
      */
     val userPass: UserPass?
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         get() {
             return userInfoRaw?.let{ UserPassParser.parse(it) }
         }
@@ -89,7 +89,7 @@ data class HostedUri
 
     /** Port of host, in valid range. Nullable.  */ // TODO: must be valid?
     val port: Int?
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         get() {
             try {
                 val portRaw = portRaw
@@ -98,7 +98,7 @@ data class HostedUri
                 else
                     Integer.parseInt(portRaw)
             } catch (nfe: NumberFormatException) {
-                throw UrlDecodeException("Could not parse port as integer", nfe)
+                throw UriDecodeException("Could not parse port as integer", nfe)
             }
 
         }
@@ -108,7 +108,7 @@ data class HostedUri
      * @return Non-null
      */
     val path: TextPath?
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         get() = Urls.parsePath(pathRaw)
 
     /**
@@ -118,7 +118,7 @@ data class HostedUri
      * @return Decoded query, empty if no query component
      */
     val query: Params
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         get() {
             val raw = queryRaw
             return if (raw == null) Queries.empty() else Urls.parseQuery(raw)
@@ -129,7 +129,7 @@ data class HostedUri
      * @return Decoded fragment, or null if no fragment
      */
     val fragment: String?
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         get() {
             val fragmentRaw = fragmentRaw
             return if (fragmentRaw == null) null else Codecs.percentDecode(fragmentRaw)
@@ -201,7 +201,7 @@ data class HostedUri
      * @param key Non-null query param key (may be empty)
      * @param value Nullable query param value
      */
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun querySetKey(key: String?, value: String): HostedUri {
         if (key == null) {
             throw NullPointerException("Cannot append null query key")
@@ -216,7 +216,7 @@ data class HostedUri
      * @param key Non-null query param key (may be empty)
      * @return Possibly empty collection of values for key
      */
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun queryGet(key: String?): Collection<String?> {
         if (key == null) {
             throw NullPointerException("Cannot search for null query key")
@@ -231,7 +231,7 @@ data class HostedUri
      * @param key Non-null query param key (may be empty)
      * @return Last value for key, null iff key not present.
      */
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun queryGetLast(key: String?): String? {
         if (key == null) {
             throw NullPointerException("Cannot search for null query key")

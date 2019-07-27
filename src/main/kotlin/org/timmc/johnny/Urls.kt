@@ -24,18 +24,18 @@ object Urls {
      * host, e.g. HTTP and FTP URLs.
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parse(uri: String): HostedUri {
-        return Codecs.urlParser.parseHostedUri(uri)
+        return Codecs.uriParser.parseHostedUri(uri)
     }
 
     /**
      * Parse a URI of any sort from a string.
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parseGeneric(uri: String): GenericUri {
-        return Codecs.urlParser.parseGenericUri(uri)
+        return Codecs.uriParser.parseGenericUri(uri)
     }
 
     /**
@@ -78,7 +78,7 @@ object Urls {
      * @param pathRaw Non-null path component
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parsePath(pathRaw: String): TextPath {
         return Paths.parse(pathRaw)
     }
@@ -88,7 +88,7 @@ object Urls {
      * [Queries.parse]).
      */
     @JvmStatic
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     fun parseQuery(queryRaw: String): Params {
         return Queries.parse(queryRaw)
     }

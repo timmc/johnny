@@ -4,11 +4,16 @@ import org.timmc.johnny.*
 import java.util.regex.Pattern
 
 /**
- * Handwritten URI parser for RFC 3986 (prefer [AntlrUriParser] to this.)
+ * Handwritten URI parser for RFC 3986 -- use [AntlrUriParser], not this!
+ *
+ * The purpose of this class is to allow cross-checking of methods (RFC-derived
+ * grammar vs RFC as understood by a human); to demonstrate the complexity of
+ * validating URIs by handwritten code; and finally to support a baseline for
+ * performance testing of the CFG-generated code.
  */
-class SchemeSpecificUriParser : UrlParser {
+class ArtisanalUriParser : UriParser {
 
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     override fun parseGenericUri(input: String): GenericUri {
         return parseTopLevel(input)
     }
@@ -28,11 +33,11 @@ class SchemeSpecificUriParser : UrlParser {
          * Parse a URI based on generic syntax (not scheme-specific.)
          */
         @JvmStatic
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         fun parseTopLevel(uri: String): GenericUri {
             val m = absSyntax.matcher(uri)
             if (!m.find()) {
-                throw UrlDecodeException("Could not determine basic structure of URI")
+                throw UriDecodeException("Could not determine basic structure of URI")
             }
             val scheme = m.group(1)
             val hierarchy = m.group(2)
@@ -74,7 +79,7 @@ class SchemeSpecificUriParser : UrlParser {
          * Parse a URI based on generic syntax (not scheme-specific.)
          */
         @JvmStatic
-        @Throws(UrlDecodeException::class)
+        @Throws(UriDecodeException::class)
         fun parseAuthority(authority: String): UriAuthority {
             val userinfo: String?
             val hostRaw: String
@@ -110,7 +115,7 @@ class SchemeSpecificUriParser : UrlParser {
                     hostRaw = remaining.substring(0, lastColon)
                     port = possiblePort
                 } else {
-                    throw UrlDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)")
+                    throw UriDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)")
                 }
             }
 
@@ -167,11 +172,11 @@ class SchemeSpecificUriParser : UrlParser {
         }
     }
 
-    @Throws(UrlDecodeException::class)
+    @Throws(UriDecodeException::class)
     override fun validateScheme(input: String) {
         if (!Regex("^[a-zA-Z].*").matches(input))
-            throw UrlDecodeException("Scheme must start with a letter in A-Z")
+            throw UriDecodeException("Scheme must start with a letter in A-Z")
         if (!Regex("""^[a-zA-Z0-9+\-.]+$""").matches(input))
-            throw UrlDecodeException("Scheme must only contain alphanumerics, +, -, and .")
+            throw UriDecodeException("Scheme must only contain alphanumerics, +, -, and .")
     }
 }

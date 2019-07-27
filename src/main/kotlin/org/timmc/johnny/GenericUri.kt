@@ -37,7 +37,7 @@ constructor(
     val fragmentRaw: String?
 ) {
     init {
-        Codecs.urlParser.validateScheme(schemeRaw)
+        Codecs.uriParser.validateScheme(schemeRaw)
     }
 
     /**
