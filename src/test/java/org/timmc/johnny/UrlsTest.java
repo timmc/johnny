@@ -8,11 +8,45 @@ import java.util.Locale;
 
 class UrlsTest {
     @Test
-    void scheme() {
-        HostedUri ipfsUpper = Urls.parse("IPFS://BAFYBEICZSSCDSBS7FFQZ55ASQDF3SMV6KLCW3GOFSZVWLYARCI47BGF354/");
+    void schemeChecking() {
+        // Hosted URIs
+        assertEquals("http", Urls.parse("http://localhost/foo").getScheme());
+        assertEquals("https", Urls.parse("https://localhost/foo").getScheme());
+        assertEquals("ipns", Urls.parse("ipns://example.com").getScheme());
+
+        // Non-hosted URIs
+        assertThrows(UrlDecodeException.class, () -> Urls.parse("mailto:foo@example.com?subject=hi"));
+        assertThrows(UrlDecodeException.class, () -> Urls.parse("tel:1-800-222-1222"));
+        assertEquals("mailto", Urls.parseGeneric("mailto:foo@example.com?subject=hi").getSchemeRaw());
+        assertEquals("tel", Urls.parseGeneric("tel:1-800-222-1222").getSchemeRaw());
+
+        // RFC 3986:
+        //
+        // « Scheme names consist of a sequence of characters beginning with a
+        // letter and followed by any combination of letters, digits, plus
+        // ("+"), period ("."), or hyphen ("-"). »
+
+        // Valid but unusual schemes
+        assertEquals("coaps+ws", Urls.parse("coaps+ws://example.org/weather").getScheme());
+        assertEquals("h323", Urls.parse("h323://rfc3508.example.org/").getScheme());
+        assertEquals("soap.beep", Urls.parse("soap.beep://rfc4227.example.com").getScheme());
+        assertEquals("ms-settings", Urls.parseGeneric("ms-settings:screenrotation").getSchemeRaw());
+
+        // Invalid
+        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("2spooky://example.net"));
+        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric(".net://example.net"));
+        assertThrows(UrlDecodeException.class, () -> Urls.parseGeneric("http_s://example.net"));
+    }
+
+    // Scheme is supposed to be case-insensitive
+    @Test
+    void schemeCase() {
+        String ipfsUpperRaw = "IPFS://BAFYBEICZSSCDSBS7FFQZ55ASQDF3SMV6KLCW3GOFSZVWLYARCI47BGF354/";
+
+        HostedUri ipfsUpper = Urls.parse(ipfsUpperRaw);
         assertEquals("IPFS", ipfsUpper.getSchemeRaw());
         assertEquals("ipfs", ipfsUpper.getScheme());
-        // Just to show why this matters. Turkish maps I/i case conversions
+        // Just to show why this raw/parsed distinction matters. Turkish maps I/i case conversions
         // differently from English, so the case-folding happening above
         // could very well produce "ıpfs" instead.
         Locale oldLocale = Locale.getDefault();
@@ -26,5 +60,7 @@ class UrlsTest {
         } finally {
             Locale.setDefault(oldLocale);
         }
+
+        assertEquals("IPFS", Urls.parseGeneric(ipfsUpperRaw).getSchemeRaw());
     }
 }

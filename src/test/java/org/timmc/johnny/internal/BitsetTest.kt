@@ -9,11 +9,11 @@ import kotlin.test.assertTrue
 // TODO generative testing for behavioral equivalency to j.u.BitSet
 
 class BitsetTest {
-    fun elements(bs: ImmutableBitSet): List<Int> {
+    private fun elements(bs: ImmutableBitSet): List<Int> {
         return bs.iterator().asSequence().toList()
     }
 
-    val e = ImmutableBitSet.EMPTY
+    private val e = ImmutableBitSet.EMPTY
 
     @Test
     fun `base case`() {
