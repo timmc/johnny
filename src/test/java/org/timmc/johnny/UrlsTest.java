@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
 
-public class UrlsTest {
+class UrlsTest {
     @Test
-    public void scheme() {
+    void scheme() {
         HostedUri ipfsUpper = Urls.parse("IPFS://BAFYBEICZSSCDSBS7FFQZ55ASQDF3SMV6KLCW3GOFSZVWLYARCI47BGF354/");
         assertEquals("IPFS", ipfsUpper.getSchemeRaw());
         assertEquals("ipfs", ipfsUpper.getScheme());

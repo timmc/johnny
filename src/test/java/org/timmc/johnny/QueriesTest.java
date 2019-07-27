@@ -6,9 +6,9 @@ import org.timmc.johnny.internal.coll.MapEntry;
 
 import java.util.*;
 
-public class QueriesTest {
+class QueriesTest {
     @Test
-    public void missing() {
+    void missing() {
         // Url-level q-parse defaults
         assertEquals(Queries.empty(), Urls.parse("http://localhost").getQuery());
         // Urls-level q-parse defaults
@@ -16,7 +16,7 @@ public class QueriesTest {
     }
 
     @Test
-    public void emptyEquality() {
+    void emptyEquality() {
         Params missing = Urls.parse("http://localhost").getQuery();
         Params empty = Urls.parse("http://localhost?").getQuery();
         Params degenerate = Urls.parse("http://localhost?&&&").getQuery();
@@ -30,14 +30,14 @@ public class QueriesTest {
      * Behavioral testing of various routes to an empty Params.
      */
     @Test
-    public void empty() {
+    void empty() {
         for (Params empty: Arrays.asList(
             Queries.parse(""),
             Queries.parse("&&&&&"),
             Queries.empty(),
             Queries.empty().appendAll(new ArrayList<MapEntry<String, String>>()),
-            Queries.from("foo", new ArrayList<String>()),
-            Queries.from(new HashMap<String, String>()),
+            Queries.from("foo", new ArrayList<>()),
+            Queries.from(new HashMap<>()),
             Queries.from("foo", "bar").removeAll("foo")
         )) {
             assertEquals(0, empty.getPairs().size());
@@ -56,7 +56,7 @@ public class QueriesTest {
      * Behavioral testing of a Params made from parsing
      */
     @Test
-    public void parsed() {
+    void parsed() {
         Params q = Queries.parse("a&b=&a=65");
 
         assertNotNull(q);
@@ -66,9 +66,9 @@ public class QueriesTest {
         assertEquals(3, q.countPairs());
         assertEquals(
             Arrays.asList(
-                new MapEntry<String, String>("a", null),
-                new MapEntry<String, String>("b", ""),
-                new MapEntry<String, String>("a", "65")
+                new MapEntry<>("a", null),
+                new MapEntry<>("b", ""),
+                new MapEntry<>("a", "65")
             ),
             q.getPairs());
 
@@ -78,7 +78,7 @@ public class QueriesTest {
     }
 
     @Test
-    public void appending() {
+    void appending() {
         Params base = Queries.parse("m=5&m=6");
         assertNotNull(base);
         Params appended = base.append("m", "6") // again

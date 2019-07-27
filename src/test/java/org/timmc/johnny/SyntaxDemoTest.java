@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 /** Demonstrate basic usage. */
-public class SyntaxDemoTest {
+class SyntaxDemoTest {
 
     /*
      * NOTICE: All the real tests are in src/main/clojure -- this is just
@@ -23,7 +23,7 @@ public class SyntaxDemoTest {
      * Demonstrate setter workflow.
      */
     @Test
-    public void testWorkflow() throws UrlDecodeException {
+    void testWorkflow() throws UrlDecodeException {
         HostedUri result = Urls.parse("http://brightcove.com/login?email=jrh@example.net")
                          .withPort(8443)
                          .withScheme("https")
@@ -35,12 +35,12 @@ public class SyntaxDemoTest {
      * Demonstrate query manipulation.
      */
     @Test
-    public void testQS() throws UrlDecodeException {
+    void testQS() throws UrlDecodeException {
         HostedUri orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
         HostedUri result = orig.withQuery(orig.getQuery()
                                         .append("foo", "bar")
                                         .replace("a", null));
-        assertTrue(Arrays.<String>asList(
+        assertTrue(Arrays.asList(
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"
                 ).contains(result.format()));
@@ -50,7 +50,7 @@ public class SyntaxDemoTest {
      * Demonstrate construction with structured components.
      */
     @Test
-    public void testConstruction() {
+    void testConstruction() {
         HostedUri u = Urls.from("https", new RegNameHost("brightcove.com"))
             .withPath(Paths.from("v1", "api", "123"))
             .withQuery(Queries.from("foo", "bar"));

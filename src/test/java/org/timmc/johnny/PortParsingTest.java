@@ -3,9 +3,9 @@ package org.timmc.johnny;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PortParsingTest {
+class PortParsingTest {
     @Test
-    public void basic() {
+    void basic() {
         HostedUri uri = Urls.parse("http://example.com:8080/path");
         assertEquals("8080", uri.getPortRaw());
         assertEquals(8080, (int) uri.getPort());
@@ -17,7 +17,7 @@ public class PortParsingTest {
     // [0,65535])
 
     @Test
-    public void asLowAsZero() {
+    void asLowAsZero() {
         // TODO Revisit: Is a zero port acceptable?
         HostedUri uri = Urls.parse("http://example.com:0/path");
         assertEquals("0", uri.getPortRaw());
@@ -28,7 +28,7 @@ public class PortParsingTest {
     // TODO Port number with giant numeric sequence
 
     @Test
-    public void asHighAsMaxInt() {
+    void asHighAsMaxInt() {
         // TODO Revisit: Is a port value over 65535 acceptable?
         HostedUri uri = Urls.parse("http://example.com:2147483647/path");
         assertEquals("2147483647", uri.getPortRaw());
@@ -38,7 +38,7 @@ public class PortParsingTest {
 
     /** Strip leading zeroes, and parse in decimal */
     @Test
-    public void zeroNormalization() {
+    void zeroNormalization() {
         HostedUri uri = Urls.parse("http://example.com:0020/path");
         assertEquals("0020", uri.getPortRaw());
         assertEquals(20, (int) uri.getPort());
@@ -47,7 +47,7 @@ public class PortParsingTest {
 
     /** Scheme-based normalization of default port numbers */
     @Test
-    public void defaultPortNormalization() {
+    void defaultPortNormalization() {
         // RFC 3986 §3.2.3: URI producers and normalizers should omit the
         // port component and its ":" delimiter if port is empty or if its
         // value would be the same as that of the scheme's default.

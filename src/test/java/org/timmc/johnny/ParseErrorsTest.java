@@ -3,9 +3,9 @@ package org.timmc.johnny;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-public class ParseErrorsTest {
+class ParseErrorsTest {
     @Test
-    public void relativePath() {
+    void relativePath() {
         try {
             Urls.parse("/.well-known/robots.txt");
             fail("Expected decode exception for relative URI");
@@ -15,7 +15,7 @@ public class ParseErrorsTest {
     }
 
     @Test
-    public void hostlessUri() {
+    void hostlessUri() {
         try {
             Urls.parse("tel:+1-800-222-1222");
             fail("Expected decode exception for hostless URI scheme");

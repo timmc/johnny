@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HostTest {
+class HostTest {
     /** Parse and retrieve, check type and equality */
     @Test
-    public void parsingAndRawPreservation() {
+    void parsingAndRawPreservation() {
         List<List<Object>> samples = Arrays.asList(
             Arrays.asList("example.com", new RegNameHost("example.com")),
             Arrays.asList("1.2.3.4", new IPv4Host(1, 2, 3, 4)),
@@ -59,7 +59,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipv6() {
+    void ipv6() {
         IPv6Host h6 = (IPv6Host) Urls.parse("https://[::1%25a%2Fb]/").getHost();
         assertEquals("::1", h6.getAddress());
         assertEquals("[::1%25a%2Fb]", h6.getRaw());
@@ -67,7 +67,7 @@ public class HostTest {
     }
 
     @Test
-    public void nullChecks() {
+    void nullChecks() {
         assertThrowsNPE(new Runnable() { public void run() {
             new RegNameHost(null); } });
         assertThrowsNPE(new Runnable() { public void run() {
@@ -114,7 +114,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipv4Ambiguity() {
+    void ipv4Ambiguity() {
         // RFC 3986 §3.2.2
         // The syntax rule for host is ambiguous because it does not completely
         // distinguish between an IPv4address and a reg-name.  In order to
@@ -131,8 +131,8 @@ public class HostTest {
 
     /** Check if IPv4Host copies array on input */
     @Test
-    public void ipv4SafetyCopying() {
-        List<Integer> quad = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+    void ipv4SafetyCopying() {
+        List<Integer> quad = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
         IPv4Host ipA = new IPv4Host(quad);
         // Mutate after passing
         quad.set(0, 100);
@@ -142,7 +142,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipvFutureVersion() {
+    void ipvFutureVersion() {
         assertEquals(1, ((IPvFutureHost) Urls.parse("http://[v1.foo]").getHost()).getFormatVersion());
         assertEquals(255, ((IPvFutureHost) Urls.parse("http://[vff.~$]").getHost()).getFormatVersion());
     }
