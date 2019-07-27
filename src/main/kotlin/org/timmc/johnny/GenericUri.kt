@@ -33,4 +33,26 @@ constructor(
      * with same implications as in [queryRaw].
      */
     val fragmentRaw: String?
-)
+) {
+
+    /**
+     * Convert to a [HostedUri] if possible, else throw an
+     * IllegalArgumentException (specifically, if the generic URI
+     * lacks an authority component.)
+     */
+    @Throws(IllegalArgumentException::class)
+    fun toHostedUri(): HostedUri {
+        if (authority == null) {
+            throw IllegalArgumentException("URI does not have a host component")
+        }
+        return HostedUri(
+            schemeRaw = schemeRaw,
+            userInfoRaw = authority.userinfoRaw,
+            host = authority.host,
+            portRaw = authority.portRaw,
+            pathRaw = pathRaw,
+            queryRaw = queryRaw,
+            fragmentRaw = fragmentRaw
+        )
+    }
+}

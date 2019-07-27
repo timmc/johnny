@@ -27,30 +27,9 @@ interface UrlParser {
     fun parseHostedUri(input: String): HostedUri {
         val uri = parseGenericUri(input)
         try {
-            return narrowToHostedUri(uri)
-        } catch(e: Exception) {
+            return uri.toHostedUri()
+        } catch (e: Exception) {
             throw UrlDecodeException("Valid URI, but does not have a host component")
         }
     }
-}
-
-/**
- * Convert a [GenericUri] to a [HostedUri] if possible, else throw an
- * IllegalArgumentException (specifically, if the generic URI
- * lacks an authority component.)
- */
-@Throws(IllegalArgumentException::class)
-fun narrowToHostedUri(generic: GenericUri): HostedUri {
-    if (generic.authority == null) {
-        throw IllegalArgumentException("URI does not have a host component")
-    }
-    return HostedUri(
-        schemeRaw = generic.schemeRaw,
-        userInfoRaw = generic.authority.userinfoRaw,
-        host = generic.authority.host,
-        portRaw = generic.authority.portRaw,
-        pathRaw = generic.pathRaw,
-        queryRaw = generic.queryRaw,
-        fragmentRaw = generic.fragmentRaw
-    )
 }
