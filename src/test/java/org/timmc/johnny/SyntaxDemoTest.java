@@ -1,10 +1,10 @@
 package org.timmc.johnny;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Demonstrate basic usage. */
 public class SyntaxDemoTest {

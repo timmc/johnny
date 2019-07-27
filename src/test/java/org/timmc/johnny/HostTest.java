@@ -1,7 +1,7 @@
 package org.timmc.johnny;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +31,9 @@ public class HostTest {
 
             Host actual = Urls.parse("https://" + raw).getHost();
 
-            assertEquals("Parsed host",  expectedParsed, actual);
-            assertEquals("Round-tripped raw host", raw, actual.getRaw());
+            assertEquals(expectedParsed, actual);
+            // Round-tripped raw host
+            assertEquals(raw, actual.getRaw());
         }
 
         // When given huge numeric sequence in IPv4-like address, fall back to
@@ -122,10 +123,10 @@ public class HostTest {
         // considered an IPv4 address literal and not a reg-name.
         assertEquals(new IPv4Host(0, 0, 0, 0), Urls.parse("http://0.0.0.0").getHost());
         // TODO should all-numeric hosts be always treated as IPv4, but invalid?
-        assertEquals("Leading zeroes",
-            new RegNameHost("00.00.00.00"), Urls.parse("http://00.00.00.00").getHost());
-        assertEquals("Out of range",
-            new RegNameHost("1.1.1.256"), Urls.parse("http://1.1.1.256").getHost());
+        // Leading zeroes
+        assertEquals(new RegNameHost("00.00.00.00"), Urls.parse("http://00.00.00.00").getHost());
+        // Out of range
+        assertEquals(new RegNameHost("1.1.1.256"), Urls.parse("http://1.1.1.256").getHost());
     }
 
     /** Check if IPv4Host copies array on input */

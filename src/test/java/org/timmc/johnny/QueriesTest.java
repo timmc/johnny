@@ -1,7 +1,7 @@
 package org.timmc.johnny;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 import org.timmc.johnny.internal.coll.MapEntry;
 
 import java.util.*;
