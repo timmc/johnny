@@ -114,11 +114,11 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
         if (effect.absolute) {
             return TextPath(effect.added, effect.hadTrailingSlash)
         } else {
-            val build = ArrayList(segments)
+            var build: MutableList<String> = ArrayList(segments)
 
             if (effect.backwards > 0) {
                 val newSize = Math.max(0, build.size - effect.backwards)
-                build.subList(0, newSize)
+                build = build.subList(0, newSize)
             }
 
             build.addAll(effect.added)

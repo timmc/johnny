@@ -102,6 +102,8 @@ class PathsTest {
 
         // Absolute
         assertEquals("/d/e", Paths.parse("/a/b/c").resolveRelative("/d/e").format());
+        // Path traversal
+        assertEquals("/a/b/e/", Paths.parse("/a/b/c").resolveRelative("d/../../e/./").format());
     }
 
     @Test void formatting() {
