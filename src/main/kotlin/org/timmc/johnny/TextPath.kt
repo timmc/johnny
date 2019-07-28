@@ -15,9 +15,7 @@ import org.timmc.johnny.internal.Constants
  * contains the segments `["foo", "bar", "ba/z"]` and has a flag
  * set indicating the trailing slash.
  *
- *
  * TextPath will attempt to keep itself in normalized form.
- *
  *
  * This implementation of path parsing does *not* respect path parameters.
  */
@@ -81,10 +79,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
      * Append more segments to a path.
      * @param more Further path segments (not null).
      */
-    fun addSegments(more: TextPath?): TextPath {
-        if (more == null) {
-            throw NullPointerException("Additional TextPath may not be null")
-        }
+    fun addSegments(more: TextPath): TextPath {
         return addSegments(more.segments)
             .withTrailingSlash(more.hasTrailingSlash())
     }
@@ -146,10 +141,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
         val EMPTY = TextPath(emptyList(), false)
 
         /** Normalize (if necessary).  */
-        private fun normComponent(input: List<String>?): List<String> {
-            if (input == null) {
-                throw NullPointerException("segments may not be null")
-            }
+        private fun normComponent(input: List<String>): List<String> {
             return if (!isNormalized(input)) {
                 normalize(input)
             } else input
@@ -189,10 +181,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
          * @return Effect on an existing path component, with decoded segments.
          */
         @Throws(UriDecodeException::class)
-        private fun effectOf(pathRef: String?): PathEffect {
-            if (pathRef == null) {
-                throw NullPointerException("path reference may not be null.")
-            }
+        private fun effectOf(pathRef: String): PathEffect {
             val absolute = Paths.isAbsolute(pathRef)
             val effect = effectOf(decodeEach(Paths.explodeRaw(pathRef)))
             return PathEffect(

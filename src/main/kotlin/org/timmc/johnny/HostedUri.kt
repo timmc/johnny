@@ -221,10 +221,7 @@ data class HostedUri
      * @param value Nullable query param value
      */
     @Throws(UriDecodeException::class)
-    fun querySetKey(key: String?, value: String): HostedUri {
-        if (key == null) {
-            throw NullPointerException("Cannot append null query key")
-        }
+    fun querySetKey(key: String, value: String): HostedUri {
         return withQuery(query.replace(key, value))
     }
 
@@ -236,10 +233,7 @@ data class HostedUri
      * @return Possibly empty collection of values for key
      */
     @Throws(UriDecodeException::class)
-    fun queryGet(key: String?): Collection<String?> {
-        if (key == null) {
-            throw NullPointerException("Cannot search for null query key")
-        }
+    fun queryGet(key: String): Collection<String?> {
         return query.getAll(key)
     }
 
@@ -251,10 +245,7 @@ data class HostedUri
      * @return Last value for key, null iff key not present.
      */
     @Throws(UriDecodeException::class)
-    fun queryGetLast(key: String?): String? {
-        if (key == null) {
-            throw NullPointerException("Cannot search for null query key")
-        }
+    fun queryGetLast(key: String): String? {
         return query.getLast(key)
     }
 

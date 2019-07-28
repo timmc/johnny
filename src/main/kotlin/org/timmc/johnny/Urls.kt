@@ -50,7 +50,7 @@ object Urls {
     /**
      * Parse a path to the default piecewise URI query representation
      * using the default parser.
-     * @param pathRaw Non-null path component
+     * @param pathRaw Non-null path component (may be empty)
      */
     @JvmStatic
     @Throws(UriDecodeException::class)

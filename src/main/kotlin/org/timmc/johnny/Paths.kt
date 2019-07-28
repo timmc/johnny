@@ -25,7 +25,7 @@ import java.util.Arrays
 object Paths {
 
     /**
-     * Parse an raw (undecoded) path from a URL. Empty segments will be removed
+     * Parse a raw (undecoded) path from a URL. Empty segments will be removed
      * and relative segments ("." and "..") will be cancelled out. The
      * presence of any trailing slash will be noted.
      * @param pathRaw Raw path component of a URL (not null, may either be
@@ -33,10 +33,7 @@ object Paths {
      */
     @JvmStatic
     @Throws(UriDecodeException::class)
-    fun parse(pathRaw: String?): TextPath {
-        if (pathRaw == null) {
-            throw NullPointerException("Raw path must not be null.")
-        }
+    fun parse(pathRaw: String): TextPath {
         if (!pathRaw.isEmpty() && !pathRaw.startsWith("/")) {
             throw UriDecodeException("Non-empty path component did not start with a slash")
         }

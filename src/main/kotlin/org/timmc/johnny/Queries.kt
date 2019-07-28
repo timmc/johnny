@@ -57,10 +57,7 @@ object Queries {
      * the key
      */
     @JvmStatic
-    fun from(key: String?, vals: Iterable<String>): Params {
-        if (key == null) {
-            throw NullPointerException("Param key may not be null")
-        }
+    fun from(key: String, vals: Iterable<String>): Params {
         val pairs = ArrayList<MapEntry<String, String>>()
         for (`val` in vals) {
             pairs.add(MapEntry(key, `val`))
