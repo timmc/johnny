@@ -103,7 +103,7 @@ Parse and manipulate components:
     - Perhaps grab data from https://commoncrawl.org and extract all hrefs
 - Test that `;` is escaped in at least one query encoder
 - Test that NPE is thrown whereever null is not accepted
-- Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
+- Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
 - Test that we don't fall victim to java.net.URI's constructor bug:
   There is no `x` such that
   `java.net.URI("http", "example.com", "/", x, null).equals(new java.net.URI("http://example.com/?ampersand=%26")`.
@@ -146,8 +146,7 @@ Parse and manipulate components:
 
 Host parsing turns out to be tricky for the following reasons:
 
-- The host component is a reg-name or an ip. Registered names are### Variations
-
+- The host component is a reg-name or an ip. Registered names are
   *usually* domain names (or at least the subset of domain names that
   *can* be hostnames, e.g. those without underscores), but RFC 3986
   allows for `*( unreserved / pct-encoded / sub-delims )` which has
