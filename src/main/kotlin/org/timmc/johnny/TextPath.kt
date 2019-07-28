@@ -1,13 +1,12 @@
 package org.timmc.johnny
 
-import java.util.ArrayList
-import java.util.Collections
 import java.util.regex.Pattern
 
 import org.timmc.johnny.internal.Ascii7Oracle
 import org.timmc.johnny.internal.ByCharPercentEncoder
 import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.Constants
+import java.util.*
 
 /**
  * The path component of a URL, consisting of a series of
@@ -67,11 +66,14 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
     }
 
     /**
-     * Append or replace with the provided path.
+     * Append or replace with the provided path. If the provided string is an
+     * absolute path, it will remove any existing segments; if it is relative,
+     * it may either append to the existing path, remove some of its segments,
+     * or both (performs traversal if ".." segments encountered).
      * @param rawRelative Absolute or relative path.
      */
     @Throws(UriDecodeException::class)
-    fun addRawPath(rawRelative: String): TextPath {
+    fun resolveRelative(rawRelative: String): TextPath {
         return applyEffect(effectOf(rawRelative))
     }
 
@@ -130,6 +132,22 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
             }
             return TextPath(build, useTrailingSlash)
         }
+    }
+
+    //== Object overrides ==//
+
+    override fun equals(other: Any?): Boolean {
+        return other is TextPath &&
+            trailingSlash == other.trailingSlash &&
+            segments == other.segments
+    }
+
+    override fun hashCode(): Int {
+        return Arrays.hashCode(arrayOf(segments, trailingSlash))
+    }
+
+    override fun toString(): String {
+        return format()
     }
 
     companion object {

@@ -20,7 +20,6 @@ import java.util.Arrays
  * `/foo/bar%2Fbaz` be interpreted as `/foo/bar/baz`
  * (the former has two segments which decode to
  * `["foo", "bar/baz"]`.
- *
  */
 object Paths {
 
@@ -37,12 +36,12 @@ object Paths {
         if (!pathRaw.isEmpty() && !pathRaw.startsWith("/")) {
             throw UriDecodeException("Non-empty path component did not start with a slash")
         }
-        return TextPath.EMPTY.addRawPath(pathRaw)
+        return TextPath.EMPTY.resolveRelative(pathRaw)
     }
 
     /**
-     * Create a path from a series of path segments, not encoded. Validates
-     * that segments are not null or empty.
+     * Create a path from a series of path segments, not encoded. Throws if
+     * any segment is null or empty.
      */
     @JvmStatic
     fun from(vararg pathSegs: String): TextPath {
@@ -57,7 +56,9 @@ object Paths {
     /**
      * Explode a raw path (component or reference) without decoding it. This
      * will lose information about whether a path reference started with a
-     * slash; see [isAbsolute].
+     * slash; see [isAbsolute]. This is intended to be used by callers who
+     * want to use path parameters or similar.
+     *
      * @param path Raw path, possibly relative. Not null.
      * @return Raw segments of path, including empty and traversal segments.
      */
