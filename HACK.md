@@ -229,6 +229,8 @@ These have at least one useful thing:
 - commons-httpclient/commons-httpclient 3.1 for URIUtils escapeWithinX
   methods (although it does parse fragments incorrectly by looking for
   last `#`) and URI bitset building
+- http://wiki.call-cc.org/eggref/5/uri-generic seems to have the same
+  aim as this project, and a good collection of tests
 
 ### Unuseful
 
