@@ -7,6 +7,7 @@ import org.timmc.johnny.internal.ByCharPercentEncoder
 import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.Constants
 import java.util.*
+import kotlin.math.max
 
 /**
  * The path component of a URL, consisting of a series of
@@ -70,11 +71,25 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
      * absolute path, it will remove any existing segments; if it is relative,
      * it may either append to the existing path, remove some of its segments,
      * or both (performs traversal if ".." segments encountered).
+     *
      * @param rawRelative Absolute or relative path.
      */
+    // This conforms to RFC 3986, but TODO: implement merge/remove-dots instead
+    // for better matching of other URI processors, just in case we missed
+    // a corner case.
     @Throws(UriDecodeException::class)
     fun resolveRelative(rawRelative: String): TextPath {
-        return applyEffect(effectOf(rawRelative))
+        if (rawRelative.isEmpty()) {
+            return this
+        }
+        // When resolving a relative path, drop everything after the last slash
+        // in the base path.
+        val effectiveBase = if (trailingSlash) {
+            this
+        } else {
+            TextPath(segments = segments.dropLast(1), trailingSlash = true)
+        }
+        return effectiveBase.applyEffect(effectOf(rawRelative))
     }
 
     /**
@@ -114,23 +129,22 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
         if (effect.absolute) {
             return TextPath(effect.added, effect.hadTrailingSlash)
         } else {
-            var build: MutableList<String> = ArrayList(segments)
-
-            if (effect.backwards > 0) {
-                val newSize = Math.max(0, build.size - effect.backwards)
-                build = build.subList(0, newSize)
+            val truncated = if (effect.backwards > 0) {
+                val newSize = max(0, segments.size - effect.backwards)
+                segments.subList(0, newSize)
+            } else {
+                ArrayList(segments)
             }
 
-            build.addAll(effect.added)
-
+            // Only use the effect's trailingSlash value if the effect adds or
+            // removes something.
             val useTrailingSlash = if (effect.added.isEmpty() && effect.backwards == 0) {
-                // If nothing was added or removed, don't inherit the effect's
-                // trailing slash.
                 trailingSlash
             } else {
                 effect.hadTrailingSlash
             }
-            return TextPath(build, useTrailingSlash)
+
+            return TextPath(truncated + effect.added, useTrailingSlash)
         }
     }
 

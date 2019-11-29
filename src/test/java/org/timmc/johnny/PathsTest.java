@@ -96,14 +96,35 @@ class PathsTest {
     }
 
     @Test void resolveRelative() {
-        // Adding empty raw path doesn't add an empty segment
-        assertEquals("/foo/bar", Paths.parse("/foo/bar").resolveRelative("").format());
-        assertEquals("/foo/bar/", Paths.parse("/foo/bar/").resolveRelative("").format());
-
         // Absolute
         assertEquals("/d/e", Paths.parse("/a/b/c").resolveRelative("/d/e").format());
+
         // Path traversal
-        assertEquals("/a/b/e/", Paths.parse("/a/b/c").resolveRelative("d/../../e/./").format());
+        assertEquals("/a/b/e/", Paths.parse("/a/b/c/").resolveRelative("d/../../e/./").format());
+
+        // Replacing current is *different* with/without a trailing slash on the original
+        assertEquals("/a/b/index.html", Paths.parse("/a/b/c").resolveRelative("index.html").format());
+        assertEquals("/a/b/c/index.html", Paths.parse("/a/b/c/").resolveRelative("index.html").format());
+        // Same when traversing upward
+        assertEquals("/a/index.html", Paths.parse("/a/b/c").resolveRelative("../index.html").format());
+        assertEquals("/a/b/index.html", Paths.parse("/a/b/c/").resolveRelative("../index.html").format());
+        // And with current-dir
+        assertEquals("/a/b/", Paths.parse("/a/b/c").resolveRelative(".").format());
+        assertEquals("/a/b/c/", Paths.parse("/a/b/c/").resolveRelative(".").format());
+        // ...with or without trailing slash on relative path
+        assertEquals("/a/b/", Paths.parse("/a/b/c").resolveRelative("./").format());
+        assertEquals("/a/b/c/", Paths.parse("/a/b/c/").resolveRelative("./").format());
+        // But adding *empty* raw path doesn't add an empty segment (or remove
+        // the current one when slashless)
+        assertEquals("/a/b", Paths.parse("/a/b").resolveRelative("").format());
+        assertEquals("/a/b/", Paths.parse("/a/b/").resolveRelative("").format());
+
+        // Short base paths
+        assertEquals("/index.html", Paths.parse("/a").resolveRelative("index.html").format());
+        assertEquals("/a/index.html", Paths.parse("/a/").resolveRelative("index.html").format());
+        // Empty base paths
+        assertEquals("/index.html", Paths.parse("").resolveRelative("index.html").format());
+        assertEquals("/index.html", Paths.parse("/").resolveRelative("index.html").format());
     }
 
     @Test void formatting() {
@@ -114,6 +135,6 @@ class PathsTest {
     @Test void integration() {
         HostedUri u = Urls.parse("http://[::1]/foo/bar");
         u = u.withPath(u.getPath().resolveRelative("baz;a=b/quux").addOneSegment("/a?;"));
-        assertEquals("http://[::1]/foo/bar/baz;a=b/quux/%2Fa%3F;", u.format());
+        assertEquals("http://[::1]/foo/baz;a=b/quux/%2Fa%3F;", u.format());
     }
 }
