@@ -33,7 +33,7 @@ class PathsTest {
         assertEquals(Arrays.asList("a"), Paths.from("a").getSegments());
         assertEquals(Arrays.asList("foo", "bar", "baz"), Paths.from("foo", "bar", "baz").getSegments());
 
-        // Doesnt include a trailing slash
+        // Doesn't include a trailing slash
         assertEquals(false, Paths.from("a", "bc").hasTrailingSlash());
 
         // Checks for null or empty segments

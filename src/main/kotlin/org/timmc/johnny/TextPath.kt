@@ -143,7 +143,7 @@ private constructor(segments: List<String>, private val trailingSlash: Boolean) 
     }
 
     override fun hashCode(): Int {
-        return Arrays.hashCode(arrayOf(segments, trailingSlash))
+        return arrayOf(segments, trailingSlash).contentHashCode()
     }
 
     override fun toString(): String {

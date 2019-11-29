@@ -1,7 +1,5 @@
 package org.timmc.johnny
 
-import java.util.Arrays
-
 /**
  * Utilities for working with standard RFC 3986 paths.
  *
@@ -33,7 +31,7 @@ object Paths {
     @JvmStatic
     @Throws(UriDecodeException::class)
     fun parse(pathRaw: String): TextPath {
-        if (!pathRaw.isEmpty() && !pathRaw.startsWith("/")) {
+        if (pathRaw.isNotEmpty() && !pathRaw.startsWith("/")) {
             throw UriDecodeException("Non-empty path component did not start with a slash")
         }
         return TextPath.EMPTY.resolveRelative(pathRaw)
@@ -50,7 +48,7 @@ object Paths {
                 throw IllegalArgumentException("Path segments may not be empty")
             }
         }
-        return TextPath.EMPTY.addSegments(Arrays.asList(*pathSegs))
+        return TextPath.EMPTY.addSegments(listOf(*pathSegs))
     }
 
     /**

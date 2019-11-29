@@ -107,7 +107,7 @@ data class HostedUri
      * Parse and return the path component.
      * @return Non-null
      */
-    val path: TextPath?
+    val path: TextPath
         @Throws(UriDecodeException::class)
         get() = Urls.parsePath(pathRaw)
 
@@ -221,7 +221,7 @@ data class HostedUri
      * @param value Nullable query param value
      */
     @Throws(UriDecodeException::class)
-    fun querySetKey(key: String, value: String): HostedUri {
+    fun querySetKey(key: String, value: String?): HostedUri {
         return withQuery(query.replace(key, value))
     }
 
