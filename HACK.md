@@ -28,13 +28,18 @@ Some tests are still in Clojure from an earlier iteration.
 
 ### Building
 
-johnny is managed with the aven build tool.
+johnny is managed with the Maven build tool.
 
 - Build: `mvn clean compile` (not usually necessary, but if
   you encounter surprising behavior during tests, you may want to do
   this clean rebuild)
 - Test: `mvn test`
 - Package: `mvn package`
+
+You'll likely need to run the build using JDK 1.8 rather than newer,
+module-system JDKs, e.g.
+
+`JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ mvn package`
 
 ### Process
 
