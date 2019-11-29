@@ -37,7 +37,7 @@
     <kotlin.compiler.jvmTarget>1.6</kotlin.compiler.jvmTarget>
     <kotlin.code.style>official</kotlin.code.style>
 
-    <kotlin.version>1.3.10</kotlin.version>
+    <kotlin.version>1.3.61</kotlin.version>
     <junit.version>5.5.1</junit.version>
     <antlr.version>4.7.1</antlr.version>
   </properties>
