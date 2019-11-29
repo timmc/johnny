@@ -28,12 +28,13 @@ Some tests are still in Clojure from an earlier iteration.
 
 ### Building
 
-johnny is managed with the Maven build tool.
+johnny is managed with the Maven build tool with some tests still
+run via Leiningen.
 
 - Build: `mvn clean compile` (not usually necessary, but if
   you encounter surprising behavior during tests, you may want to do
   this clean rebuild)
-- Test: `mvn test`
+- Test: `mvn test && lein test`
 - Package: `mvn package`
 
 You'll likely need to run the build using JDK 1.8 rather than newer,
