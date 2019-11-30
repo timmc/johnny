@@ -42,6 +42,13 @@ module-system JDKs, e.g.
 
 `JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ mvn package`
 
+### Release
+
+Deploys snapshots and releases to
+[Sonatype's open source repo hosting][ossrh] via `mvn clean deploy`.
+
+[ossrh]: https://central.sonatype.org/pages/ossrh-guide.html
+
 ### Process
 
 All skill levels welcome. Please consider opening an issue before
