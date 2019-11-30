@@ -45,14 +45,14 @@ Maven:
 <dependency>
   <groupId>org.timmc</groupId>
   <artifactId>johnny</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.1</version>
 </dependency>
 ```
 
 Leiningen:
 
 ```clojure
-[org.timmc/johnny "0.1.1"]
+[org.timmc/johnny "0.2.1"]
 ```
 
 ## Usage
