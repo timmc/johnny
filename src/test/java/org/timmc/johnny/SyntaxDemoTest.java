@@ -37,9 +37,7 @@ class SyntaxDemoTest {
     @Test
     void testQS() throws UriDecodeException {
         HostedUri orig = Urls.parse("http://brightcove.com/login?a=b=c&a=?d");
-        HostedUri result = orig.withQuery(orig.getQuery()
-                                        .append("foo", "bar")
-                                        .replace("a", null));
+        HostedUri result = orig.mapQuery((q) -> q.append("foo", "bar").replace("a", null));
         assertTrue(Arrays.asList(
                 "http://brightcove.com/login?foo=bar&a",
                 "http://brightcove.com/login?a&foo=bar"

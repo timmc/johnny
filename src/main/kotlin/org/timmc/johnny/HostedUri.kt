@@ -4,6 +4,7 @@ import org.timmc.johnny.internal.Codecs
 import org.timmc.johnny.internal.UserPassParser
 
 import java.util.Locale
+import java.util.function.Function
 
 /**
  * A URI with a host component (usually synonymous with URL).
@@ -172,6 +173,9 @@ data class HostedUri
         return withSchemeRaw(scheme)
     }
 
+    /** Set scheme by running a transform on the existing scheme. */
+    fun mapScheme(f: Function<String, String>) = withScheme(f.apply(scheme))
+
     /**
      * Set raw userinfo by encoding provided userinfo with standard userinfo encoder.
      * @param userInfo Nullable
@@ -180,11 +184,17 @@ data class HostedUri
         return withUserInfoRaw(userInfo?.format())
     }
 
+    /** Set userinfo by running a transform on the parsed userinfo. */
+    fun mapUserPass(f: Function<UserPass?, UserPass?>) = withUserPass(f.apply(userPass))
+
     /** See [port].  */
     fun withPort(port: Int?): HostedUri {
         val portRaw = port?.toString()
         return withPortRaw(portRaw)
     }
+
+    /** Set port by running a transform on the parsed port. */
+    fun mapPort(f: Function<Int?, Int?>) = withPort(f.apply(port))
 
     /**
      * Set raw path by encoding provided path with standard path encoder. (TODO: Different language for with*)
@@ -194,6 +204,9 @@ data class HostedUri
         return withPathRaw(path.format())
     }
 
+    /** Set path by running a transform on the parsed path. */
+    fun mapPath(f: Function<TextPath, TextPath>) = withPath(f.apply(path))
+
     /**
      * Set raw query by encoding provided query with standard query encoder.
      * @param q Possibly null Query
@@ -201,6 +214,9 @@ data class HostedUri
     fun withQuery(q: Params): HostedUri {
         return withQueryRaw(Queries.formatQuery(q))
     }
+
+    /** Set query by running a transform on the parsed query. */
+    fun mapQuery(f: Function<Params, Params>) = withQuery(f.apply(query))
 
     /**
      * Set raw fragment by encoding provided fragment with standard encoder.
@@ -210,6 +226,9 @@ data class HostedUri
         val fragmentRaw = if (fragment == null) null else Codecs.percentEncodeFragment(fragment)
         return withFragmentRaw(fragmentRaw)
     }
+
+    /** Set fragment by running a transform on the decoded fragment. */
+    fun mapFragment(f: Function<String?, String?>) = withFragment(f.apply(fragment))
 
     /*== Convenience: Query-specific ==*/
 
