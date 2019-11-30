@@ -35,7 +35,6 @@ run via Leiningen.
   you encounter surprising behavior during tests, you may want to do
   this clean rebuild)
 - Test: `mvn test && lein test`
-- Package: `mvn package`
 
 You'll likely need to run the build using JDK 1.8 rather than newer,
 module-system JDKs, e.g.
@@ -58,6 +57,17 @@ it. It will take some time for this to complete, and even longer for
 the deployment to sync to the Central repo.
 
 [manual-release]: https://central.sonatype.org/pages/releasing-the-deployment.html
+
+Dokka, the Kotlin documentation generator, has some verbose complaints
+that are mostly irrelevant. To strip out most of the noise and see if
+there are any real issues, run:
+
+```
+mvn clean dokka:javadocJar \
+  | grep -v INFO \
+  | grep -v 'cannot be used in inline' \
+  | grep -v "Can't find node by signature not implemented for"
+```
 
 ### Process
 
