@@ -44,10 +44,20 @@ module-system JDKs, e.g.
 
 ### Release
 
-Deploys snapshots and releases to
-[Sonatype's open source repo hosting][ossrh] via `mvn clean deploy`.
+Deploy snapshots to [Sonatype's open source repo hosting][ossrh] via
+`mvn clean deploy`.
 
 [ossrh]: https://central.sonatype.org/pages/ossrh-guide.html
+
+Releases are a little more complicated. `mvn release:clean
+release:prepare` and then `mvn release:perform`. The release should
+appear in https://oss.sonatype.org/#stagingRepositories after a few
+minutes (when logged in as `timmc`). Then
+[manually release][manual-release] the staging repository by "closing"
+it. It will take some time for this to complete, and even longer for
+the deployment to sync to the Central repo.
+
+[manual-release]: https://central.sonatype.org/pages/releasing-the-deployment.html
 
 ### Process
 
