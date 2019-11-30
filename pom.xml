@@ -3,7 +3,7 @@
   <groupId>org.timmc</groupId>
   <artifactId>johnny</artifactId>
   <packaging>jar</packaging>
-  <version>0.2.1-SNAPSHOT</version>
+  <version>0.2.1</version>
   <name>johnny</name>
   <description>A URL parsing and manipulation library for the JVM emphasizing standards-compliance, flexibility, and ease of use.</description>
   <url>https://github.com/timmc/johnny</url>
@@ -20,7 +20,7 @@
     <url>git@github.com:timmc/johnny.git</url>
     <connection>scm:git:git://github.com/timmc/johnny.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/timmc/johnny.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>johnny-0.2.1</tag>
   </scm>
   <developers>
     <developer>
