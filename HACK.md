@@ -21,7 +21,7 @@ Some tests are still in Clojure from an earlier iteration.
   structure-sharing, not persisted-to-disk)
 - UTF-8 always (but provide facilities to allow users to introduce
   other encodings)
-- Advertise possible throwing of runtime exceptions, escept for
+- Advertise possible throwing of runtime exceptions, except for
   trivial ones like NPE
 
 ## Contributing
@@ -108,7 +108,7 @@ Parse and manipulate components:
 - Add fuzz tests/generative tests
     - Perhaps grab data from https://commoncrawl.org and extract all hrefs
 - Test that `;` is escaped in at least one query encoder
-- Test that NPE is thrown whereever null is not accepted
+- Test that NPE is thrown wherever null is not accepted
 - Example of raw non-ASCII in host: `☁→❄→☃→☀→☺→☂→☹→✝.ws`
 - Test that we don't fall victim to java.net.URI's constructor bug:
   There is no `x` such that

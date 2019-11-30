@@ -25,7 +25,7 @@ class HostTest {
             Arrays.asList("[v7.xyz]", new IPvFutureHost(7, "xyz", "[v7.xyz]"))
         );
 
-        for (List sample: samples) {
+        for (List<Object> sample: samples) {
             String raw = (String) sample.get(0);
             Host expectedParsed = (Host) sample.get(1);
 
@@ -66,34 +66,22 @@ class HostTest {
         assertEquals("a/b", h6.getZone());
     }
 
+    @SuppressWarnings("ConstantConditions") // intentionally provoking NPEs
     @Test
     void nullChecks() {
-        assertThrowsNPE(new Runnable() { public void run() {
-            new RegNameHost(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(Arrays.asList(1, 2, 3, 4), null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv4Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv6Host(null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv6Host(null, "eth0"); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv6Host(null, "eth0", "[::1%25eth0]"); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPv6Host("::1", "eth0", null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPvFutureHost(5, "abcd",null); } });
-        assertThrowsNPE(new Runnable() { public void run() {
-            new IPvFutureHost(5, null,"v5.abcd"); } });
+        assertThrowsNPE(() -> new RegNameHost(null));
+        assertThrowsNPE(() -> new IPv4Host(null));
+        assertThrowsNPE(() -> new IPv4Host(Arrays.asList(1, 2, 3, 4), null));
+        assertThrowsNPE(() -> new IPv4Host(null));
+        assertThrowsNPE(() -> new IPv4Host(null));
+        assertThrowsNPE(() -> new IPv4Host(null));
+        assertThrowsNPE(() -> new IPv4Host(null));
+        assertThrowsNPE(() -> new IPv6Host(null));
+        assertThrowsNPE(() -> new IPv6Host(null, "eth0"));
+        assertThrowsNPE(() -> new IPv6Host(null, "eth0", "[::1%25eth0]"));
+        assertThrowsNPE(() -> new IPv6Host("::1", "eth0", null));
+        assertThrowsNPE(() -> new IPvFutureHost(5, "abcd",null));
+        assertThrowsNPE(() -> new IPvFutureHost(5, null,"v5.abcd"));
     }
 
     private void assertThrowsNPE(Runnable thunk) {

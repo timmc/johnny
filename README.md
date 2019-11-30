@@ -117,7 +117,7 @@ extant bugs, and decisions that need to be made.
 
 Copyright 2013–2019 Tim McCormack (where commits authored using personal
 email address) and Brightcove, Inc. (where using brightcove.com address)
-as well as other contributers as commit metadata indicates.
+as well as other contributors as commit metadata indicates.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

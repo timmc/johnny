@@ -8,7 +8,7 @@ class PortParsingTest {
     void basic() {
         HostedUri uri = Urls.parse("http://example.com:8080/path");
         assertEquals("8080", uri.getPortRaw());
-        assertEquals(8080, (int) uri.getPort());
+        assertEquals(8080, uri.getPort());
         assertEquals("http://example.com:8080/path", uri.format());
     }
 
@@ -21,7 +21,7 @@ class PortParsingTest {
         // TODO Revisit: Is a zero port acceptable?
         HostedUri uri = Urls.parse("http://example.com:0/path");
         assertEquals("0", uri.getPortRaw());
-        assertEquals(0, (int) uri.getPort());
+        assertEquals(0, uri.getPort());
         assertEquals("http://example.com:0/path", uri.format());
     }
 
@@ -32,7 +32,7 @@ class PortParsingTest {
         // TODO Revisit: Is a port value over 65535 acceptable?
         HostedUri uri = Urls.parse("http://example.com:2147483647/path");
         assertEquals("2147483647", uri.getPortRaw());
-        assertEquals(Integer.MAX_VALUE, (int) uri.getPort());
+        assertEquals(Integer.MAX_VALUE, uri.getPort());
         assertEquals("http://example.com:2147483647/path", uri.format());
     }
 
@@ -41,7 +41,7 @@ class PortParsingTest {
     void zeroNormalization() {
         HostedUri uri = Urls.parse("http://example.com:0020/path");
         assertEquals("0020", uri.getPortRaw());
-        assertEquals(20, (int) uri.getPort());
+        assertEquals(20, uri.getPort());
         // TODO assertEquals("http://example.com:20/path", uri.format());
     }
 

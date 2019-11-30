@@ -107,15 +107,19 @@ class ArtisanalUriParser : UriParser {
                 // least *peek* at the host, but we don't want to fully parse it if we don't have to.
                 // Also, Guava doesn't know how to parse IPv6 addresses with zone identifiers.
                 val possiblePort = remaining.substring(lastColon + 1)
-                if (possiblePort.endsWith("]")) {
-                    // We probably have an IPv6 or IPvFuture address, no port
-                    hostRaw = remaining
-                    port = null
-                } else if (digitsOrEmpty.matcher(possiblePort).matches()) {
-                    hostRaw = remaining.substring(0, lastColon)
-                    port = possiblePort
-                } else {
-                    throw UriDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)")
+                when {
+                    possiblePort.endsWith("]") -> {
+                        // We probably have an IPv6 or IPvFuture address, no port
+                        hostRaw = remaining
+                        port = null
+                    }
+                    digitsOrEmpty.matcher(possiblePort).matches() -> {
+                        hostRaw = remaining.substring(0, lastColon)
+                        port = possiblePort
+                    }
+                    else -> {
+                        throw UriDecodeException("URI authority section ends in invalid port (or is unbracketed IPv6 address)")
+                    }
                 }
             }
 
@@ -127,7 +131,7 @@ class ArtisanalUriParser : UriParser {
         fun parseHost(hostRaw: String): Host {
             val ipv4Match = ipv4.matcher(hostRaw)
             if (ipv4Match.find()) {
-                val segs = (1..4).map {
+                val segs = (1..4).mapNotNull {
                     val decOctet = ipv4Match.group(it)
                     if (decOctet.startsWith('0') && decOctet.length > 1) {
                         null
@@ -143,12 +147,12 @@ class ArtisanalUriParser : UriParser {
                             seg
                         }
                     }
-                }.filterNotNull()
+                }
 
-                if (segs.size == 4) {
-                    return IPv4Host(segs, hostRaw)
+                return if (segs.size == 4) {
+                    IPv4Host(segs, hostRaw)
                 } else {
-                    return RegNameHost(hostRaw)
+                    RegNameHost(hostRaw)
                 }
             }
 

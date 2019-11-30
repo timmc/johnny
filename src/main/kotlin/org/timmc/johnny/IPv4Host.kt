@@ -14,7 +14,7 @@ data class IPv4Host @JvmOverloads constructor (
     val seg2: Int,
     /** Fourth segment of the address. */
     val seg3: Int,
-    override val raw: String = IPv4Host.format(seg0, seg1, seg2, seg3)
+    override val raw: String = format(seg0, seg1, seg2, seg3)
 ): Host() {
     init {
         if (seg0 !in 0..255 || seg1 !in 0..255 || seg2 !in 0..255 || seg3 !in 0..255)
@@ -23,7 +23,7 @@ data class IPv4Host @JvmOverloads constructor (
 
     /** Create an IPv4Host from a list of 4 integers. */
     @JvmOverloads
-    constructor(segments: List<Int>, raw: String = IPv4Host.format(segments))
+    constructor(segments: List<Int>, raw: String = format(segments))
         : this(segments[0], segments[1], segments[2], segments[3], raw)
     {
         if (segments.size != 4)

@@ -1,6 +1,6 @@
-package org.timmc.johnny.internal;
+package org.timmc.johnny.internal
 
-import java.nio.charset.Charset;
+import java.nio.charset.Charset
 
 /**
  * Percent-encodes a string a character at a time, referring to a
@@ -23,19 +23,19 @@ class ByCharPercentEncoder
         val len = input.length
         var offset = 0
         while (offset < len) {
-            val cp = input.codePointAt(offset);
-            val charLen = Character.charCount(cp);
+            val cp = input.codePointAt(offset)
+            val charLen = Character.charCount(cp)
             if (passthrough.containsCodePoint(cp)) {
-                ret.appendCodePoint(cp);
+                ret.appendCodePoint(cp)
             } else {
-                val sub: String = input.substring(offset, offset + charLen);
-                val raw = sub.toByteArray(encoding); // TODO: Support throwing instead of using replacement characters?
+                val sub: String = input.substring(offset, offset + charLen)
+                val raw = sub.toByteArray(encoding) // TODO: Support throwing instead of using replacement characters?
                 for (b in raw) {
-                    ret.append('%').append(String.format("%02X", b));
+                    ret.append('%').append(String.format("%02X", b))
                 }
             }
-            offset += charLen;
+            offset += charLen
         }
-        return ret.toString();
+        return ret.toString()
     }
 }

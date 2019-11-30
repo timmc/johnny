@@ -5,7 +5,7 @@ import kotlin.collections.Map.Entry
 import org.timmc.johnny.*
 
 /**
- * Query formatter whcih encodes queries in the standard fashion, defaulting
+ * Query formatter which encodes queries in the standard fashion, defaulting
  * to ampersand and equals as delimiters and allowing null values.
  */
 class PairQueryFormatter @JvmOverloads constructor(

@@ -1,4 +1,4 @@
-package org.timmc.johnny;
+package org.timmc.johnny
 
 /**
  * The host component of a URI using a future IP literal format. This is a

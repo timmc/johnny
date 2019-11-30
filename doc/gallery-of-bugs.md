@@ -82,12 +82,12 @@ Urls.parse("http://example.net/").equals(Urls.parse("http://example.org/")) // f
 
 RFC 3986 defines a ladder of progressively more complex
 comparison. Johnny does not yet fall into any of those categories, but
-will at some point provide a mechanism for checkign equality at those
+will at some point provide a mechanism for checking equality at those
 different levels.
 
 ## Over-encoding of query
 
-`java.net.URI` has several piece-wise contructors that accept a
+`java.net.URI` has several piece-wise constructors that accept a
 scheme, hostname, path, query, etc. However, it assumes that pieces
 like the query have *not yet been* encoded, and encodes them for the
 caller.

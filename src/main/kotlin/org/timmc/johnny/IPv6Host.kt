@@ -21,12 +21,12 @@ data class IPv6Host @JvmOverloads constructor (
     /**
      * Raw form of address, properly encoded and bracketed
      */
-    override val raw: String = IPv6Host.format(address, zone)
+    override val raw: String = format(address, zone)
 
 ) : Host() {
 
     override fun format(): String {
-        return IPv6Host.format(address, zone)
+        return format(address, zone)
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package org.timmc.johnny.internal;
+package org.timmc.johnny.internal
 
 /**
  * Represents a set of characters, either positive or negative.

@@ -1,4 +1,4 @@
-package org.timmc.johnny.internal.coll;
+package org.timmc.johnny.internal.coll
 
 /**
  * Immutable implementation of {@link java.util.Map.Entry} -- essentially,

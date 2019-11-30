@@ -138,28 +138,35 @@ class AntlrUriParser : UriParser {
         val ipv6zoned = ipNewer?.ipv6addrz()
         val ipFuture = ipNewer?.ipvfuture()
 
-        if (regname != null) {
-            return RegNameHost(host.text)
-        } else if (ipv4 != null) {
-            val octets = ArrayList<Int>(4)
-            for (octet in ipv4.dec_octet()) {
-                octets.add(Integer.parseInt(octet.text))
+        return when {
+            regname != null -> {
+                RegNameHost(host.text)
             }
-            return IPv4Host(octets, host.text)
-        } else if (ipv6 != null) {
-            return IPv6Host(ipv6.text, null, host.text)
-        } else if (ipv6zoned != null) {
-            val ipv6addr = ipv6zoned.ipv6address().text
-            val zoneRaw = ipv6zoned.zoneid().text
-            val zone = if (zoneRaw == null) null else Codecs.percentDecode(zoneRaw)
-            return IPv6Host(ipv6addr, zone, host.text)
-        } else if (ipFuture != null) {
-            val hexver = ipFuture.ipvfuture_version().text
-            val futureData = ipFuture.ipvfuture_data().text
-            val formatVersion = Integer.parseInt(hexver, 16)
-            return IPvFutureHost(formatVersion, futureData, host.text)
-        } else {
-            throw UriDecodeException("Grammar mismatch: authority did not contain any known host variant")
+            ipv4 != null -> {
+                val octets = ArrayList<Int>(4)
+                for (octet in ipv4.dec_octet()) {
+                    octets.add(Integer.parseInt(octet.text))
+                }
+                IPv4Host(octets, host.text)
+            }
+            ipv6 != null -> {
+                IPv6Host(ipv6.text, null, host.text)
+            }
+            ipv6zoned != null -> {
+                val ipv6addr = ipv6zoned.ipv6address().text
+                val zoneRaw = ipv6zoned.zoneid().text
+                val zone = if (zoneRaw == null) null else Codecs.percentDecode(zoneRaw)
+                IPv6Host(ipv6addr, zone, host.text)
+            }
+            ipFuture != null -> {
+                val hexver = ipFuture.ipvfuture_version().text
+                val futureData = ipFuture.ipvfuture_data().text
+                val formatVersion = Integer.parseInt(hexver, 16)
+                IPvFutureHost(formatVersion, futureData, host.text)
+            }
+            else -> {
+                throw UriDecodeException("Grammar mismatch: authority did not contain any known host variant")
+            }
         }
     }
 

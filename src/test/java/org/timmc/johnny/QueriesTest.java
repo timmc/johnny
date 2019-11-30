@@ -90,7 +90,7 @@ class QueriesTest {
         assertEquals("7", appended.getLast("m"));
 
         List<Map.Entry<String, String>> pairs = appended.getPairs();
-        Map.Entry last = pairs.get(pairs.size() - 1);
+        Map.Entry<String, String> last = pairs.get(pairs.size() - 1);
         assertEquals("z", last.getKey());
         assertEquals("after", last.getValue());
     }
