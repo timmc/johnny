@@ -84,7 +84,7 @@ data class HostedUri
         }
 
     /** Unparsed host component. */
-    val hostRaw: String?
+    val hostRaw: String
         get() = host.raw
 
 
