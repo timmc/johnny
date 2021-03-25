@@ -131,6 +131,10 @@ Parse and manipulate components:
 
 ### Tests
 
+- Tests around equality comparison of case-folding, e.g. Turkish dotless i:
+  https://eng.getwisdom.io/hacking-github-with-unicode-dotless-i/
+  (that one is about the local portion of an email address, but we should check
+  on handling in regnames)
 - Steal tests from other URL libs
 - Add fuzz tests/generative tests
     - Perhaps grab data from https://commoncrawl.org and extract all hrefs
