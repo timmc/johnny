@@ -1,4 +1,4 @@
-// Generated from src/main/antlr4/RFC_3986_6874.g4 by ANTLR 4.7.1
+// Generated from src/main/antlr4/RFC_3986_6874.g4 by ANTLR 4.9.3
 package org.timmc.johnny.internal.gen.parse;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -11,7 +11,7 @@ import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class RFC_3986_6874Lexer extends Lexer {
-	static { RuntimeMetaData.checkVersion("4.7.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -36,42 +36,51 @@ public class RFC_3986_6874Lexer extends Lexer {
 		"DEFAULT_MODE"
 	};
 
-	public static final String[] ruleNames = {
-		"EXCLAMATION", "POUND", "DOLLAR", "PERCENT", "AMPERSAND", "APOSTROPHE", 
-		"LEFT_PAREN", "RIGHT_PAREN", "ASTERISK", "PLUS", "COMMA", "DASH", "PERIOD", 
-		"SLASH", "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", 
-		"EIGHT", "NINE", "COLON", "SEMICOLON", "EQUALS", "QUESTION", "AT", "CAP_A", 
-		"CAP_B", "CAP_C", "CAP_D", "CAP_E", "CAP_F", "CAP_G", "CAP_H", "CAP_I", 
-		"CAP_J", "CAP_K", "CAP_L", "CAP_M", "CAP_N", "CAP_O", "CAP_P", "CAP_Q", 
-		"CAP_R", "CAP_S", "CAP_T", "CAP_U", "CAP_V", "CAP_W", "CAP_X", "CAP_Y", 
-		"CAP_Z", "LEFT_BRACE", "RIGHT_BRACE", "UNDERSCORE", "A", "B", "C", "D", 
-		"E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
-		"S", "T", "U", "V", "W", "X", "Y", "Z", "TILDE"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"EXCLAMATION", "POUND", "DOLLAR", "PERCENT", "AMPERSAND", "APOSTROPHE", 
+			"LEFT_PAREN", "RIGHT_PAREN", "ASTERISK", "PLUS", "COMMA", "DASH", "PERIOD", 
+			"SLASH", "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", 
+			"EIGHT", "NINE", "COLON", "SEMICOLON", "EQUALS", "QUESTION", "AT", "CAP_A", 
+			"CAP_B", "CAP_C", "CAP_D", "CAP_E", "CAP_F", "CAP_G", "CAP_H", "CAP_I", 
+			"CAP_J", "CAP_K", "CAP_L", "CAP_M", "CAP_N", "CAP_O", "CAP_P", "CAP_Q", 
+			"CAP_R", "CAP_S", "CAP_T", "CAP_U", "CAP_V", "CAP_W", "CAP_X", "CAP_Y", 
+			"CAP_Z", "LEFT_BRACE", "RIGHT_BRACE", "UNDERSCORE", "A", "B", "C", "D", 
+			"E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
+			"S", "T", "U", "V", "W", "X", "Y", "Z", "TILDE"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
 
-	private static final String[] _LITERAL_NAMES = {
-		null, "'!'", "'#'", "'$'", "'%'", "'&'", "'''", "'('", "')'", "'*'", "'+'", 
-		"','", "'-'", "'.'", "'/'", "'0'", "'1'", "'2'", "'3'", "'4'", "'5'", 
-		"'6'", "'7'", "'8'", "'9'", "':'", "';'", "'='", "'?'", "'@'", "'A'", 
-		"'B'", "'C'", "'D'", "'E'", "'F'", "'G'", "'H'", "'I'", "'J'", "'K'", 
-		"'L'", "'M'", "'N'", "'O'", "'P'", "'Q'", "'R'", "'S'", "'T'", "'U'", 
-		"'V'", "'W'", "'X'", "'Y'", "'Z'", "'['", "']'", "'_'", "'a'", "'b'", 
-		"'c'", "'d'", "'e'", "'f'", "'g'", "'h'", "'i'", "'j'", "'k'", "'l'", 
-		"'m'", "'n'", "'o'", "'p'", "'q'", "'r'", "'s'", "'t'", "'u'", "'v'", 
-		"'w'", "'x'", "'y'", "'z'", "'~'"
-	};
-	private static final String[] _SYMBOLIC_NAMES = {
-		null, "EXCLAMATION", "POUND", "DOLLAR", "PERCENT", "AMPERSAND", "APOSTROPHE", 
-		"LEFT_PAREN", "RIGHT_PAREN", "ASTERISK", "PLUS", "COMMA", "DASH", "PERIOD", 
-		"SLASH", "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", 
-		"EIGHT", "NINE", "COLON", "SEMICOLON", "EQUALS", "QUESTION", "AT", "CAP_A", 
-		"CAP_B", "CAP_C", "CAP_D", "CAP_E", "CAP_F", "CAP_G", "CAP_H", "CAP_I", 
-		"CAP_J", "CAP_K", "CAP_L", "CAP_M", "CAP_N", "CAP_O", "CAP_P", "CAP_Q", 
-		"CAP_R", "CAP_S", "CAP_T", "CAP_U", "CAP_V", "CAP_W", "CAP_X", "CAP_Y", 
-		"CAP_Z", "LEFT_BRACE", "RIGHT_BRACE", "UNDERSCORE", "A", "B", "C", "D", 
-		"E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
-		"S", "T", "U", "V", "W", "X", "Y", "Z", "TILDE"
-	};
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'!'", "'#'", "'$'", "'%'", "'&'", "'''", "'('", "')'", "'*'", 
+			"'+'", "','", "'-'", "'.'", "'/'", "'0'", "'1'", "'2'", "'3'", "'4'", 
+			"'5'", "'6'", "'7'", "'8'", "'9'", "':'", "';'", "'='", "'?'", "'@'", 
+			"'A'", "'B'", "'C'", "'D'", "'E'", "'F'", "'G'", "'H'", "'I'", "'J'", 
+			"'K'", "'L'", "'M'", "'N'", "'O'", "'P'", "'Q'", "'R'", "'S'", "'T'", 
+			"'U'", "'V'", "'W'", "'X'", "'Y'", "'Z'", "'['", "']'", "'_'", "'a'", 
+			"'b'", "'c'", "'d'", "'e'", "'f'", "'g'", "'h'", "'i'", "'j'", "'k'", 
+			"'l'", "'m'", "'n'", "'o'", "'p'", "'q'", "'r'", "'s'", "'t'", "'u'", 
+			"'v'", "'w'", "'x'", "'y'", "'z'", "'~'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, "EXCLAMATION", "POUND", "DOLLAR", "PERCENT", "AMPERSAND", "APOSTROPHE", 
+			"LEFT_PAREN", "RIGHT_PAREN", "ASTERISK", "PLUS", "COMMA", "DASH", "PERIOD", 
+			"SLASH", "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", 
+			"EIGHT", "NINE", "COLON", "SEMICOLON", "EQUALS", "QUESTION", "AT", "CAP_A", 
+			"CAP_B", "CAP_C", "CAP_D", "CAP_E", "CAP_F", "CAP_G", "CAP_H", "CAP_I", 
+			"CAP_J", "CAP_K", "CAP_L", "CAP_M", "CAP_N", "CAP_O", "CAP_P", "CAP_Q", 
+			"CAP_R", "CAP_S", "CAP_T", "CAP_U", "CAP_V", "CAP_W", "CAP_X", "CAP_Y", 
+			"CAP_Z", "LEFT_BRACE", "RIGHT_BRACE", "UNDERSCORE", "A", "B", "C", "D", 
+			"E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
+			"S", "T", "U", "V", "W", "X", "Y", "Z", "TILDE"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
 	/**

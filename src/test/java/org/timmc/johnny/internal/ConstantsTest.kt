@@ -23,6 +23,6 @@ class ConstantsTest {
     }
 
     fun charsToIntSet(chars: List<Char>): Set<Int> {
-        return chars.map { it.toInt() }.toSet()
+        return chars.map { it.code }.toSet()
     }
 }

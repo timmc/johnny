@@ -37,7 +37,7 @@ data class UserPass @JvmOverloads constructor (
 
     private companion object {
         /** Set of unencoded characters for username subcomponent.  */
-        private val ALLOW_CHARS_USERNAME = Constants.RFC3986_UNENCODED_USERINFO.clear(':'.toInt())
+        private val ALLOW_CHARS_USERNAME = Constants.RFC3986_UNENCODED_USERINFO.clear(':'.code)
         /** Set of unencoded characters for password subcomponent.  */
         private val ALLOW_CHARS_PASSWORD = Constants.RFC3986_UNENCODED_USERINFO
 

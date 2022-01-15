@@ -26,7 +26,7 @@ constructor (
     /*== Specified by interfaces ==*/
 
     override fun containsChar(c: Char): Boolean {
-        return backing.get(c.toInt())
+        return backing.get(c.code)
     }
 
     override fun containsCodePoint(cp: Int): Boolean {

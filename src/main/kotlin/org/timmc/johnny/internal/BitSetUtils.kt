@@ -24,7 +24,7 @@ object BitSetUtils {
         // TODO: Is there a way to chain to the Iterable version?
         val mutate = BitSet(0)
         for (c in included) {
-            mutate.set(c.toInt())
+            mutate.set(c.code)
         }
         return ImmutableBitSet(mutate)
     }

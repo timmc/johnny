@@ -8,7 +8,7 @@
 (defmacro cross
   [& body]
   `(u/dorun-bindings (var i/*url-parser*) i/url-parse-impls
-                     (fn tests [] ~@body)))
+                     (fn tests# [] ~@body)))
 
 (deftest parse
   (cross

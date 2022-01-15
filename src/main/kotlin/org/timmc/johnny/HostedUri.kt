@@ -69,7 +69,7 @@ data class HostedUri
             // in a Turkish locale might have "IPFS".toLowerCase() -> "ıpfs"
             // (dotless lowercase I). So, use the so-called "empty locale"
             // to pin to English-like behavior.
-            return schemeRaw.toLowerCase(Locale.ROOT)
+            return schemeRaw.lowercase(Locale.ROOT)
         }
 
     /**

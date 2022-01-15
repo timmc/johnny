@@ -19,16 +19,16 @@ object Constants {
 
     /** Set of lowercase alphabetic characters in ASCII.  */
     @JvmField
-    val ASCII_ALPHA_LOWER = ImmutableBitSet.EMPTY.set('a'.toInt(), 'z'.toInt() + 1)
+    val ASCII_ALPHA_LOWER = ImmutableBitSet.EMPTY.set('a'.code, 'z'.code + 1)
     /** Set of uppercase alphabetic characters in ASCII.  */
     @JvmField
-    val ASCII_ALPHA_UPPER = ImmutableBitSet.EMPTY.set('A'.toInt(), 'Z'.toInt() + 1)
+    val ASCII_ALPHA_UPPER = ImmutableBitSet.EMPTY.set('A'.code, 'Z'.code + 1)
     /** Set of alphabetic characters in ASCII.  */
     @JvmField
     val ASCII_ALPHA = ASCII_ALPHA_LOWER.or(ASCII_ALPHA_UPPER)
     /** Set of numeric characters in ASCII.  */
     @JvmField
-    val ASCII_NUMERIC = ImmutableBitSet.EMPTY.set('0'.toInt(), '9'.toInt() + 1)
+    val ASCII_NUMERIC = ImmutableBitSet.EMPTY.set('0'.code, '9'.code + 1)
     /** Set of alphabetic and numeric characters in ASCII.  */
     @JvmField
     val ASCII_ALPHANUMERIC = ASCII_ALPHA.or(ASCII_NUMERIC)
