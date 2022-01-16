@@ -86,8 +86,8 @@ course.)
 - No checked exceptions -- switch to unchecked.
 - Support for extracting path parameters (aka matrix parameters)
 - Compatibility: Support treating + as a space (opt-in)
-- Use of File as path (encode segments to avoid production of matrix
-  params)
+- Use of File as path (set scheme to `file`, authority to empty
+  string, and encode segments for URI path)
 - Expansion to other kinds of URIs.
     - or just support generic URI syntax
 - StringBuilder-backed impls (store offsets for fast getters)
