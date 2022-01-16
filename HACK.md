@@ -48,8 +48,8 @@ Deploy snapshots to [Sonatype's open source repo hosting][ossrh] via
 
 [ossrh]: https://central.sonatype.org/pages/ossrh-guide.html
 
-Releases are a little more complicated. `mvn release:clean
-release:prepare` and then `mvn release:perform`. The release should
+Releases are a little more complicated. `mvn release:clean release:prepare`
+and then `mvn release:perform`. The release should
 appear in https://oss.sonatype.org/#stagingRepositories after a few
 minutes (when logged in as `timmc`). Then
 [manually release][manual-release] the staging repository by "closing"
@@ -57,17 +57,6 @@ it. It will take some time for this to complete, and even longer for
 the deployment to sync to the Central repo.
 
 [manual-release]: https://central.sonatype.org/pages/releasing-the-deployment.html
-
-Dokka, the Kotlin documentation generator, has some verbose complaints
-that are mostly irrelevant. To strip out most of the noise and see if
-there are any real issues, run:
-
-```
-mvn clean dokka:javadocJar \
-  | grep -v INFO \
-  | grep -v 'cannot be used in inline' \
-  | grep -v "Can't find node by signature not implemented for"
-```
 
 ### Process
 
