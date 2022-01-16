@@ -109,7 +109,7 @@
   </pluginRepositories>
 
   <build>
-    <sourceDirectory>src/main/generated-java</sourceDirectory>
+    <sourceDirectory>src/main/kotlin</sourceDirectory>
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
       <plugin>
@@ -165,16 +165,13 @@
         <version>1.6.10</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <phase>pre-site</phase>
             <goals>
-              <goal>javadocJar</goal>
+              <goal>dokka</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <sourceDirectories>
-            <sourceDirectory>src/main/kotlin</sourceDirectory>
-          </sourceDirectories>
           <includes>
             <include>src/main/kotlin/dokka.md</include>
           </includes>
@@ -244,6 +241,78 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>versions-maven-plugin</artifactId>
         <version>2.8.1</version>
+      </plugin>
+
+      <!-- Specifies a minimum version of Maven to make versions:display-plugin-updates useful -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>enforce-maven</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>3.2.5</version>
+                </requireMavenVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- After this point, just pin the versions of a bunch of build plugins -->
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.1.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.9.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.0.0-M2</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.2.2</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.2.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.10.0</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.0.0</version>
       </plugin>
     </plugins>
   </build>
