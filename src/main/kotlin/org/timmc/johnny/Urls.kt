@@ -1,6 +1,7 @@
 package org.timmc.johnny
 
 import org.timmc.johnny.internal.Codecs
+import java.nio.file.Path
 
 /**
  * Main entrance point for http(s) URL parsing and manipulation.
@@ -45,6 +46,16 @@ object Urls {
     fun from(scheme: String, host: Host): HostedUri {
         // NB: We're passing in scheme for the schemeRaw
         return HostedUri(scheme, null, host, null, "", null, null)
+    }
+
+    /**
+     * Create a file: URI from a local Path.
+     */
+    @JvmStatic
+    fun from(localPath: Path): GenericUri {
+        val urlPath = TextPath.EMPTY.addSegments(localPath.toList().map { it.toString() })
+        val emptyAuthority = UriAuthority(null, RegNameHost(""), null)
+        return GenericUri("file", emptyAuthority, urlPath.format(), null, null)
     }
 
     /**
