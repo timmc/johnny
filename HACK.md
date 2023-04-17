@@ -53,7 +53,7 @@ and then `mvn release:perform`. The release should
 appear in https://oss.sonatype.org/#stagingRepositories after a few
 minutes (when logged in as `timmc`). Then
 [manually release][manual-release] the staging repository by "closing"
-it. It will take some time for this to complete, and even longer for
+it and then "releasing" it. It will take some time for this to complete, and even longer for
 the deployment to sync to the Central repo.
 
 [manual-release]: https://central.sonatype.org/pages/releasing-the-deployment.html
